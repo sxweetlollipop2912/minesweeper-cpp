@@ -3,12 +3,12 @@
 
 class Position {
 public:
-	int x, y;
+	int r, c;
 	Position() {
-		x = -1; y = -1;
+		r = -1; c = -1;
 	}
-	Position(const int x, const int y) {
-		this->x = x; this->y = y;
+	Position(const int r, const int c) {
+		this->r = r; this->c = c;
 	}
  
 	void operator=(const Position&);

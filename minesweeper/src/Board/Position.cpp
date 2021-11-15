@@ -2,32 +2,32 @@
 
 
 void Position::operator=(const Position& pos) {
-	x = pos.x;
-	y = pos.y;
+	r = pos.r;
+	c = pos.c;
 }
 
 
 Position Position::operator+(const Position& pos) const {
 	Position res;
-	res.x = x + pos.x;
-	res.y = y + pos.y;
+	res.r = r + pos.r;
+	res.c = c + pos.c;
 	return res;
 }
 
 
 Position Position::operator-(const Position& pos) const {
 	Position res;
-	res.x = x - pos.x;
-	res.y = y - pos.y;
+	res.r = r - pos.r;
+	res.c = c - pos.c;
 	return res;
 }
 
 
 bool Position::operator==(const Position& pos) const {
-	return x == pos.x && y == pos.y;
+	return r == pos.r && c == pos.c;
 }
 
 
 bool Position::operator<(const Position& pos) const {
-	return x < pos.x || (x == pos.x && y < pos.y);
+	return r < pos.r || (r == pos.r && c < pos.c);
 }

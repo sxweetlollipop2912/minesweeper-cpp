@@ -19,21 +19,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Board\Board.cpp" />
+    <ClCompile Include="src\Board\Position.cpp" />
     <ClCompile Include="src\Button\Button.cpp" />
+    <ClCompile Include="src\Cell\Cell.cpp" />
     <ClCompile Include="src\GraphicsObject\GraphicsObject.cpp" />
     <ClCompile Include="src\minesweeper.cpp" />
-    <ClCompile Include="src\Position\Position.cpp" />
     <ClCompile Include="src\Scenes\scene.cpp" />
     <ClCompile Include="src\Scenes\menu_scene.cpp" />
     <ClCompile Include="src\Text\Text.cpp" />
     <ClCompile Include="src\Window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Board\Board.h" />
+    <ClInclude Include="src\Board\Position.h" />
     <ClInclude Include="src\Button\Button.h" />
+    <ClInclude Include="src\Cell\Cell.h" />
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Enums.h" />
     <ClInclude Include="src\GraphicsObject\GraphicsObject.h" />
-    <ClInclude Include="src\Position\Position.h" />
     <ClInclude Include="src\Scenes\scene.h" />
     <ClInclude Include="src\Scenes\menu_scene.h" />
     <ClInclude Include="src\Text\Text.h" />
