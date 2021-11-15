@@ -39,5 +39,9 @@ protected:
 	std::string trim(std::string s) const;
 
 public:
+	bool isDrawing;
 
+	GraphicsObject() {
+		isDrawing = false;
+	}
 };

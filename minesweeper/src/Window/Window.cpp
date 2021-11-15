@@ -1,11 +1,22 @@
+#include <iostream>
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
 #include "Window.h"
 
 
-void Window::setMousePosition(const sf::Vector2i& pos) {
-	pos_mouse = pos;
+void Window::changeMousePosition(const sf::Vector2i& mouse_position) {
+	pos_mouse = mouse_position;
+
+	Scene& scene = map_scene[current_scene];
+	ButtonType last_hovered = scene.hoveredButton;
+
+	scene.changeMousePosition(pos_mouse);
+
+	if (scene.hoveredButton == last_hovered) return;
+
+	draw(scene);
 }
 
 
@@ -55,12 +66,16 @@ void Window::draw(const sf::Text& text) {
 }
 
 
-void Window::draw(const Text& text) {
+void Window::draw(Text& text) {
+	text.isDrawing = true;
+
 	draw(text.getSfText());
 }
 
 
-void Window::draw(const Button& button, const bool isHovered) {
+void Window::draw(Button& button, const bool isHovered) {
+	button.isDrawing = true;
+
 	if (isHovered == false)
 		draw(button.getDefaultSprite());
 	else
@@ -70,9 +85,16 @@ void Window::draw(const Button& button, const bool isHovered) {
 }
 
 
-void Window::draw(const Scene& scene) {
-	for (auto i = scene.map_button.begin(); i != scene.map_button.end(); i++)
-		draw(i->second);
+void Window::draw(Scene& scene) {
+	scene.isDrawing = true;
+
+	for (auto i = scene.map_button.begin(); i != scene.map_button.end(); i++) {
+		if (i->first != scene.hoveredButton)
+			draw(i->second);
+		else
+			draw(i->second, true);
+	}
+
 	for (auto i = scene.map_text.begin(); i != scene.map_text.end(); i++)
 		draw(i->second);
 }

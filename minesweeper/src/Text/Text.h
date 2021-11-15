@@ -7,7 +7,7 @@
 #include "../GraphicsObject/GraphicsObject.h"
 
 
-class Text : GraphicsObject {
+class Text : public GraphicsObject {
 private:
 	std::string content;
 

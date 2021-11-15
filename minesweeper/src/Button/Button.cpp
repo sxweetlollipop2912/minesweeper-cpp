@@ -53,10 +53,7 @@ sf::Vector2f Button::getPosTopLeft() const {
 
 
 sf::Vector2f Button::getPosRightDown() const {
-    sf::Vector2f button_size;
-    button_size.x = texture.getSize().x * scale.x;
-    button_size.y = texture.getSize().y * scale.y;
-    return pos_top_left + button_size;
+    return pos_top_left + getSize();
 }
 
 
@@ -80,14 +77,14 @@ sf::Sprite Button::getHoveredSprite() const {
     sprite.setScale(scale);
 
     // Darken the hovered sprite a bit.
-    sf::Color grey(215, 215, 215);
+    sf::Color grey(225, 225, 225);
     sprite.setColor(grey);
 
     return sprite;
 }
 
 
-bool Button::isMouseHovering(const sf::Vector2f& mouse_position) const {
+bool Button::isMouseHovering(const sf::Vector2i& mouse_position) const {
     sf::Vector2f pos_right_down = getPosRightDown();
 
     if (mouse_position.x < pos_top_left.x || mouse_position.x > pos_right_down.x) {

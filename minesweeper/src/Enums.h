@@ -1,12 +1,6 @@
 #pragma once
 
-/*enum class CellType {
-	mine,
-	number,
-	blank,
-	unknown
-};
-
+/*
 enum class CellState {
 	opened,
 	closed,
@@ -21,15 +15,34 @@ enum class GameState {
 	unknown
 };*/
 
+
 enum class Result {
 	success,
 	failure
 };
 
+
 enum class ButtonType {
 	Start,
 	Quit,
 	Board,
+	Cell,
+	Unknown
+};
+
+
+enum class CellState {
+	Closed,
+	Opened,
+	Flagged,
+	Unknown
+};
+
+
+enum class CellType {
+	Mine,
+	Number,
+	Blank,
 	Unknown
 };
 
@@ -40,5 +53,6 @@ enum class SceneType {
 	Won,
 	Lost,
 	Leaderboard,
+	Closing,
 	Unkown
 };

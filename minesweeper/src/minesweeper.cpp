@@ -1,3 +1,5 @@
+// Runs with configuration: release, x64
+
 #include <iostream>
 
 #include <SFML/System.hpp>
@@ -36,7 +38,7 @@ int main() {
                 break;
 
             case sf::Event::MouseMoved:
-                window.setMousePosition(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+                window.changeMousePosition(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
                 break;
             case sf::Event::MouseButtonPressed:
                 window.handleMouseButtonPress(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));

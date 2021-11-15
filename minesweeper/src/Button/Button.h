@@ -11,8 +11,8 @@
 // A button is basically an image, but with label and interactive.
 // Remember to rescale image after changing text,
 // and recenter image after changing window dimension.
-class Button : GraphicsObject {
-private:
+class Button : public GraphicsObject {
+protected:
 	ButtonType button_type;
 
 	sf::Texture texture;

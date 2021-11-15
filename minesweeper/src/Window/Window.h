@@ -23,11 +23,11 @@ private:
 	// Draws a text on the window.
 	void draw(const sf::Text& text);
 	// Draws a text on the window.
-	void draw(const Text& text);
+	void draw(Text& text);
 	// Draws a button on the window.
-	void draw(const Button& button, const bool isHovered = false);
+	void draw(Button& button, const bool isHovered = false);
 	// Draws a scene on the window.
-	void draw(const Scene& scene);
+	void draw(Scene& scene);
 
 public:
 	sf::RenderWindow render_window;
@@ -58,8 +58,8 @@ public:
 	// Gets current scene type.
 	SceneType getCurrentSceneType() const;
 
-	// Sets new mouse position.
-	void setMousePosition(const sf::Vector2i& pos);
+	// Changes window graphics base on new mouse position.
+	void changeMousePosition(const sf::Vector2i& pos);
 	// Registers a scene.
 	void registerScene(const SceneType& type, const Scene& scene);
 	// Sets current scene type.

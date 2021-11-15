@@ -12,7 +12,7 @@
 #include "../Constants.h"
 
 
-class Scene {
+class Scene : public GraphicsObject {
 	friend class Window;
 
 protected:
@@ -20,7 +20,19 @@ protected:
 	std::map <ButtonType, Button> map_button;
 	std::map <std::string, Text> map_text;
 
+	std::map <ButtonType, SceneType> next_scene;
+	ButtonType hoveredButton;
+
 public:
+	Scene() {
+		texture_path.clear();
+		map_button.clear();
+		map_text.clear();
+		next_scene.clear();
+
+		hoveredButton = ButtonType::Unknown;
+	}
+
 	// Adds an texture path to scene data.
 	// > Returns Result::failure if path cannot be found,
 	// > otherwise, returns Result::success.
@@ -29,4 +41,9 @@ public:
 	// Call on a mouse button event.
 	// This method is empty.
 	Result handleMouseButtonEvent(const sf::Event::MouseButtonEvent mouse_event);
+	// Changes window graphics base on new mouse position.
+	void changeMousePosition(const sf::Vector2i& pos);
+
+	// Cleans up after undrawing the scene.
+	void undrawScene();
 };
