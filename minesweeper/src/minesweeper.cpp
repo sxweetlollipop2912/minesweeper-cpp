@@ -7,6 +7,7 @@
 
 #include "../src/Window/Window.h"
 #include "../src/Scenes/menu_scene.h"
+#include "../src/Scenes/playing_scene.h"
 #include "../src/Button/Button.h"
 
 
@@ -17,7 +18,9 @@ int main() {
     sf::Vector2u window_size = window.render_window.getSize();
 
     window.registerScene(SceneType::Menu, MenuScene(window_size));
-    window.setCurrentSceneType(SceneType::Menu);
+    window.registerScene(SceneType::Playing, PlayingScene(window_size, 5, 5));
+
+    window.setCurrentSceneType(SceneType::Playing);
 
     while (window.render_window.isOpen()) {
         sf::Event event;

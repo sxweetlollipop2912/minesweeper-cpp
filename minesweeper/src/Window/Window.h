@@ -8,6 +8,7 @@
 #include "../Enums.h"
 #include "../Button/Button.h"
 #include "../Text/Text.h"
+#include "../Board/Board.h"
 #include "../Scenes/scene.h"
 
 
@@ -18,6 +19,8 @@ private:
 
 	sf::Vector2i pos_mouse;
 
+	// Draws a scene on the window.
+	void draw(Scene& scene);
 	// Draws a sprite on the window.
 	void draw(const sf::Sprite& sprite);
 	// Draws a text on the window.
@@ -26,8 +29,6 @@ private:
 	void draw(Text& text);
 	// Draws a button on the window.
 	void draw(Button& button, const bool isHovered = false);
-	// Draws a scene on the window.
-	void draw(Scene& scene);
 
 public:
 	sf::RenderWindow render_window;

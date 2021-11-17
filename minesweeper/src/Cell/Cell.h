@@ -48,7 +48,7 @@ private:
 	void reset();
 
 public:
-	Cell() {
+	Cell() : Button() {
 		button_at_state.clear();
 		setDefaultImages();
 

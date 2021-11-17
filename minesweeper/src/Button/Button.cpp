@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <SFML/Graphics.hpp>
 
 #include "Button.h"
@@ -63,6 +65,7 @@ sf::Vector2f Button::getPadding() const {
 
 
 sf::Sprite Button::getDefaultSprite() const {
+    std::cout << "BUTTON SPRITE DEFAULT\n";
     sf::Sprite sprite;
     loadSpriteFromTexture(sprite, texture, pos_top_left);
     sprite.setScale(scale);
@@ -72,6 +75,7 @@ sf::Sprite Button::getDefaultSprite() const {
 
 
 sf::Sprite Button::getHoveredSprite() const {
+    std::cout << "BUTTON SPRITE HOVERED\n";
     sf::Sprite sprite;
     loadSpriteFromTexture(sprite, texture, pos_top_left);
     sprite.setScale(scale);

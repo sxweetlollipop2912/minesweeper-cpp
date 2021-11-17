@@ -14,7 +14,7 @@ private:
 	sf::Vector2u window_size;
 
 public:
-	MenuScene(const sf::Vector2u& window_size) {
+	MenuScene(const sf::Vector2u& window_size) : Scene() {
 		next_scene[ButtonType::Start] = SceneType::Playing;
 		next_scene[ButtonType::Quit] = SceneType::Closing;
 
@@ -25,7 +25,7 @@ public:
 		float pos_y_quit_button = window_size.y * pos_Y_COEF_QUIT_BUTTON;
 
 		Text& title = map_text[TITLE];
-		title.setText(TITLE, DEFAULT_FONT_SIZE * 2);
+		title.setText(TITLE, DEFAULT_TITLE_FONT_SIZE);
 		title.setTopLeftPosition(sf::Vector2f(0, pos_y_title));
 		title.centerTextHorizontally(window_size.x);
 

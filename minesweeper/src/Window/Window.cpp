@@ -4,6 +4,7 @@
 #include <SFML/Window.hpp>
 
 #include "Window.h"
+#include "../Board/Board.h"
 
 
 void Window::changeMousePosition(const sf::Vector2i& mouse_position) {
@@ -74,6 +75,7 @@ void Window::draw(Text& text) {
 
 
 void Window::draw(Button& button, const bool isHovered) {
+	std::cout << "DRAWING\n";
 	button.isDrawing = true;
 
 	if (isHovered == false)
@@ -82,6 +84,7 @@ void Window::draw(Button& button, const bool isHovered) {
 		draw(button.getHoveredSprite());
 
 	draw(button.label);
+	std::cout << "DRAWN!!!\n";
 }
 
 

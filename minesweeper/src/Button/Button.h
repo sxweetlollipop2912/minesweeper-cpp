@@ -29,7 +29,7 @@ public:
 	// - Button is positioned at (0, 0).
 	// - Default padding.
 	// - Empty image, image scale = 1.
-	Button() {
+	Button() : GraphicsObject() {
 		button_type = ButtonType::Unknown;
 
 		pos_top_left = sf::Vector2f(0, 0);

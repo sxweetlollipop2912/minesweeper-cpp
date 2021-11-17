@@ -1,3 +1,4 @@
+#include <iostream>
 #include <map>
 
 #include <SFML/System.hpp>
@@ -14,10 +15,10 @@ Result Cell::setDefaultImages() {
 	Button& flagged = button_at_state[CellState::Flagged];
 
 	if (closed.setImage(CLOSED_CELL_IMG_PATH) == Result::failure)
-		return Result::failure;
+		return std::cout << "FAILED\n", Result::failure;
 
 	if (flagged.setImage(FLAGGED_CELL_IMG_PATH) == Result::failure)
-		return Result::failure;
+		return std::cout << "FAILED\n", Result::failure;
 
 	sf::Vector2f scale;
 	scale.x = DEFAULT_CELL_SIZE / (float)closed.getImageSize().x;
@@ -28,6 +29,7 @@ Result Cell::setDefaultImages() {
 	scale.y = DEFAULT_CELL_SIZE / (float)flagged.getImageSize().y;
 	closed.setScale(scale);
 
+	std::cout << "SET IMAGE COMPLETED\n";
 	return Result::success;
 }
 
@@ -191,7 +193,7 @@ int Cell::getNumber() const {
 
 
 
-// OVERLOADING METHODS
+// OVERRIDED METHODS
 
 sf::Vector2f Cell::getSize() const {
 	return sf::Vector2f(DEFAULT_CELL_SIZE, DEFAULT_CELL_SIZE);

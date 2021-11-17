@@ -9,7 +9,8 @@ const int MAX_ROW = 30;
 
 
 // TEXT
-const unsigned int DEFAULT_FONT_SIZE = 20;
+const unsigned int DEFAULT_TITLE_FONT_SIZE = 40;
+const unsigned int DEFAULT_FONT_SIZE = 15;
 const std::string DEFAULT_FONT_PATH = "D:\\Music\\OneDrive - VNU-HCMUS\\Assignment Documents\\CS161 - Final Project\\minesweeper\\minesweeper\\assets\\fonts\\MochiyPopOne.ttf";
 
 
@@ -30,7 +31,10 @@ const float POS_Y_COEF_START_BUTTON = 1 / (float)2;
 const float pos_Y_COEF_QUIT_BUTTON = 5 / (float)8;
 // BOARD
 const int DEFAULT_CELL_SIZE = 18;
-const float POS_Y_COEF_BOARD = 1 / (float)5;
+const sf::Vector2f TOP_LEFT_COEF_BOARD_AREA = sf::Vector2f(0, 0);
+const sf::Vector2f RIGHT_DOWN_COEF_BOARD_AREA = sf::Vector2f(4 / (float)5, 1);
+const sf::Vector2f POS_COEF_TIMER = sf::Vector2f(4 / (float)5, 1 / (float)3);
+const sf::Vector2f POS_COEF_HIGHSCORE = sf::Vector2f(4 / (float)5, 2 / (float)5);
 
 
 // IMAGE PATHS
