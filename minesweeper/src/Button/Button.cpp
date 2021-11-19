@@ -79,7 +79,7 @@ sf::Sprite Button::getHoveredSprite() const {
     sprite.setScale(scale);
 
     // Darken the hovered sprite a bit.
-    sf::Color grey(225, 225, 225);
+    sf::Color grey(100, 100, 100);
     sprite.setColor(grey);
 
     return sprite;
