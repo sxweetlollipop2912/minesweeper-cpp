@@ -54,19 +54,31 @@ void Window::initializePlayingScene(sf::Vector2u window_size, int board_rows, in
 void Window::changeMousePosition(const sf::Vector2i& mouse_position) {
 	pos_mouse = mouse_position;
 
-	Scene& scene = map_scene[current_scene];
-	ButtonType last_hovered = scene.hoveredButton;
+	switch (current_scene) {
+	case SceneType::Playing:
+		if (playing_scene.PlayingScene::changeMousePosition(mouse_position))
+			drawCurrentScene();
+		break;
 
-	scene.changeMousePosition(pos_mouse);
+	case SceneType::Menu:
+		//break;
+	case SceneType::Won:
+		//break;
+	case SceneType::Lost:
+		//break;
+	case SceneType::Leaderboard:
+		//break;
+	case SceneType::Closing:
+		//break;
+	case SceneType::Unkown:
+		//break;
 
-	if (scene.hoveredButton == last_hovered) return;
-
-	draw(scene);
-}
-
-
-void Window::registerScene(const SceneType& type, const Scene& scene) {
-	map_scene[type] = scene;
+	default:
+		Scene* scene = getCurrentScene();
+		if (scene->changeMousePosition(pos_mouse))
+			drawCurrentScene();
+		break;
+	}
 }
 
 

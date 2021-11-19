@@ -29,9 +29,20 @@ private:
 	int number_of_cols;
 	Position hovered_cell;
 
-	sf::RenderTexture board_rendertexture;
-	sf::Vector2i hovered_cell;
-
+	// Initializes the board.
+	void initialize(const int rows, const int cols, const sf::Vector2f pos_top_left = sf::Vector2f(0, 0));
+	// Assigns all elements in board to default value.
+	void resetAllCells();
+	// Updates the grahics side of the board.
+	// Returns Result::success / Result::failure:
+	//	> success: board is successfully updated.
+	//	> failure: board has not been changed after calling this method.
+	// Regardless of the result, the board is up-to-date at return time.
+	Result updateBoard(const GameCell new_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int rows, const int cols);
+	// Determines the hovered cell given current mouse position.
+	// Returns true if the hovered cell is changed.
+	// Otherwise, returns false.
+	bool determineHoveredCell(const sf::Vector2i mouse_pos);
 	// Sets type of the cell at requested position.
 	// `number` param is for CellType::Number.
 	// Returns Result::success / Result::failure:

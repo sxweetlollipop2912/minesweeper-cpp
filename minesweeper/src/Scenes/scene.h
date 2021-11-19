@@ -42,7 +42,9 @@ public:
 	// This method is empty.
 	Result handleMouseButtonEvent(const sf::Event::MouseButtonEvent mouse_event);
 	// Changes window graphics base on new mouse position.
-	void changeMousePosition(const sf::Vector2i& pos);
+	// Returns true if there are changes in the scene.
+	// Otherwise, returns false
+	virtual bool changeMousePosition(const sf::Vector2i& pos);
 
 	// Cleans up after undrawing the scene.
 	void undrawScene();

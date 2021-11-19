@@ -10,7 +10,8 @@
 #include "../Constants.h"
 
 
-void Scene::changeMousePosition(const sf::Vector2i& mouse_position) {
+bool Scene::changeMousePosition(const sf::Vector2i& mouse_position) {
+	ButtonType last_hovered = hoveredButton;
 	hoveredButton = ButtonType::Unknown;
 	
 	for (auto i = map_button.begin(); i != map_button.end(); i++) {
@@ -18,6 +19,8 @@ void Scene::changeMousePosition(const sf::Vector2i& mouse_position) {
 		hoveredButton = i->first;
 		break;
 	}
+
+	return hoveredButton != last_hovered;
 }
 
 

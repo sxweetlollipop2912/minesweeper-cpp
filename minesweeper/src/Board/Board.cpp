@@ -86,6 +86,23 @@ Result Board::updateBoard(const GameCell new_board[][MAX_COLUMN], const char min
 }
 
 
+bool Board::determineHoveredCell(const sf::Vector2i mouse_pos) {
+	Position last_hovered = hovered_cell;
+	hovered_cell = Position(-1, -1);
+
+	for (int i = 0; i < number_of_rows; i++) {
+		for (int j = 0; j < number_of_cols; j++) {
+			if (!board[i][j].isMouseHovering(mouse_pos)) continue;
+			hovered_cell = Position(i, j);
+
+			break;
+		}
+	}
+
+	return hovered_cell != last_hovered;
+}
+
+
 void Board::resetAllCells() {
 	for (int i = 0; i < number_of_rows; i++)
 		for (int j = 0; j < number_of_cols; j++) {
