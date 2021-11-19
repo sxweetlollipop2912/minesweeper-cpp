@@ -8,16 +8,27 @@
 #include "../Enums.h"
 #include "../Button/Button.h"
 #include "../Text/Text.h"
+#include "../Board/Board.h"
 #include "../Scenes/scene.h"
+#include "../Scenes/menu_scene.h"
+#include "../Scenes/playing_scene.h"
 
 
 class Window {
 private:
-	std::map <SceneType, Scene> map_scene;
+	MenuScene menu_scene;
+	PlayingScene playing_scene;
+
 	SceneType current_scene;
 
 	sf::Vector2i pos_mouse;
 
+	// Draws a menu scene on the window.
+	void draw(MenuScene& scene);
+	// Draws a playing scene on the window.
+	void draw(PlayingScene& scene);
+	// Draws a scene on the window.
+	void draw(Scene& scene);
 	// Draws a sprite on the window.
 	void draw(const sf::Sprite& sprite);
 	// Draws a text on the window.
@@ -26,8 +37,6 @@ private:
 	void draw(Text& text);
 	// Draws a button on the window.
 	void draw(Button& button, const bool isHovered = false);
-	// Draws a scene on the window.
-	void draw(Scene& scene);
 
 public:
 	sf::RenderWindow render_window;
@@ -40,7 +49,9 @@ public:
 		this->height = sf::VideoMode::getDesktopMode().height;
 		this->title = "";
 
-		map_scene.clear();
+		menu_scene.initialize(sf::Vector2u(width, height));
+		playing_scene.initialize(sf::Vector2u(width, height), 0, 0);
+
 		current_scene = SceneType::Unkown;
 	}
 	// Initializes a Window object with desired width, height, title.
@@ -49,7 +60,9 @@ public:
 		this->height = height;
 		this->title = title;
 
-		map_scene.clear();
+		menu_scene.initialize(sf::Vector2u(width, height));
+		playing_scene.initialize(sf::Vector2u(width, height), 0, 0);
+
 		current_scene = SceneType::Unkown;
 	}
 
@@ -57,11 +70,15 @@ public:
 	sf::Vector2i getMousePosition() const;
 	// Gets current scene type.
 	SceneType getCurrentSceneType() const;
+	// Gets current scene as Scene object.
+	Scene* getCurrentScene();
 
+	// Initializes menu scene for window.
+	void initializeMenuScene(sf::Vector2u window_size);
+	// Initializes playing scene for window.
+	void initializePlayingScene(sf::Vector2u window_size, int board_rows, int board_cols);
 	// Changes window graphics base on new mouse position.
 	void changeMousePosition(const sf::Vector2i& pos);
-	// Registers a scene.
-	void registerScene(const SceneType& type, const Scene& scene);
 	// Sets current scene type.
 	void setCurrentSceneType(const SceneType& type);
 

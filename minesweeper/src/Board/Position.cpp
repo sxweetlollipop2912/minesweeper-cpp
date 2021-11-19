@@ -23,6 +23,11 @@ Position Position::operator-(const Position& pos) const {
 }
 
 
+bool Position::operator!=(const Position& pos) const {
+	return r != pos.r || c != pos.c;
+}
+
+
 bool Position::operator==(const Position& pos) const {
 	return r == pos.r && c == pos.c;
 }

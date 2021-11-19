@@ -25,6 +25,7 @@
     <ClCompile Include="src\Cell\Cell.cpp" />
     <ClCompile Include="src\GraphicsObject\GraphicsObject.cpp" />
     <ClCompile Include="src\minesweeper.cpp" />
+    <ClCompile Include="src\Scenes\playing_scene.cpp" />
     <ClCompile Include="src\Scenes\scene.cpp" />
     <ClCompile Include="src\Scenes\menu_scene.cpp" />
     <ClCompile Include="src\Text\Text.cpp" />
@@ -38,6 +39,7 @@
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Enums.h" />
     <ClInclude Include="src\GraphicsObject\GraphicsObject.h" />
+    <ClInclude Include="src\Scenes\playing_scene.h" />
     <ClInclude Include="src\Scenes\scene.h" />
     <ClInclude Include="src\Scenes\menu_scene.h" />
     <ClInclude Include="src\Text\Text.h" />

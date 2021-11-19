@@ -29,7 +29,7 @@ public:
 	// - Button is positioned at (0, 0).
 	// - Default padding.
 	// - Empty image, image scale = 1.
-	Button() {
+	Button() : GraphicsObject() {
 		button_type = ButtonType::Unknown;
 
 		pos_top_left = sf::Vector2f(0, 0);
@@ -69,7 +69,7 @@ public:
 	// > otherwise, returns Result::success.
 	virtual Result setImage(const std::string& img_path, const sf::Vector2f& pos_top_left = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1));
 	// Sets top-left position of the button.
-	void setTopLeftPosition(const sf::Vector2f& pos_top_left);
+	virtual void setTopLeftPosition(const sf::Vector2f& pos_top_left);
 	// Sets padding size of the button.
 	// NOTE: if button is already scaled to fit text, it is recommended to rescale it.
 	virtual void setPadding(const sf::Vector2f& padding);

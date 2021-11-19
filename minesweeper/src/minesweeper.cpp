@@ -7,17 +7,20 @@
 
 #include "../src/Window/Window.h"
 #include "../src/Scenes/menu_scene.h"
+#include "../src/Scenes/playing_scene.h"
 #include "../src/Button/Button.h"
 
 
 int main() {
-    Window window(800, 600, "minesweeper");
+    Window window(1000, 800, "minesweeper");
     window.createWindow();
 
     sf::Vector2u window_size = window.render_window.getSize();
 
-    window.registerScene(SceneType::Menu, MenuScene(window_size));
-    window.setCurrentSceneType(SceneType::Menu);
+    window.initializeMenuScene(window_size);
+    window.initializePlayingScene(window_size, 10, 10);
+
+    window.setCurrentSceneType(SceneType::Playing);
 
     while (window.render_window.isOpen()) {
         sf::Event event;

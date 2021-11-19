@@ -27,6 +27,7 @@ enum class ButtonType {
 	Quit,
 	Board,
 	Cell,
+	Back,
 	Unknown
 };
 

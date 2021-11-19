@@ -27,7 +27,7 @@ public:
 	// Initializes button with:
 	// - Default font, font size, text color, text style.
 	// - Empty text
-	Text() {
+	Text() : GraphicsObject() {
 		width = 0;
 		height = 0;
 		pos_top_left.x = pos_top_left.y = 0;

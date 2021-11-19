@@ -14,6 +14,7 @@ public:
 	void operator=(const Position&);
 	Position operator+(const Position&) const;
 	Position operator-(const Position&) const;
+	bool operator!=(const Position&) const;
 	bool operator==(const Position&) const;
 	bool operator<(const Position&) const;
 };

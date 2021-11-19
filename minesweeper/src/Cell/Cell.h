@@ -20,6 +20,10 @@ private:
 	CellState cell_state;
 	int cell_number;
 
+	
+	// Gets scale for the cell base on current image's size and DEFAULT_CELL_SIZE.
+	sf::Vector2f getScale() const;
+
 	// Sets default images for `closed` and `flagged` states.
 	Result setDefaultImages();
 	Result setImageForMineType();
@@ -48,7 +52,7 @@ private:
 	void reset();
 
 public:
-	Cell() {
+	Cell() : Button() {
 		button_at_state.clear();
 		setDefaultImages();
 
@@ -70,16 +74,19 @@ public:
 	int getNumber() const;
 
 
-	// OVERRIDED BUTTON METHODS
+	// OVERRIDING BUTTON METHODS
 
-	// Gets size of the button (after apply scaling).
+	// Gets size of the cell.
 	sf::Vector2f getSize() const override;
-	// Gets original size of the button's image (b4 apply scaling).
+	// Gets original size of the cell's image.
 	sf::Vector2u getImageSize() const override;
-	// Gets default (not hovered) button's sprite.
+	// Gets default (not hovered) cell's sprite.
 	sf::Sprite getDefaultSprite() const override;
-	// Gets hovered (not hovered) button's sprite.
+	// Gets hovered (not hovered) cell's sprite.
 	sf::Sprite getHoveredSprite() const override;
+
+	// Sets top-left position of the cell in respect of window size.
+	void setTopLeftPosition(const sf::Vector2f& pos_top_left) override;
 
 	void setButtonType(const ButtonType& button_type) override;
 	Result setImage(const std::string& img_path, const sf::Vector2f& pos_top_left = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1)) override;

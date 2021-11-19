@@ -4,24 +4,81 @@
 #include <SFML/Window.hpp>
 
 #include "Window.h"
+#include "../Board/Board.h"
+
+
+sf::Vector2i Window::getMousePosition() const {
+	return pos_mouse;
+}
+
+SceneType Window::getCurrentSceneType() const {
+	return current_scene;
+}
+
+Scene* Window::getCurrentScene() {
+	switch (current_scene) {
+	case SceneType::Menu:
+		return &menu_scene;
+		break;
+	case SceneType::Playing:
+		return &playing_scene;
+		break;
+	case SceneType::Won:
+		break;
+	case SceneType::Lost:
+		break;
+	case SceneType::Leaderboard:
+		break;
+	case SceneType::Closing:
+		break;
+	case SceneType::Unkown:
+		break;
+	default:
+		break;
+	}
+
+	return &Scene();
+}
+
+
+void Window::initializeMenuScene(sf::Vector2u window_size) {
+	menu_scene.initialize(window_size);
+}
+
+
+void Window::initializePlayingScene(sf::Vector2u window_size, int board_rows, int board_cols) {
+	playing_scene.initialize(window_size, board_rows, board_cols);
+}
 
 
 void Window::changeMousePosition(const sf::Vector2i& mouse_position) {
 	pos_mouse = mouse_position;
 
-	Scene& scene = map_scene[current_scene];
-	ButtonType last_hovered = scene.hoveredButton;
+	switch (current_scene) {
+	case SceneType::Playing:
+		if (playing_scene.PlayingScene::changeMousePosition(mouse_position))
+			drawCurrentScene();
+		break;
 
-	scene.changeMousePosition(pos_mouse);
+	case SceneType::Menu:
+		//break;
+	case SceneType::Won:
+		//break;
+	case SceneType::Lost:
+		//break;
+	case SceneType::Leaderboard:
+		//break;
+	case SceneType::Closing:
+		//break;
+	case SceneType::Unkown:
+		//break;
 
-	if (scene.hoveredButton == last_hovered) return;
-
-	draw(scene);
-}
-
-
-void Window::registerScene(const SceneType& type, const Scene& scene) {
-	map_scene[type] = scene;
+	default:
+		Scene* scene = getCurrentScene();
+		if (scene->changeMousePosition(pos_mouse))
+			drawCurrentScene();
+		break;
+	}
 }
 
 
@@ -52,7 +109,26 @@ Result Window::handleMouseButtonPress(const sf::Mouse::Button& button, const sf:
 
 
 void Window::drawCurrentScene() {
-	draw(map_scene[current_scene]);
+	switch (current_scene) {
+	case SceneType::Menu:
+		draw(menu_scene);
+		break;
+	case SceneType::Playing:
+		draw(playing_scene);
+		break;
+	case SceneType::Won:
+		break;
+	case SceneType::Lost:
+		break;
+	case SceneType::Leaderboard:
+		break;
+	case SceneType::Closing:
+		break;
+	case SceneType::Unkown:
+		break;
+	default:
+		break;
+	}
 }
 
 
@@ -82,6 +158,31 @@ void Window::draw(Button& button, const bool isHovered) {
 		draw(button.getHoveredSprite());
 
 	draw(button.label);
+}
+
+
+void Window::draw(MenuScene& scene) {
+	draw((Scene&)scene);
+}
+
+
+void Window::draw(PlayingScene& scene) {
+	draw((Scene&)scene);
+
+	Board& board = scene.board;
+	board.isDrawing = true;
+
+	for (int i = 0; i < board.number_of_rows; i++) {
+		for (int j = 0; j < board.number_of_cols; j++) {
+
+			if (Position(i, j) != board.hovered_cell) {
+				draw(board.board[i][j]);
+			}
+			else {
+				draw(board.board[i][j], true);
+			}
+		}
+	}
 }
 
 
