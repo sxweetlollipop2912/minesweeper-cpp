@@ -10,15 +10,25 @@
 #include "../Constants.h"
 
 
+sf::Vector2f Cell::getScale() const {
+	sf::Vector2f scale;
+
+	scale.x = DEFAULT_CELL_SIZE / (float)button_at_state.at(cell_state).getImageSize().x;
+	scale.y = DEFAULT_CELL_SIZE / (float)button_at_state.at(cell_state).getImageSize().y;
+
+	return scale;
+}
+
+
 Result Cell::setDefaultImages() {
 	Button& closed = button_at_state[CellState::Closed];
 	Button& flagged = button_at_state[CellState::Flagged];
 
 	if (closed.setImage(CLOSED_CELL_IMG_PATH) == Result::failure)
-		return std::cout << "FAILED\n", Result::failure;
+		return Result::failure;
 
 	if (flagged.setImage(FLAGGED_CELL_IMG_PATH) == Result::failure)
-		return std::cout << "FAILED\n", Result::failure;
+		return Result::failure;
 
 	sf::Vector2f scale;
 	scale.x = DEFAULT_CELL_SIZE / (float)closed.getImageSize().x;
@@ -29,7 +39,6 @@ Result Cell::setDefaultImages() {
 	scale.y = DEFAULT_CELL_SIZE / (float)flagged.getImageSize().y;
 	closed.setScale(scale);
 
-	std::cout << "SET IMAGE COMPLETED\n";
 	return Result::success;
 }
 
@@ -193,7 +202,7 @@ int Cell::getNumber() const {
 
 
 
-// OVERRIDED METHODS
+// OVERRIDING METHODS
 
 sf::Vector2f Cell::getSize() const {
 	return sf::Vector2f(DEFAULT_CELL_SIZE, DEFAULT_CELL_SIZE);
@@ -207,11 +216,7 @@ sf::Vector2u Cell::getImageSize() const {
 
 sf::Sprite Cell::getDefaultSprite() const {
 	sf::Sprite sprite = button_at_state.at(cell_state).getDefaultSprite();
-	sf::Vector2f scale;
-
-	scale.x = DEFAULT_CELL_SIZE / (float)button_at_state.at(cell_state).getImageSize().x;
-	scale.y = DEFAULT_CELL_SIZE / (float)button_at_state.at(cell_state).getImageSize().y;
-	sprite.scale(scale);
+	sprite.scale(getScale());
 
 	return sprite;
 }
@@ -219,13 +224,18 @@ sf::Sprite Cell::getDefaultSprite() const {
 
 sf::Sprite Cell::getHoveredSprite() const {
 	sf::Sprite sprite = button_at_state.at(cell_state).getHoveredSprite();
-	sf::Vector2f scale;
-
-	scale.x = DEFAULT_CELL_SIZE / (float)button_at_state.at(cell_state).getImageSize().x;
-	scale.y = DEFAULT_CELL_SIZE / (float)button_at_state.at(cell_state).getImageSize().y;
-	sprite.scale(scale);
+	sprite.scale(getScale());
 
 	return sprite;
+}
+
+
+void Cell::setTopLeftPosition(const sf::Vector2f& pos_top_left) {
+	this->Button::setTopLeftPosition(pos_top_left);
+
+	for (auto i = button_at_state.begin(); i != button_at_state.end(); i++) {
+		i->second.setTopLeftPosition(this->pos_top_left);
+	}
 }
 
 

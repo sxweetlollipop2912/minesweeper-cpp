@@ -5,8 +5,6 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "../Window/Window.h"
-#include "../Scenes/menu_scene.h"
 #include "../Button/Button.h"
 #include "../Text/Text.h"
 #include "../Constants.h"
@@ -14,9 +12,9 @@
 
 
 std::string PlayingScene::timerStr(int h, int m, int s) {
-	if (h < 0 || m < 0 || s < 0) return "timer: -1";
+	if (h < 0 || m < 0 || s < 0) return "timer -1";
 
-	std::string str = "timer: ";
+	std::string str = "timer ";
 	std::string s_h, s_m, s_s;
 
 	for (; h != 0; h /= 10) s_h += (char)('0' + (h % 10));
@@ -37,9 +35,9 @@ std::string PlayingScene::timerStr(int h, int m, int s) {
 
 
 std::string PlayingScene::highscoreStr(int h, int m, int s) {
-	if (h < 0 || m < 0 || s < 0) return "highscore: -1";
+	if (h < 0 || m < 0 || s < 0) return "highscore -1";
 
-	std::string str = "highscore: ";
+	std::string str = "highscore ";
 	std::string s_h, s_m, s_s;
 
 	for (; h != 0; h /= 10) s_h += (char)('0' + (h % 10));

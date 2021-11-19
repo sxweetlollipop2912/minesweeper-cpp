@@ -20,12 +20,14 @@ struct GameCell {
 
 
 class Board : public Button {
+	friend class PlayingScene;
 	friend class Window;
 
 private:
 	std::vector <std::vector <Cell> > board;
 	int number_of_rows;
 	int number_of_cols;
+	Position hovered_cell;
 
 	sf::RenderTexture board_rendertexture;
 	sf::Vector2i hovered_cell;
@@ -37,63 +39,33 @@ private:
 	//	> failure: cell has been set to the desired type b4 calling this method OR image cannot be loaded.
 	// Regardless of the result, the cell is at desired type at return time.
 	Result setCellType(const Position& pos, const CellType type, const int number = -1);
-	// Updates board RenderTexture base on current board.
-	void updateBoardRenderTexture();
+
+
+	// OVERRIDING BUTTON METHODS
+
+	// Sets top-left position of the whole board in respect of window size.
+	void setTopLeftPosition(const sf::Vector2f& pos_top_left) override;
 
 public:
-	Board() : Button() {
+	Board() {
 		button_type = ButtonType::Board;
 		number_of_rows = number_of_cols = 0;
 		pos_top_left.x = pos_top_left.y = 0;
 
-		hovered_cell = sf::Vector2i(-1, -1);
+		hovered_cell = Position(-1, -1);
 
 		board.clear();
 	}
 
-	Board(const int rows, const int cols) : Button() {
-		std::cout << "BOARD INITING\n";
-
-		button_type = ButtonType::Board;
-		pos_top_left.x = pos_top_left.y = 0;
-		number_of_rows = rows;
-		number_of_cols = cols;
-
-		hovered_cell = sf::Vector2i(-1, -1);
-		
-		board.resize(number_of_rows);
-		for (int i = 0; i < number_of_rows; i++) {
-			board[i].resize(number_of_cols);
-
-			for (int j = 0; j < number_of_cols; j++) {
-				sf::Vector2f rel_pos;
-				rel_pos.x = DEFAULT_CELL_SIZE * j;
-				rel_pos.y = DEFAULT_CELL_SIZE * i;
-
-				board[i][j].setTopLeftPosition(rel_pos);
-
-				std::cout << "CELL " << i << ' ' << j << ' ' << board[i][j].getPosTopLeft().x << ' ' << board[i][j].getPosTopLeft().y << '\n';
-			}
-		}
-
-		updateBoardRenderTexture();
-
-		std::cout << "BOARD INIT COMPLETED\n";
+	Board(const int rows, const int cols, const sf::Vector2f pos_top_left = sf::Vector2f(0, 0)) {
+		initialize(rows, cols, pos_top_left);
 	}
 
-	// Updates the grahics side of the board.
-	// Returns Result::success / Result::failure:
-	//	> success: board is successfully updated.
-	//	> failure: board has not been changed after calling this method.
-	// Regardless of the result, the board is up-to-date at return time.
-	Result updateBoard(const GameCell new_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int rows, const int cols);
-	// Assigns all elements in board to default value.
-	void resetAllCells();
-
+	// Checks if a coordinate is valid on this board.
 	bool isValidPos(const Position& pos) const;
 
 
-	// OVERRIDED BUTTON METHODS
+	// OVERRIDING BUTTON METHODS
 
 	// Gets size of the button (after apply scaling).
 	sf::Vector2f getSize() const override;

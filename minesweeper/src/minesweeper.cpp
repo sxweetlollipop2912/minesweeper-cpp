@@ -12,13 +12,13 @@
 
 
 int main() {
-    Window window(800, 600, "minesweeper");
+    Window window(1000, 800, "minesweeper");
     window.createWindow();
 
     sf::Vector2u window_size = window.render_window.getSize();
 
-    window.registerScene(SceneType::Menu, MenuScene(window_size));
-    window.registerScene(SceneType::Playing, PlayingScene(window_size, 5, 5));
+    window.initializeMenuScene(window_size);
+    window.initializePlayingScene(window_size, 10, 10);
 
     window.setCurrentSceneType(SceneType::Playing);
 
