@@ -17,12 +17,15 @@
 
 class Window {
 private:
-	MenuScene menu_scene;
-	PlayingScene playing_scene;
+	std::map <SceneType, std::shared_ptr<Scene>> map_scene;
 
 	SceneType current_scene;
 
 	sf::Vector2i pos_mouse;
+	// Locks mouse button when it is in use, i.e, a RMB won't be detected while a LMB is pressed and hasn't been released.
+	MouseActionType lock_mouse_button;
+	// To detect double LMB clicks.
+	sf::Clock time_elapsed_last_lmb;
 
 	// Draws a menu scene on the window.
 	void draw(MenuScene& scene);
@@ -50,19 +53,34 @@ public:
 		this->height = sf::VideoMode::getDesktopMode().height;
 		this->title = "";
 
-		menu_scene.initialize(sf::Vector2u(width, height));
-		playing_scene.initialize(sf::Vector2u(width, height), 0, 0);
+		lock_mouse_button = MouseActionType::Unknown;
+
+		auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene());
+		auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene());
+		menu_scene->initialize(sf::Vector2u(width, height));
+		playing_scene->initialize(sf::Vector2u(width, height), 0, 0);
+
+		map_scene[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
+		map_scene[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
 
 		current_scene = SceneType::Unkown;
 	}
+
 	// Initializes a Window object with desired width, height, title.
 	Window(const int width, const int height, const std::string& title) {
 		this->width = width;
 		this->height = height;
 		this->title = title;
 
-		menu_scene.initialize(sf::Vector2u(width, height));
-		playing_scene.initialize(sf::Vector2u(width, height), 0, 0);
+		lock_mouse_button = MouseActionType::Unknown;
+
+		auto menu_scene = std::make_shared<MenuScene>();
+		auto playing_scene = std::make_shared<PlayingScene>();
+		menu_scene->initialize(sf::Vector2u(width, height));
+		playing_scene->initialize(sf::Vector2u(width, height), 0, 0);
+
+		map_scene[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
+		map_scene[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
 
 		current_scene = SceneType::Unkown;
 	}
@@ -72,7 +90,7 @@ public:
 	// Gets current scene type.
 	SceneType getCurrentSceneType() const;
 	// Gets current scene as Scene object.
-	Scene* getCurrentScene();
+	std::shared_ptr<Scene> getCurrentScene();
 
 	// Initializes menu scene for window.
 	void initializeMenuScene(sf::Vector2u window_size);
