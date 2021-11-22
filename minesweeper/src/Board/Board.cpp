@@ -12,7 +12,6 @@ Result Board::setCellType(const Position& pos, const CellType type, const int nu
 
 
 void Board::initialize(const int rows, const int cols, const sf::Vector2f pos_top_left) {
-
 	this->Button::Button();
 
 	button_type = ButtonType::Board;

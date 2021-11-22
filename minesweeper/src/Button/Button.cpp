@@ -47,7 +47,7 @@ sf::Vector2f Button::getSize() const {
 }
 
 sf::Vector2u Button::getImageSize() const {
-    std::shared_ptr<sf::Texture> texture = ResourceVault::getTexture(texture_type);
+    auto texture = ResourceVault::getTexture(texture_type);
 
     return texture->getSize();
 }
@@ -69,18 +69,18 @@ sf::Vector2f Button::getPadding() const {
 
 
 sf::Sprite Button::getDefaultSprite() const {
-    std::shared_ptr<sf::Texture> texture = ResourceVault::getTexture(texture_type);
+    auto texture = ResourceVault::getTexture(texture_type);
 
     sf::Sprite sprite;
     Graphics::loadSpriteFromTexture(sprite, *texture, pos_top_left);
     sprite.setScale(scale);
 
-    return sprite;
+    return std::move(sprite);
 }
 
 
 sf::Sprite Button::getHoveredSprite() const {
-    std::shared_ptr<sf::Texture> texture = ResourceVault::getTexture(texture_type);
+    auto texture = ResourceVault::getTexture(texture_type);
 
     sf::Sprite sprite;
     Graphics::loadSpriteFromTexture(sprite, *texture, pos_top_left);
@@ -90,7 +90,7 @@ sf::Sprite Button::getHoveredSprite() const {
     sf::Color grey(100, 100, 100);
     sprite.setColor(grey);
 
-    return sprite;
+    return std::move(sprite);
 }
 
 

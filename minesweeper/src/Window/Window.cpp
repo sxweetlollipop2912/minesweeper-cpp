@@ -15,39 +15,24 @@ SceneType Window::getCurrentSceneType() const {
 	return current_scene;
 }
 
-Scene* Window::getCurrentScene() {
-	switch (current_scene) {
-	case SceneType::Menu:
-		return &menu_scene;
-		break;
-	case SceneType::Playing:
-		return &playing_scene;
-		break;
-	case SceneType::Won:
-		break;
-	case SceneType::Lost:
-		break;
-	case SceneType::Leaderboard:
-		break;
-	case SceneType::Closing:
-		break;
-	case SceneType::Unkown:
-		break;
-	default:
-		break;
+std::shared_ptr<Scene> Window::getCurrentScene() {
+	if (map_scene.find(current_scene) != map_scene.end()) {
+		return map_scene[current_scene];
 	}
 
-	return &Scene();
+	return nullptr;
 }
 
 
 void Window::initializeMenuScene(sf::Vector2u window_size) {
-	menu_scene.initialize(window_size);
+	auto menu_scene = std::static_pointer_cast<MenuScene>(map_scene[SceneType::Menu]);
+	menu_scene->initialize(window_size);
 }
 
 
 void Window::initializePlayingScene(sf::Vector2u window_size, int board_rows, int board_cols) {
-	playing_scene.initialize(window_size, board_rows, board_cols);
+	auto playing_scene = std::static_pointer_cast<PlayingScene>(map_scene[SceneType::Playing]);
+	playing_scene->initialize(window_size, board_rows, board_cols);
 }
 
 
@@ -56,9 +41,13 @@ void Window::changeMousePosition(const sf::Vector2i& mouse_position) {
 
 	switch (current_scene) {
 	case SceneType::Playing:
-		if (playing_scene.PlayingScene::changeMousePosition(mouse_position))
+	{
+		auto playing_scene = std::static_pointer_cast<PlayingScene>(map_scene[SceneType::Playing]);
+		if (playing_scene->PlayingScene::changeMousePosition(mouse_position))
 			drawCurrentScene();
+
 		break;
+	}
 
 	case SceneType::Menu:
 		//break;
@@ -74,9 +63,10 @@ void Window::changeMousePosition(const sf::Vector2i& mouse_position) {
 		//break;
 
 	default:
-		Scene* scene = getCurrentScene();
+		auto scene = getCurrentScene();
 		if (scene->changeMousePosition(pos_mouse))
 			drawCurrentScene();
+
 		break;
 	}
 }
@@ -111,11 +101,17 @@ Result Window::handleMouseButtonPress(const sf::Mouse::Button& button, const sf:
 void Window::drawCurrentScene() {
 	switch (current_scene) {
 	case SceneType::Menu:
-		draw(menu_scene);
+	{
+		auto menu_scene = std::static_pointer_cast<MenuScene>(map_scene[SceneType::Menu]);
+		draw(*menu_scene);
 		break;
+	}
 	case SceneType::Playing:
-		draw(playing_scene);
+	{
+		auto playing_scene = std::static_pointer_cast<PlayingScene>(map_scene[SceneType::Playing]);
+		draw(*playing_scene);
 		break;
+	}
 	case SceneType::Won:
 		break;
 	case SceneType::Lost:
