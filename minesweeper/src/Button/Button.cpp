@@ -35,11 +35,6 @@ Result Button::equalizeButtonsSize(Button& button1, Button& button2) {
 }
 
 
-ButtonType Button::getButtonType() const {
-    return button_type;
-}
-
-
 sf::Vector2f Button::getSize() const {
     sf::Vector2u original_size = getImageSize();
 
@@ -104,10 +99,6 @@ bool Button::isMouseHovering(const sf::Vector2i& mouse_position) const {
         return false;
     }
     return true;
-}
-
-void Button::setButtonType(const ButtonType& button_type) {
-    this->button_type = button_type;
 }
 
 

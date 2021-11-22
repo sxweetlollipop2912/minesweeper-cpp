@@ -10,15 +10,20 @@
 #include "../Constants.h"
 
 
+GameEvent Scene::handleMouseButtonEvent(const MouseActionType mouse_type) {
+	return GameEvent::Unknown;
+}
+
+
 bool Scene::changeMousePosition(const sf::Vector2i& mouse_position) {
-	ButtonType last_hovered = hoveredButton;
-	hoveredButton = ButtonType::Unknown;
+	GameEvent last_hovered = hovered_button;
+	hovered_button = GameEvent::Unknown;
 	
 	for (auto i = map_button.begin(); i != map_button.end(); i++) {
 		if (!(i->second.isMouseHovering(mouse_position))) continue;
-		hoveredButton = i->first;
+		hovered_button = i->first;
 		break;
 	}
 
-	return hoveredButton != last_hovered;
+	return hovered_button != last_hovered;
 }

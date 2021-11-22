@@ -12,12 +12,17 @@ sf::Vector2i Window::getMousePosition() const {
 }
 
 SceneType Window::getCurrentSceneType() const {
-	return current_scene;
+	return current_scene_type;
 }
 
+GameEvent Window::getLastGameEvent() const {
+	return last_game_event;
+}
+
+
 std::shared_ptr<Scene> Window::getCurrentScene() {
-	if (map_scene.find(current_scene) != map_scene.end()) {
-		return map_scene[current_scene];
+	if (map_scene.find(current_scene_type) != map_scene.end()) {
+		return map_scene[current_scene_type];
 	}
 
 	return nullptr;
@@ -36,10 +41,10 @@ void Window::initializePlayingScene(sf::Vector2u window_size, int board_rows, in
 }
 
 
-void Window::changeMousePosition(const sf::Vector2i& mouse_position) {
+bool Window::changeMousePosition(const sf::Vector2i& mouse_position) {
 	pos_mouse = mouse_position;
 
-	switch (current_scene) {
+	switch (current_scene_type) {
 	case SceneType::Playing:
 	{
 		auto playing_scene = std::static_pointer_cast<PlayingScene>(map_scene[SceneType::Playing]);
@@ -73,7 +78,7 @@ void Window::changeMousePosition(const sf::Vector2i& mouse_position) {
 
 
 void Window::setCurrentSceneType(const SceneType& type) {
-	current_scene = type;
+	current_scene_type = type;
 }
 
 
@@ -99,7 +104,7 @@ Result Window::handleMouseButtonPress(const sf::Mouse::Button& button, const sf:
 
 
 void Window::drawCurrentScene() {
-	switch (current_scene) {
+	switch (current_scene_type) {
 	case SceneType::Menu:
 	{
 		auto menu_scene = std::static_pointer_cast<MenuScene>(map_scene[SceneType::Menu]);
@@ -179,7 +184,7 @@ void Window::draw(PlayingScene& scene) {
 
 void Window::draw(Scene& scene) {
 	for (auto i = scene.map_button.begin(); i != scene.map_button.end(); i++) {
-		if (i->first != scene.hoveredButton)
+		if (i->first != scene.hovered_button)
 			draw(i->second);
 		else
 			draw(i->second, true);

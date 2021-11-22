@@ -239,9 +239,6 @@ void Cell::setTopLeftPosition(const sf::Vector2f& pos_top_left) {
 }
 
 
-void Cell::setButtonType(const ButtonType& button_type) {}
-
-
 Result Cell::setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left, const sf::Vector2f& scale) {
 	return Result::failure;
 }

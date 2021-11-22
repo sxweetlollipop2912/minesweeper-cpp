@@ -13,8 +13,6 @@
 // and recenter image after changing window dimension.
 class Button {
 protected:
-	ButtonType button_type;
-
 	TextureType texture_type;
 	sf::Vector2f scale;
 
@@ -24,14 +22,11 @@ public:
 	Text label;
 
 	// Initializes button with:
-	// - Default button type (unknown type).
 	// - Label with empty text, default font, font size, text color, text style.
 	// - Button is positioned at (0, 0).
 	// - Default padding.
 	// - Empty image, image scale = 1.
 	Button() {
-		button_type = ButtonType::Unknown;
-
 		texture_type = TextureType::Unknown;
 
 		pos_top_left = sf::Vector2f(0, 0);
@@ -44,8 +39,6 @@ public:
 	// > otherwise, returns Result::success.
 	static Result equalizeButtonsSize(Button& button1, Button& button2);
 
-	// Gets button type.
-	ButtonType getButtonType() const;
 	// Gets size of the button (after apply scaling).
 	virtual sf::Vector2f getSize() const;
 	// Gets original size of the button's image (b4 apply scaling).
@@ -64,8 +57,6 @@ public:
 	// Checks a mouse position if it is hovered over the button.
 	bool isMouseHovering(const sf::Vector2i& mouse_position) const;
 
-	// Sets button type.
-	virtual void setButtonType(const ButtonType& button_type);
 	// Sets and scales image for the button. Also, sets its top-left position, padding size, scale.
 	// > Returns Result::failure if image cannot be loaded,
 	// > otherwise, returns Result::success.

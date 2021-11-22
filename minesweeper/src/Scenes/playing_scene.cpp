@@ -72,9 +72,11 @@ void PlayingScene::initialize(const sf::Vector2u& window_size, const int board_r
 
 	this->Scene::Scene();
 	
-	next_scene[ButtonType::Board] = SceneType::Playing;
-	next_scene[ButtonType::Quit] = SceneType::Closing;
-	next_scene[ButtonType::Back] = SceneType::Menu;
+	next_scene[GameEvent::Playing] = SceneType::Playing;
+	next_scene[GameEvent::Lost] = SceneType::Lost;
+	next_scene[GameEvent::Won] = SceneType::Won;
+	next_scene[GameEvent::QuitGame] = SceneType::Closing;
+	next_scene[GameEvent::QuitToMenu] = SceneType::Menu;
 
 	this->window_size = window_size;
 
