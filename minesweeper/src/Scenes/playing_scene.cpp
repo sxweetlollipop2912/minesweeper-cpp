@@ -7,6 +7,7 @@
 
 #include "../Button/Button.h"
 #include "../Text/Text.h"
+#include "../Board/Position.h"
 #include "../Constants.h"
 #include "playing_scene.h"
 
@@ -54,6 +55,52 @@ std::string PlayingScene::highscoreStr(int h, int m, int s) {
 	str += s_h + ":" + s_m + ":" + s_s;
 
 	return str;
+}
+
+
+GameEvent PlayingScene::handleMouseButtonEvent(const MouseActionType mouse_type) {
+	switch (mouse_type) {
+		// RMB: Flag/Unflag a cell.
+		case MouseActionType::RMB:
+		{
+			Position cell_pos = board.hovered_cell;
+
+			if (!board.isValidPos(cell_pos))
+				return GameEvent::Unknown;
+
+			std::cout << "RMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
+		
+			return GameEvent::FlagCell;
+		}
+
+		// LMB: Open a cell.
+		case MouseActionType::LMB:
+		{
+			Position cell_pos = board.hovered_cell;
+
+			if (!board.isValidPos(cell_pos))
+				return GameEvent::Unknown;
+
+			std::cout << "LMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
+
+			return GameEvent::OpenCell;
+		}
+
+		// Double-LMB: Auto-open nearby safe cells.
+		case MouseActionType::DoubleLMB:
+		{
+			Position cell_pos = board.hovered_cell;
+
+			if (!board.isValidPos(cell_pos))
+				return GameEvent::Unknown;
+
+			std::cout << "DoubleLMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
+
+			return GameEvent::AutoOpenCell;
+		}
+	}
+
+	return GameEvent::Unknown;
 }
 
 

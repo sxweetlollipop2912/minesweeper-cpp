@@ -41,6 +41,10 @@ private:
 	// Draws a button on the window.
 	void draw(Button& button, const bool isHovered = false);
 
+	// Returns true if there are changes in the scene.
+	// Otherwise, returns false
+	bool handleGameEvents(const GameEvent game_event);
+
 public:
 	sf::RenderWindow render_window;
 	int width, height;
@@ -114,8 +118,14 @@ public:
 	// Actions on resizing window event.
 	// This method is empty.
 	void onResize(const int width, const int height);
-	// Call on a mouse button event.
-	Result handleMouseButtonPress(const sf::Mouse::Button& button, const sf::Vector2i& position);
+	// Call upon a mouse button PRESS event.
+	// Returns true if there are changes in the scene.
+	// Otherwise, returns false
+	bool handleMouseButtonPress(const sf::Mouse::Button& button, const sf::Vector2i& position);
+	// Call upon a mouse button RELEASE event.
+	// Returns true if there are changes in the scene.
+	// Otherwise, returns false
+	bool handleMouseButtonRelease(const sf::Mouse::Button& button, const sf::Vector2i& position);
 
 	// Draws current scene.
 	void drawCurrentScene();

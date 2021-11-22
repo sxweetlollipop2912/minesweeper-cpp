@@ -44,7 +44,41 @@ void MenuScene::initialize(const sf::Vector2u& window_size) {
 	quit_button.label.setText("QUIT");
 	quit_button.alignImageAndText();
 
-	Button::equalizeButtonsSize(start_button, quit_button);
-	quit_button.centerButtonHorizontally(window_size.x);
-	start_button.centerButtonHorizontally(window_size.x);
+
+	for (auto i = map_button.begin(); i != map_button.end(); i++) {
+		auto j = i; j++;
+		for (; j != map_button.end(); j++) {
+			Button::equalizeButtonsSize(i->second, j->second);
+		}
+	}
+	for (auto i = map_button.begin(); i != map_button.end(); i++) {
+		i->second.centerButtonHorizontally(window_size.x);
+	}
+}
+
+GameEvent MenuScene::handleMouseButtonEvent(const MouseActionType mouse_type) {
+	if (mouse_type != MouseActionType::LMB && mouse_type != MouseActionType::DoubleLMB) {
+		return GameEvent::Unknown;
+	}
+
+	switch (hovered_button) {
+		case GameEvent::QuitGame:
+		{
+			return GameEvent::QuitGame;
+		}
+		case GameEvent::NewGame:
+		{
+			return GameEvent::NewGame;
+		}
+		case GameEvent::LoadGame:
+		{
+			return GameEvent::LoadGame;
+		}
+		case GameEvent::ShowLeaderboard:
+		{
+			return GameEvent::ShowLeaderboard;
+		}
+	}
+
+	return GameEvent::Unknown;
 }

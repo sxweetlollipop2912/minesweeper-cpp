@@ -20,11 +20,20 @@ private:
 
 	Board board;
 
+
 	std::string timerStr(int h, int m, int s);
 	std::string highscoreStr(int h, int m, int s);
 
 
 	// OVERRIDING SCENE METHODS
+
+	// Call on a mouse button event.
+	// Returns true if there are changes in the scene.
+	// Otherwise, returns false
+	GameEvent handleMouseButtonEvent(const MouseActionType mouse_type) override;
+	// Changes window graphics base on new mouse position.
+	// Returns true if there are changes in the scene.
+	// Otherwise, returns false
 	bool changeMousePosition(const sf::Vector2i& pos) override;
 
 	// Initializes PlayingScene object.
