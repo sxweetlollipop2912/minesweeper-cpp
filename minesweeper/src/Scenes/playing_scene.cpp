@@ -94,7 +94,8 @@ void PlayingScene::initialize(const sf::Vector2u& window_size, const int board_r
 
 
 	Text& timer = map_text[timer_str];
-	timer.setText(timerStr(0, 0, 0), DEFAULT_FONT_SIZE);
+	timer.setText(timerStr(0, 0, 0));
+	timer.setFontSize(DEFAULT_FONT_SIZE);
 
 	sf::Vector2f TL_timer;
 	TL_timer.x = window_size.x * POS_COEF_TIMER.x;
@@ -103,7 +104,8 @@ void PlayingScene::initialize(const sf::Vector2u& window_size, const int board_r
 
 
 	Text& highscore = map_text[highscore_str];
-	highscore.setText(highscoreStr(0, 0, 0), DEFAULT_FONT_SIZE);
+	highscore.setText(highscoreStr(0, 0, 0));
+	highscore.setFontSize(DEFAULT_FONT_SIZE);
 
 	sf::Vector2f TL_highscore;
 	TL_highscore.x = window_size.x * POS_COEF_HIGHSCORE.x;

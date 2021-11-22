@@ -4,6 +4,7 @@
 
 #include "Button.h"
 #include "../Enums.h"
+#include "../ResourceVault/ResourceVault.h"
 #include "../GraphicsObject/GraphicsObject.h"
 
 
@@ -40,12 +41,15 @@ ButtonType Button::getButtonType() const {
 
 
 sf::Vector2f Button::getSize() const {
-    sf::Vector2u original_size = texture.getSize();
+    sf::Vector2u original_size = getImageSize();
+
     return sf::Vector2f(original_size.x * scale.x, original_size.y * scale.y);
 }
 
 sf::Vector2u Button::getImageSize() const {
-    return texture.getSize();
+    std::shared_ptr<sf::Texture> texture = ResourceVault::getTexture(texture_type);
+
+    return texture->getSize();
 }
 
 
@@ -65,8 +69,10 @@ sf::Vector2f Button::getPadding() const {
 
 
 sf::Sprite Button::getDefaultSprite() const {
+    std::shared_ptr<sf::Texture> texture = ResourceVault::getTexture(texture_type);
+
     sf::Sprite sprite;
-    loadSpriteFromTexture(sprite, texture, pos_top_left);
+    Graphics::loadSpriteFromTexture(sprite, *texture, pos_top_left);
     sprite.setScale(scale);
 
     return sprite;
@@ -74,8 +80,10 @@ sf::Sprite Button::getDefaultSprite() const {
 
 
 sf::Sprite Button::getHoveredSprite() const {
+    std::shared_ptr<sf::Texture> texture = ResourceVault::getTexture(texture_type);
+
     sf::Sprite sprite;
-    loadSpriteFromTexture(sprite, texture, pos_top_left);
+    Graphics::loadSpriteFromTexture(sprite, *texture, pos_top_left);
     sprite.setScale(scale);
 
     // Darken the hovered sprite a bit.
@@ -103,10 +111,13 @@ void Button::setButtonType(const ButtonType& button_type) {
 }
 
 
-Result Button::setImage(const std::string& img_path, const sf::Vector2f& pos_top_left, const sf::Vector2f& scale) {
-    if (loadTextureFromFilepath(texture, img_path) == Result::failure) {
+Result Button::setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left, const sf::Vector2f& scale) {
+    if (!ResourceVault::findTexture(texture_type)) {
+        std::cout << "NOT FOUND\n";
         return Result::failure;
     }
+
+    this->texture_type = texture_type;
     this->scale = scale;
 
     if (pos_top_left.x != -1) {
@@ -139,15 +150,15 @@ void Button::alignImageAndText() {
     float desired_width = text_width + 2 * padding.x;
     float desired_height = text_height + 2 * padding.y;
 
-    scale.x = desired_width / texture.getSize().x;
-    scale.y = desired_height / texture.getSize().y;
+    scale.x = desired_width / getImageSize().x;
+    scale.y = desired_height / getImageSize().y;
 
     label.setTopLeftPosition(pos_top_left + padding);
 }
 
 
 Result Button::centerButtonHorizontally(const float window_width) {
-    float texture_width = texture.getSize().x * scale.x;
+    float texture_width = getImageSize().x * scale.x;
 
     if (window_width < texture_width)
         return Result::failure;
@@ -173,5 +184,5 @@ Result Button::centerTextInButton() {
     desired_pos.y = ((pos_top_left.y + pos_right_down.y) / 2) - (text_height / 2);
     label.setTopLeftPosition(desired_pos);
 
-    return Result();
+    return Result::success;
 }
