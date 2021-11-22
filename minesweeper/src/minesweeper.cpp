@@ -13,22 +13,59 @@
 
 #include <map>
 
+
+void registerResources() {
+    // TEXTURES
+    {
+        if (ResourceVault::setTexture(TextureType::ButtonDefault, DEFAULT_BUTTON_PATH) == Result::failure) {
+            std::cout << "Load ButtonDefault texture failed!";
+        }
+        if (ResourceVault::setTexture(TextureType::CellClosed, CLOSED_CELL_IMG_PATH) == Result::failure) {
+            std::cout << "Load CellClosed texture failed!";
+        }
+        if (ResourceVault::setTexture(TextureType::CellFlagged, FLAGGED_CELL_IMG_PATH) == Result::failure) {
+            std::cout << "Load CellFlagged texture failed!";
+        }
+        if (ResourceVault::setTexture(TextureType::CellBlank, BLANK_CELL_IMG_PATH) == Result::failure) {
+            std::cout << "Load CellBlank texture failed!";
+        }
+        if (ResourceVault::setTexture(TextureType::CellNum1, NUM_1_CELL_IMG_PATH) == Result::failure) {
+            std::cout << "Load CellNum1 texture failed!";
+        }
+        if (ResourceVault::setTexture(TextureType::CellNum2, NUM_2_CELL_IMG_PATH) == Result::failure) {
+            std::cout << "Load CellNum2 texture failed!";
+        }
+        if (ResourceVault::setTexture(TextureType::CellNum3, NUM_3_CELL_IMG_PATH) == Result::failure) {
+            std::cout << "Load CellNum3 texture failed!";
+        }
+        if (ResourceVault::setTexture(TextureType::CellNum4, NUM_4_CELL_IMG_PATH) == Result::failure) {
+            std::cout << "Load CellNum4 texture failed!";
+        }
+        if (ResourceVault::setTexture(TextureType::CellNum5, NUM_5_CELL_IMG_PATH) == Result::failure) {
+            std::cout << "Load CellNum5 texture failed!";
+        }
+        if (ResourceVault::setTexture(TextureType::CellNum6, NUM_6_CELL_IMG_PATH) == Result::failure) {
+            std::cout << "Load CellNum6 texture failed!";
+        }
+        if (ResourceVault::setTexture(TextureType::CellNum7, NUM_7_CELL_IMG_PATH) == Result::failure) {
+            std::cout << "Load CellNum7 texture failed!";
+        }
+        if (ResourceVault::setTexture(TextureType::CellNum8, NUM_8_CELL_IMG_PATH) == Result::failure) {
+            std::cout << "Load CellNum8 texture failed!";
+        }
+    }
+
+    // FONTS
+    {
+        if (ResourceVault::setFont(FontType::FontDefault, DEFAULT_FONT_PATH) == Result::failure) {
+            std::cout << "Load FontDefault font failed!";
+        }
+    }
+}
+
+
 int main() {
-    ResourceVault::setTexture(TextureType::DefaultButton, DEFAULT_BUTTON_PATH);
-    ResourceVault::setTexture(TextureType::CellClosed, CLOSED_CELL_IMG_PATH);
-    ResourceVault::setTexture(TextureType::CellFlagged, FLAGGED_CELL_IMG_PATH);
-    ResourceVault::setTexture(TextureType::CellBlank, BLANK_CELL_IMG_PATH);
-    ResourceVault::setTexture(TextureType::CellNum1, NUM_1_CELL_IMG_PATH);
-    ResourceVault::setTexture(TextureType::CellNum2, NUM_2_CELL_IMG_PATH);
-    ResourceVault::setTexture(TextureType::CellNum3, NUM_3_CELL_IMG_PATH);
-    ResourceVault::setTexture(TextureType::CellNum4, NUM_4_CELL_IMG_PATH);
-    ResourceVault::setTexture(TextureType::CellNum5, NUM_5_CELL_IMG_PATH);
-    ResourceVault::setTexture(TextureType::CellNum6, NUM_6_CELL_IMG_PATH);
-    ResourceVault::setTexture(TextureType::CellNum7, NUM_7_CELL_IMG_PATH);
-    ResourceVault::setTexture(TextureType::CellNum8, NUM_8_CELL_IMG_PATH);
-
-    ResourceVault::setFont(FontType::FontDefault, DEFAULT_FONT_PATH);
-
+    registerResources();
 
     Window window(1500, 1000, "minesweeper");
     window.createWindow();

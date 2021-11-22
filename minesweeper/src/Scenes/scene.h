@@ -16,7 +16,6 @@ class Scene {
 	friend class Window;
 
 protected:
-	std::map <std::string, std::string> texture_path;
 	std::map <ButtonType, Button> map_button;
 	std::map <std::string, Text> map_text;
 
@@ -25,7 +24,6 @@ protected:
 
 public:
 	Scene() {
-		texture_path.clear();
 		map_button.clear();
 		map_text.clear();
 		next_scene.clear();
