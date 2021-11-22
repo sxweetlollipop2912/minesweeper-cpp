@@ -14,8 +14,6 @@ Result Board::setCellType(const Position& pos, const CellType type, const int nu
 void Board::initialize(const int rows, const int cols, const sf::Vector2f pos_top_left) {
 	this->Button::Button();
 
-	button_type = ButtonType::Board;
-
 	this->pos_top_left = pos_top_left;
 	number_of_rows = rows;
 	number_of_cols = cols;
@@ -153,9 +151,6 @@ void Board::setTopLeftPosition(const sf::Vector2f& pos_top_left) {
 		}
 	}
 }
-
-
-void Board::setButtonType(const ButtonType& button_type) {}
 
 
 Result Board::setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left, const sf::Vector2f& scale) {

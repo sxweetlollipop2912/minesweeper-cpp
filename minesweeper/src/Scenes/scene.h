@@ -16,11 +16,18 @@ class Scene {
 	friend class Window;
 
 protected:
-	std::map <ButtonType, Button> map_button;
+	std::map <GameEvent, Button> map_button;
 	std::map <std::string, Text> map_text;
 
-	std::map <ButtonType, SceneType> next_scene;
-	ButtonType hoveredButton;
+	std::map <GameEvent, SceneType> next_scene;
+	GameEvent hovered_button;
+
+	// Call on a mouse button event.
+	virtual GameEvent handleMouseButtonEvent(const MouseActionType mouse_type);
+	// Changes window graphics base on new mouse position.
+	// Returns true if there are changes in the scene.
+	// Otherwise, returns false
+	virtual bool changeMousePosition(const sf::Vector2i& pos);
 
 public:
 	Scene() {
@@ -28,19 +35,6 @@ public:
 		map_text.clear();
 		next_scene.clear();
 
-		hoveredButton = ButtonType::Unknown;
+		hovered_button = GameEvent::Unknown;
 	}
-
-	// Adds an texture path to scene data.
-	// > Returns Result::failure if path cannot be found,
-	// > otherwise, returns Result::success.
-	Result registerTexturePath(const std::string& texture_name, const std::string& texture_path);
-
-	// Call on a mouse button event.
-	// This method is empty.
-	Result handleMouseButtonEvent(const sf::Event::MouseButtonEvent mouse_event);
-	// Changes window graphics base on new mouse position.
-	// Returns true if there are changes in the scene.
-	// Otherwise, returns false
-	virtual bool changeMousePosition(const sf::Vector2i& pos);
 };

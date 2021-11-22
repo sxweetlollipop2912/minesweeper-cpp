@@ -59,7 +59,6 @@ private:
 
 public:
 	Board() {
-		button_type = ButtonType::Board;
 		number_of_rows = number_of_cols = 0;
 		pos_top_left.x = pos_top_left.y = 0;
 
@@ -87,7 +86,6 @@ public:
 	// Gets hovered (not hovered) button's sprite.
 	sf::Sprite getHoveredSprite() const override;
 
-	void setButtonType(const ButtonType& button_type) override;
 	Result setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1)) override;
 	void setPadding(const sf::Vector2f& padding) override;
 	void setScale(const sf::Vector2f& scale) override;

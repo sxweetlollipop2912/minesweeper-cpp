@@ -7,6 +7,7 @@
 
 #include "../Button/Button.h"
 #include "../Text/Text.h"
+#include "../Board/Position.h"
 #include "../Constants.h"
 #include "playing_scene.h"
 
@@ -57,6 +58,52 @@ std::string PlayingScene::highscoreStr(int h, int m, int s) {
 }
 
 
+GameEvent PlayingScene::handleMouseButtonEvent(const MouseActionType mouse_type) {
+	switch (mouse_type) {
+		// RMB: Flag/Unflag a cell.
+		case MouseActionType::RMB:
+		{
+			Position cell_pos = board.hovered_cell;
+
+			if (!board.isValidPos(cell_pos))
+				return GameEvent::Unknown;
+
+			std::cout << "RMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
+		
+			return GameEvent::FlagCell;
+		}
+
+		// LMB: Open a cell.
+		case MouseActionType::LMB:
+		{
+			Position cell_pos = board.hovered_cell;
+
+			if (!board.isValidPos(cell_pos))
+				return GameEvent::Unknown;
+
+			std::cout << "LMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
+
+			return GameEvent::OpenCell;
+		}
+
+		// Double-LMB: Auto-open nearby safe cells.
+		case MouseActionType::DoubleLMB:
+		{
+			Position cell_pos = board.hovered_cell;
+
+			if (!board.isValidPos(cell_pos))
+				return GameEvent::Unknown;
+
+			std::cout << "DoubleLMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
+
+			return GameEvent::AutoOpenCell;
+		}
+	}
+
+	return GameEvent::Unknown;
+}
+
+
 bool PlayingScene::changeMousePosition(const sf::Vector2i& pos) {
 	bool re = false;
 	re |= Scene::changeMousePosition(pos);
@@ -72,9 +119,11 @@ void PlayingScene::initialize(const sf::Vector2u& window_size, const int board_r
 
 	this->Scene::Scene();
 	
-	next_scene[ButtonType::Board] = SceneType::Playing;
-	next_scene[ButtonType::Quit] = SceneType::Closing;
-	next_scene[ButtonType::Back] = SceneType::Menu;
+	next_scene[GameEvent::Playing] = SceneType::Playing;
+	next_scene[GameEvent::Lost] = SceneType::Lost;
+	next_scene[GameEvent::Won] = SceneType::Won;
+	next_scene[GameEvent::QuitGame] = SceneType::Closing;
+	next_scene[GameEvent::QuitToMenu] = SceneType::Menu;
 
 	this->window_size = window_size;
 

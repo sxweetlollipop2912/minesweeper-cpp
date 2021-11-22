@@ -9,8 +9,8 @@ const int MAX_ROW = 30;
 
 
 // TEXT
-const int DEFAULT_TITLE_FONT_SIZE = 40;
-const int DEFAULT_FONT_SIZE = 15;
+const int DEFAULT_FONT_SIZE = 23;
+const int DEFAULT_TITLE_FONT_SIZE = DEFAULT_FONT_SIZE * 4.5;
 const std::string DEFAULT_FONT_PATH = ".\\assets\\fonts\\MochiyPopOne.ttf";
 
 
@@ -21,14 +21,15 @@ const sf::Color DEFAULT_TEXT_COLOR = sf::Color::White;
 
 
 // BUTTON
-const sf::Vector2f DEFAULT_PADDING_SIZE = sf::Vector2f(10, 10);
+const sf::Vector2f DEFAULT_PADDING_SIZE = sf::Vector2f(20, 20);
 
 
 // POSITION
 // START SCENE
-const float POS_Y_COEF_TITLE = 1 / (float)3;
-const float POS_Y_COEF_START_BUTTON = 1 / (float)2;
-const float pos_Y_COEF_QUIT_BUTTON = 5 / (float)8;
+const float POS_Y_COEF_TITLE = 1 / (float)7;
+const float POS_Y_COEF_LOAD_GAME_BUTTON = 1 / (float)2;
+const float POS_Y_COEF_NEW_GAME_BUTTON = 5 / (float)8;
+const float pos_Y_COEF_QUIT_BUTTON = 6 / (float)8;
 // BOARD
 const int DEFAULT_CELL_SIZE = 30;
 const float DEFAULT_CELL_AREA = DEFAULT_CELL_SIZE;// +(DEFAULT_CELL_SIZE / (float)7);
@@ -56,4 +57,4 @@ const std::string NUM_8_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"num_
 
 
 // TEMP
-const std::string DEFAULT_BUTTON_PATH = BOARD_IMG_DIR + (const std::string)"closed.png";
+const std::string DEFAULT_BUTTON_PATH = BOARD_IMG_DIR + (const std::string)"blank.png";

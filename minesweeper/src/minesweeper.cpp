@@ -75,10 +75,12 @@ int main() {
     window.initializeMenuScene(window_size);
     window.initializePlayingScene(window_size, 30, 30);
 
-    window.setCurrentSceneType(SceneType::Playing);
+    window.setCurrentSceneType(SceneType::Menu);
 
+    bool change = true;
     while (window.render_window.isOpen()) {
         sf::Event event;
+
         while (window.render_window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.closeWindow();
@@ -88,6 +90,7 @@ int main() {
                 window.closeWindow();
                 break;
             case sf::Event::Resized:
+                change = true;
                 window.onResize(event.size.width, event.size.height);
                 break;
             case sf::Event::LostFocus:
@@ -96,20 +99,36 @@ int main() {
                 break;
 
             case sf::Event::MouseMoved:
-                window.changeMousePosition(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
+                change |= window.changeMousePosition(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
                 break;
             case sf::Event::MouseButtonPressed:
-                window.handleMouseButtonPress(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+                change |= window.handleMouseButtonPress(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+                break;
+            case sf::Event::MouseButtonReleased:
+                change |= window.handleMouseButtonRelease(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
                 break;
             default:
                 break;
             }
         }
 
-        window.render_window.clear();
-       
-        window.drawCurrentScene();
+        switch (window.getLastGameEvent()) {
+        case GameEvent::QuitGame:
+        {
+            window.closeWindow();
+            break;
+        }
 
-        window.render_window.display();
+        default:
+            break;
+        }
+
+        if (change) {
+            window.render_window.clear();
+            window.drawCurrentScene();
+            window.render_window.display();
+        }
+
+        change = false;
     }
 }

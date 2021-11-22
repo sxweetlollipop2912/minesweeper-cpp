@@ -1,33 +1,43 @@
 #pragma once
 
-/*
-enum class CellState {
-	opened,
-	closed,
-	flagged,
-	questioned
-};
-
-enum class GameState {
-	ongoing,
-	won,
-	lost,
-	unknown
-};*/
-
-
 enum class Result {
 	success,
 	failure
 };
 
 
-enum class ButtonType {
-	Start,
-	Quit,
-	Board,
-	Cell,
-	Back,
+enum class GameEvent {
+	QuitGame,
+	QuitToMenu,
+	NewGame,
+	LoadGame,
+	ShowLeaderboard,
+	Playing,
+	OpenCell,
+	FlagCell,
+	AutoOpenCell,
+	Won,
+	Lost,
+	Unknown
+};
+
+
+enum class SceneType {
+	Menu,
+	Playing,
+	Won,
+	Lost,
+	Leaderboard,
+	Closing,
+	Unkown
+};
+
+
+enum class MouseActionType {
+	Move,
+	LMB,
+	RMB,
+	DoubleLMB,
 	Unknown
 };
 
@@ -49,7 +59,7 @@ enum class CellType {
 
 
 enum class TextureType {
-	DefaultButton,
+	ButtonDefault,
 	CellMine,
 	CellClosed,
 	CellFlagged,
@@ -69,15 +79,4 @@ enum class TextureType {
 enum class FontType {
 	FontDefault,
 	Unknown
-};
-
-
-enum class SceneType {
-	Menu,
-	Playing,
-	Won,
-	Lost,
-	Leaderboard,
-	Closing,
-	Unkown
 };

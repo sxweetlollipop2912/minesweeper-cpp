@@ -56,7 +56,6 @@ public:
 		button_at_state.clear();
 		setDefaultImages();
 
-		button_type = ButtonType::Cell;
 		pos_top_left.x = pos_top_left.y = 0;
 
 		cell_type = CellType::Unknown;
@@ -88,7 +87,6 @@ public:
 	// Sets top-left position of the cell in respect of window size.
 	void setTopLeftPosition(const sf::Vector2f& pos_top_left) override;
 
-	void setButtonType(const ButtonType& button_type) override;
 	Result setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1)) override;
 	void setPadding(const sf::Vector2f& padding) override;
 	void setScale(const sf::Vector2f& scale) override;
