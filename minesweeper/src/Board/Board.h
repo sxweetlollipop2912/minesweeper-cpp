@@ -88,7 +88,7 @@ public:
 	sf::Sprite getHoveredSprite() const override;
 
 	void setButtonType(const ButtonType& button_type) override;
-	Result setImage(const std::string& img_path, const sf::Vector2f& pos_top_left = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1)) override;
+	Result setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1)) override;
 	void setPadding(const sf::Vector2f& padding) override;
 	void setScale(const sf::Vector2f& scale) override;
 	void alignImageAndText() override;

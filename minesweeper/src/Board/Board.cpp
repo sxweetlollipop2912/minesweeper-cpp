@@ -159,7 +159,7 @@ void Board::setTopLeftPosition(const sf::Vector2f& pos_top_left) {
 void Board::setButtonType(const ButtonType& button_type) {}
 
 
-Result Board::setImage(const std::string& img_path, const sf::Vector2f& pos_top_left, const sf::Vector2f& scale) {
+Result Board::setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left, const sf::Vector2f& scale) {
 	return Result::failure;
 }
 

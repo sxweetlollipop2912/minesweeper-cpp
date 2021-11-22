@@ -11,11 +11,11 @@
 // A button is basically an image, but with label and interactive.
 // Remember to rescale image after changing text,
 // and recenter image after changing window dimension.
-class Button : public GraphicsObject {
+class Button {
 protected:
 	ButtonType button_type;
 
-	sf::Texture texture;
+	TextureType texture_type;
 	sf::Vector2f scale;
 
 	sf::Vector2f pos_top_left, padding;
@@ -29,8 +29,10 @@ public:
 	// - Button is positioned at (0, 0).
 	// - Default padding.
 	// - Empty image, image scale = 1.
-	Button() : GraphicsObject() {
+	Button() {
 		button_type = ButtonType::Unknown;
+
+		texture_type = TextureType::Unknown;
 
 		pos_top_left = sf::Vector2f(0, 0);
 		padding = DEFAULT_PADDING_SIZE;
@@ -67,7 +69,7 @@ public:
 	// Sets and scales image for the button. Also, sets its top-left position, padding size, scale.
 	// > Returns Result::failure if image cannot be loaded,
 	// > otherwise, returns Result::success.
-	virtual Result setImage(const std::string& img_path, const sf::Vector2f& pos_top_left = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1));
+	virtual Result setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1));
 	// Sets top-left position of the button.
 	virtual void setTopLeftPosition(const sf::Vector2f& pos_top_left);
 	// Sets padding size of the button.

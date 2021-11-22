@@ -22,19 +22,20 @@ void MenuScene::initialize(const sf::Vector2u& window_size) {
 	float pos_y_quit_button = window_size.y * pos_Y_COEF_QUIT_BUTTON;
 
 	Text& title = map_text[TITLE];
-	title.setText(TITLE, DEFAULT_TITLE_FONT_SIZE);
+	title.setText(TITLE);
+	title.setFontSize(DEFAULT_TITLE_FONT_SIZE);
 	title.setTopLeftPosition(sf::Vector2f(0, pos_y_title));
 	title.centerTextHorizontally(window_size.x);
 
 	Button& start_button = map_button[ButtonType::Start];
 	start_button.setButtonType(ButtonType::Start);
-	start_button.setImage(BLUE_BG_PATH, sf::Vector2f(0, pos_y_start_button));
+	start_button.setImage(TextureType::DefaultButton, sf::Vector2f(0, pos_y_start_button));
 	start_button.label.setText("START");
 	start_button.alignImageAndText();
 
 	Button& quit_button = map_button[ButtonType::Quit];
 	quit_button.setButtonType(ButtonType::Quit);
-	quit_button.setImage(BLUE_BG_PATH, sf::Vector2f(0, pos_y_quit_button));
+	quit_button.setImage(TextureType::DefaultButton, sf::Vector2f(0, pos_y_quit_button));
 	quit_button.label.setText("QUIT");
 	quit_button.alignImageAndText();
 

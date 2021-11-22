@@ -24,10 +24,10 @@ Result Cell::setDefaultImages() {
 	Button& closed = button_at_state[CellState::Closed];
 	Button& flagged = button_at_state[CellState::Flagged];
 
-	if (closed.setImage(CLOSED_CELL_IMG_PATH) == Result::failure)
+	if (closed.setImage(TextureType::CellClosed) == Result::failure)
 		return Result::failure;
 
-	if (flagged.setImage(FLAGGED_CELL_IMG_PATH) == Result::failure)
+	if (flagged.setImage(TextureType::CellFlagged) == Result::failure)
 		return Result::failure;
 
 	sf::Vector2f scale;
@@ -46,7 +46,7 @@ Result Cell::setDefaultImages() {
 Result Cell::setImageForMineType() {
 	Button& opened = button_at_state[CellState::Opened];
 
-	if (opened.setImage(MINE_CELL_IMG_PATH) == Result::failure)
+	if (opened.setImage(TextureType::CellMine) == Result::failure)
 		return Result::failure;
 
 	sf::Vector2f scale;
@@ -61,7 +61,7 @@ Result Cell::setImageForMineType() {
 Result Cell::setImageForBlankType() {
 	Button& opened = button_at_state[CellState::Opened];
 
-	if (opened.setImage(BLANK_CELL_IMG_PATH) == Result::failure)
+	if (opened.setImage(TextureType::CellBlank) == Result::failure)
 		return Result::failure;
 
 	sf::Vector2f scale;
@@ -76,37 +76,37 @@ Result Cell::setImageForBlankType() {
 Result Cell::setImageForNumberType() {
 	Button& opened = button_at_state[CellState::Opened];
 
-	std::string img_path;
+	TextureType texture_type = TextureType::Unknown;
 	switch (cell_number) {
 	case 1:
-		img_path = NUM_1_CELL_IMG_PATH;
+		texture_type = TextureType::CellNum1;
 		break;
 	case 2:
-		img_path = NUM_2_CELL_IMG_PATH;
+		texture_type = TextureType::CellNum2;
 		break;
 	case 3:
-		img_path = NUM_3_CELL_IMG_PATH;
+		texture_type = TextureType::CellNum3;
 		break;
 	case 4:
-		img_path = NUM_4_CELL_IMG_PATH;
+		texture_type = TextureType::CellNum4;
 		break;
 	case 5:
-		img_path = NUM_5_CELL_IMG_PATH;
+		texture_type = TextureType::CellNum5;
 		break;
 	case 6:
-		img_path = NUM_6_CELL_IMG_PATH;
+		texture_type = TextureType::CellNum6;
 		break;
 	case 7:
-		img_path = NUM_7_CELL_IMG_PATH;
+		texture_type = TextureType::CellNum7;
 		break;
 	case 8:
-		img_path = NUM_8_CELL_IMG_PATH;
+		texture_type = TextureType::CellNum8;
 		break;
 	default:
 		return Result::failure;
 	}
 
-	if (opened.setImage(img_path) == Result::failure)
+	if (opened.setImage(texture_type) == Result::failure)
 		return Result::failure;
 
 	sf::Vector2f scale;
@@ -242,7 +242,7 @@ void Cell::setTopLeftPosition(const sf::Vector2f& pos_top_left) {
 void Cell::setButtonType(const ButtonType& button_type) {}
 
 
-Result Cell::setImage(const std::string& img_path, const sf::Vector2f& pos_top_left, const sf::Vector2f& scale) {
+Result Cell::setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left, const sf::Vector2f& scale) {
 	return Result::failure;
 }
 

@@ -6,6 +6,7 @@
 #include <SFML/Window.hpp>
 
 #include "../Enums.h"
+#include "../ResourceVault/ResourceVault.h"
 #include "../Button/Button.h"
 #include "../Text/Text.h"
 #include "../Board/Board.h"

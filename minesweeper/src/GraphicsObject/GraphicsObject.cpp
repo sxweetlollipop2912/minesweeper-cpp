@@ -6,7 +6,7 @@
 #include "../Enums.h"
 
 
-Result GraphicsObject::loadTextureFromFilepath(sf::Texture& texture, const std::string& img_path) const {
+Result Graphics::loadTextureFromFilepath(sf::Texture& texture, const std::string& img_path) {
     if (!texture.loadFromFile(img_path)) {
         return Result::failure;
     }
@@ -14,13 +14,13 @@ Result GraphicsObject::loadTextureFromFilepath(sf::Texture& texture, const std::
 }
 
 
-void GraphicsObject::loadSpriteFromTexture(sf::Sprite& sprite, const sf::Texture& texture, const sf::Vector2f& position) const {
+void Graphics::loadSpriteFromTexture(sf::Sprite& sprite, const sf::Texture& texture, const sf::Vector2f& position) {
     sprite.setTexture(texture);
     sprite.setPosition(position.x, position.y);
 }
 
 
-Result GraphicsObject::loadFont(sf::Font& font, const std::string& font_path) const {
+Result Graphics::loadFont(sf::Font& font, const std::string& font_path) {
     if (!font.loadFromFile(font_path)) {
         return Result::failure;
     }
@@ -28,7 +28,7 @@ Result GraphicsObject::loadFont(sf::Font& font, const std::string& font_path) co
 }
 
 
-void GraphicsObject::createText(sf::Text& text, const std::string& content, const sf::Font& font, const unsigned int size, const sf::Color& color, const sf::Text::Style& style, const sf::Vector2f pos_top_left) const {
+void Graphics::createText(sf::Text& text, const std::string& content, const sf::Font& font, const int size, const sf::Color& color, const sf::Text::Style& style, const sf::Vector2f pos_top_left) {
     text.setFont(font);
     text.setString(content);
     text.setCharacterSize(size);
@@ -38,7 +38,7 @@ void GraphicsObject::createText(sf::Text& text, const std::string& content, cons
 }
 
 
-Result GraphicsObject::positionTextInRect(sf::Text& text, const int width, const int height) const {
+Result Graphics::positionTextInRect(sf::Text& text, const int width, const int height) {
     int size = text.getString().getSize();
 
     for (int space_1 = -1, space_2 = 0; space_2 < size; space_2++) {
@@ -66,7 +66,7 @@ Result GraphicsObject::positionTextInRect(sf::Text& text, const int width, const
 }
 
 
-std::string GraphicsObject::trim(std::string s) const {
+std::string Graphics::trim(std::string s) {
     int l = 0, r = s.size();
     while (s[l] == ' ') ++l;
     while (s[r] == ' ') --r;

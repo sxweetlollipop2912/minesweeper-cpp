@@ -25,6 +25,7 @@
     <ClCompile Include="src\Cell\Cell.cpp" />
     <ClCompile Include="src\GraphicsObject\GraphicsObject.cpp" />
     <ClCompile Include="src\minesweeper.cpp" />
+    <ClCompile Include="src\ResourceVault\ResourceVault.cpp" />
     <ClCompile Include="src\Scenes\playing_scene.cpp" />
     <ClCompile Include="src\Scenes\scene.cpp" />
     <ClCompile Include="src\Scenes\menu_scene.cpp" />
@@ -39,6 +40,7 @@
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Enums.h" />
     <ClInclude Include="src\GraphicsObject\GraphicsObject.h" />
+    <ClInclude Include="src\ResourceVault\ResourceVault.h" />
     <ClInclude Include="src\Scenes\playing_scene.h" />
     <ClInclude Include="src\Scenes\scene.h" />
     <ClInclude Include="src\Scenes\menu_scene.h" />
@@ -144,7 +146,7 @@
       <PreprocessorDefinitions>SFML_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\Music\OneDrive - VNU-HCMUS\Assignment Documents\CS161 - Final Project\minesweeper\minesweeper\SFML\include</AdditionalIncludeDirectories>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -163,7 +165,7 @@
       <PreprocessorDefinitions>SFML_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\Music\OneDrive - VNU-HCMUS\Assignment Documents\CS161 - Final Project\minesweeper\minesweeper\SFML\include</AdditionalIncludeDirectories>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

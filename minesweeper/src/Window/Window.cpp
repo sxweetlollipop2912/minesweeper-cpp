@@ -143,15 +143,11 @@ void Window::draw(const sf::Text& text) {
 
 
 void Window::draw(Text& text) {
-	text.isDrawing = true;
-
 	draw(text.getSfText());
 }
 
 
 void Window::draw(Button& button, const bool isHovered) {
-	button.isDrawing = true;
-
 	if (isHovered == false)
 		draw(button.getDefaultSprite());
 	else
@@ -170,7 +166,6 @@ void Window::draw(PlayingScene& scene) {
 	draw((Scene&)scene);
 
 	Board& board = scene.board;
-	board.isDrawing = true;
 
 	for (int i = 0; i < board.number_of_rows; i++) {
 		for (int j = 0; j < board.number_of_cols; j++) {
@@ -187,8 +182,6 @@ void Window::draw(PlayingScene& scene) {
 
 
 void Window::draw(Scene& scene) {
-	scene.isDrawing = true;
-
 	for (auto i = scene.map_button.begin(); i != scene.map_button.end(); i++) {
 		if (i->first != scene.hoveredButton)
 			draw(i->second);

@@ -48,6 +48,30 @@ enum class CellType {
 };
 
 
+enum class TextureType {
+	DefaultButton,
+	CellMine,
+	CellClosed,
+	CellFlagged,
+	CellBlank,
+	CellNum1,
+	CellNum2,
+	CellNum3,
+	CellNum4,
+	CellNum5,
+	CellNum6,
+	CellNum7,
+	CellNum8,
+	Unknown
+};
+
+
+enum class FontType {
+	FontDefault,
+	Unknown
+};
+
+
 enum class SceneType {
 	Menu,
 	Playing,

@@ -12,7 +12,7 @@
 #include "../Constants.h"
 
 
-class Scene : public GraphicsObject {
+class Scene {
 	friend class Window;
 
 protected:
@@ -45,7 +45,4 @@ public:
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
 	virtual bool changeMousePosition(const sf::Vector2i& pos);
-
-	// Cleans up after undrawing the scene.
-	void undrawScene();
 };

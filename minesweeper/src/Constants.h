@@ -9,9 +9,9 @@ const int MAX_ROW = 30;
 
 
 // TEXT
-const unsigned int DEFAULT_TITLE_FONT_SIZE = 40;
-const unsigned int DEFAULT_FONT_SIZE = 15;
-const std::string DEFAULT_FONT_PATH = "D:\\Music\\OneDrive - VNU-HCMUS\\Assignment Documents\\CS161 - Final Project\\minesweeper\\minesweeper\\assets\\fonts\\MochiyPopOne.ttf";
+const int DEFAULT_TITLE_FONT_SIZE = 40;
+const int DEFAULT_FONT_SIZE = 15;
+const std::string DEFAULT_FONT_PATH = ".\\assets\\fonts\\MochiyPopOne.ttf";
 
 
 // COLOR
@@ -40,7 +40,7 @@ const sf::Vector2f POS_COEF_HIGHSCORE = sf::Vector2f(4 / (float)5, 2 / (float)5)
 
 // IMAGE PATHS
 const std::string BOARD_IMG_DIR = 
-"D:\\Music\\OneDrive - VNU-HCMUS\\Assignment Documents\\CS161 - Final Project\\minesweeper\\minesweeper\\assets\\images\\board\\";
+".\\assets\\images\\board\\";
 const std::string CLOSED_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"closed.png";
 const std::string BLANK_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"blank.png";
 const std::string FLAGGED_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"flagged.png";
@@ -56,4 +56,4 @@ const std::string NUM_8_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"num_
 
 
 // TEMP
-const std::string BLUE_BG_PATH = BOARD_IMG_DIR + (const std::string)"closed.png";
+const std::string DEFAULT_BUTTON_PATH = BOARD_IMG_DIR + (const std::string)"closed.png";

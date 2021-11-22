@@ -1,4 +1,4 @@
-// Runs with configuration: release, x64
+// Run with configuration: release, x64
 
 #include <iostream>
 
@@ -6,19 +6,37 @@
 #include <SFML/Graphics.hpp>
 
 #include "../src/Window/Window.h"
+#include "../src/ResourceVault/ResourceVault.h"
 #include "../src/Scenes/menu_scene.h"
 #include "../src/Scenes/playing_scene.h"
 #include "../src/Button/Button.h"
 
+#include <map>
 
 int main() {
-    Window window(1000, 800, "minesweeper");
+    ResourceVault::setTexture(TextureType::DefaultButton, DEFAULT_BUTTON_PATH);
+    ResourceVault::setTexture(TextureType::CellClosed, CLOSED_CELL_IMG_PATH);
+    ResourceVault::setTexture(TextureType::CellFlagged, FLAGGED_CELL_IMG_PATH);
+    ResourceVault::setTexture(TextureType::CellBlank, BLANK_CELL_IMG_PATH);
+    ResourceVault::setTexture(TextureType::CellNum1, NUM_1_CELL_IMG_PATH);
+    ResourceVault::setTexture(TextureType::CellNum2, NUM_2_CELL_IMG_PATH);
+    ResourceVault::setTexture(TextureType::CellNum3, NUM_3_CELL_IMG_PATH);
+    ResourceVault::setTexture(TextureType::CellNum4, NUM_4_CELL_IMG_PATH);
+    ResourceVault::setTexture(TextureType::CellNum5, NUM_5_CELL_IMG_PATH);
+    ResourceVault::setTexture(TextureType::CellNum6, NUM_6_CELL_IMG_PATH);
+    ResourceVault::setTexture(TextureType::CellNum7, NUM_7_CELL_IMG_PATH);
+    ResourceVault::setTexture(TextureType::CellNum8, NUM_8_CELL_IMG_PATH);
+
+    ResourceVault::setFont(FontType::FontDefault, DEFAULT_FONT_PATH);
+
+
+    Window window(1500, 1000, "minesweeper");
     window.createWindow();
 
     sf::Vector2u window_size = window.render_window.getSize();
 
     window.initializeMenuScene(window_size);
-    window.initializePlayingScene(window_size, 10, 10);
+    window.initializePlayingScene(window_size, 30, 30);
 
     window.setCurrentSceneType(SceneType::Playing);
 

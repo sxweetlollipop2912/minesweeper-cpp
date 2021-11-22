@@ -5,6 +5,7 @@
 #include "Text.h"
 #include "../Enums.h"
 #include "../GraphicsObject/GraphicsObject.h"
+#include "../ResourceVault/ResourceVault.h"
 #include "../Window/Window.h"
 
 
@@ -14,7 +15,7 @@ void Text::calSpaceTaken() {
     width = height = 0;
 
     for (int i = 0; i < content.size(); i++) {
-        sf::Vector2f pos = text.findCharacterPos(i);
+        sf::Vector2f pos = text.findCharacterPos(i) - pos_top_left;
         width = std::max(width, pos.x);
         height = std::max(height, pos.y);
     }
@@ -40,8 +41,10 @@ float Text::getHeight() const {
 
 
 sf::Text Text::getSfText() const {
+    std::shared_ptr<sf::Font> font = ResourceVault::getFont(font_type);
+
     sf::Text text;
-    GraphicsObject::createText(text, content, font, font_size, text_color, style, pos_top_left);
+    Graphics::createText(text, content, *font, font_size, text_color, style, pos_top_left);
     return text;
 }
 
@@ -51,9 +54,9 @@ int Text::getFontSize() const {
 }
 
 
-void Text::createText(const std::string& content, const sf::Font& font, const unsigned int size, const sf::Color& color, const sf::Text::Style& style, const sf::Vector2f pos_top_left) {
-    this->content = trim(content);
-    this->font = font;
+void Text::createText(const std::string& content, const FontType font_type, const int size, const sf::Color& color, const sf::Text::Style& style, const sf::Vector2f pos_top_left) {
+    this->content = Graphics::trim(content);
+    this->font_type = font_type;
     this->font_size = size;
     this->text_color = color;
     this->style = style;
@@ -63,34 +66,17 @@ void Text::createText(const std::string& content, const sf::Font& font, const un
 }
 
 
-Result Text::createText(const std::string& content, const std::string& font_path, const unsigned int size, const sf::Color& color, const sf::Text::Style& style, const sf::Vector2f pos_top_left) {
-    if (!font_path.empty() && loadFont(font, font_path) == Result::failure) {
-        return Result::failure;
-    }
-    this->content = trim(content);
-    this->font_size = size;
-    this->text_color = color;
-    this->style = style;
-    this->pos_top_left = pos_top_left;
+void Text::setText(const std::string& content) {
+    this->content = Graphics::trim(content);
 
     calSpaceTaken();
-
-    return Result::success;
 }
 
 
-Result Text::setText(const std::string& text, const int size, const std::string& font_path) {
-    if (!font_path.empty() && loadFont(font, font_path) == Result::failure) {
-        return Result::failure;
-    }
-    if (size != -1) {
-        font_size = size;
-    }
-    content = trim(text);
+void Text::setFontType(const FontType font_type) {
+    this->font_type = font_type;
 
     calSpaceTaken();
-
-    return Result::success;
 }
 
 
@@ -99,8 +85,10 @@ void Text::setTopLeftPosition(const sf::Vector2f& pos_top_left) {
 }
 
 
-void Text::setFontSize(unsigned int size) {
+void Text::setFontSize(int size) {
     font_size = size;
+
+    calSpaceTaken();
 }
 
 

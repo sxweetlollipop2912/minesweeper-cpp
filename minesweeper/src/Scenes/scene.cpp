@@ -22,14 +22,3 @@ bool Scene::changeMousePosition(const sf::Vector2i& mouse_position) {
 
 	return hoveredButton != last_hovered;
 }
-
-
-void Scene::undrawScene() {
-	isDrawing = false;
-
-	for (auto i = map_button.begin(); i != map_button.end(); i++)
-		i->second.isDrawing = false;
-
-	for (auto i = map_text.begin(); i != map_text.end(); i++)
-		i->second.isDrawing = false;
-}
