@@ -45,7 +45,7 @@ sf::Text Text::getSfText() const {
 
     sf::Text text;
     Graphics::createText(text, content, *font, font_size, text_color, style, pos_top_left);
-    return std::move(text);
+    return text;
 }
 
 

@@ -11,24 +11,6 @@ Result Board::setCellType(const Position& pos, const CellType type, const int nu
 }
 
 
-void Board::initialize(const int rows, const int cols, const sf::Vector2f pos_top_left) {
-	this->Button::Button();
-
-	this->pos_top_left = pos_top_left;
-	number_of_rows = rows;
-	number_of_cols = cols;
-
-	hovered_cell = Position(-1, -1);
-
-	board.resize(number_of_rows);
-	for (int i = 0; i < number_of_rows; i++) {
-		board[i].resize(number_of_cols);
-	}
-
-	Board::setTopLeftPosition(this->pos_top_left);
-}
-
-
 Result Board::updateBoard(const GameCell new_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int rows, const int cols) {
 	bool change = false;
 	
@@ -87,14 +69,12 @@ bool Board::determineHoveredCell(const sf::Vector2i mouse_pos) {
 	Position last_hovered = hovered_cell;
 	hovered_cell = Position(-1, -1);
 
-	for (int i = 0; i < number_of_rows; i++) {
-		for (int j = 0; j < number_of_cols; j++) {
-			if (!board[i][j].isMouseHovering(mouse_pos)) continue;
-			hovered_cell = Position(i, j);
-
-			break;
-		}
+	if (isMouseHovering(mouse_pos)) {
+		hovered_cell.r = ((float)mouse_pos.y - pos_top_left.y) / (float)DEFAULT_CELL_AREA;
+		hovered_cell.c = ((float)mouse_pos.x - pos_top_left.x) / (float)DEFAULT_CELL_AREA;
 	}
+
+	
 
 	return hovered_cell != last_hovered;
 }
@@ -105,6 +85,16 @@ void Board::resetAllCells() {
 		for (int j = 0; j < number_of_cols; j++) {
 			board[i][j].reset();
 		}
+}
+
+
+int Board::getRows() const {
+	return number_of_rows;
+}
+
+
+int Board::getCols() const {
+	return number_of_cols;
 }
 
 
@@ -139,7 +129,7 @@ sf::Sprite Board::getHoveredSprite() const {
 
 
 void Board::setTopLeftPosition(const sf::Vector2f& pos_top_left) {
-	Button::setTopLeftPosition(pos_top_left);
+	this->Button::setTopLeftPosition(pos_top_left);
 
 	for (int i = 0; i < number_of_rows; i++) {
 		for (int j = 0; j < number_of_cols; j++) {

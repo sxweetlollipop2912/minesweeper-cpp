@@ -11,8 +11,6 @@
 #include "../src/Scenes/playing_scene.h"
 #include "../src/Button/Button.h"
 
-#include <map>
-
 
 void registerResources() {
     // TEXTURES
@@ -67,13 +65,13 @@ void registerResources() {
 int main() {
     registerResources();
 
-    Window window(1500, 1000, "minesweeper");
+    Window window(sf::VideoMode(1500, 1000), "minesweeper");
     window.createWindow();
 
-    sf::Vector2u window_size = window.render_window.getSize();
+    sf::VideoMode window_size = sf::VideoMode(window.render_window.getSize().x, window.render_window.getSize().y);
 
-    window.initializeMenuScene(window_size);
-    window.initializePlayingScene(window_size, 30, 30);
+    window.initializeMenuScene();
+    window.initializePlayingScene(30, 30);
 
     window.setCurrentSceneType(SceneType::Menu);
 
@@ -88,10 +86,6 @@ int main() {
             switch (event.type) {
             case sf::Event::Closed:
                 window.closeWindow();
-                break;
-            case sf::Event::Resized:
-                change = true;
-                window.onResize(event.size.width, event.size.height);
                 break;
             case sf::Event::LostFocus:
                 break;

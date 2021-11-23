@@ -1,7 +1,7 @@
 # minesweeper-cpp
 So as not to accidentally mess up `main branch` later on, one should follow these rules:
 1. Create a new branch for each new feature.
-2. Commits should be clearly named base on the their content. It is best for each commit to include **one** change in code only.
+2. Commits should be clearly named base on their content. It is best for each commit to include **one** change in code only.
 3. Make a `pull request` when a branch is done coding and ready to be merged into `main`.
 4. Before merging a branch to `main`, be sure to carefully check if the merge is safe (i.e., make sure that the merged code works fine).
 5. Comment on the `pull request` if there are any thoughts or stuff that need fixing.

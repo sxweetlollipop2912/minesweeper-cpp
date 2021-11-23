@@ -29,8 +29,6 @@ private:
 	int number_of_cols;
 	Position hovered_cell;
 
-	// Initializes the board.
-	void initialize(const int rows, const int cols, const sf::Vector2f pos_top_left = sf::Vector2f(0, 0));
 	// Assigns all elements in board to default value.
 	void resetAllCells();
 	// Updates the grahics side of the board.
@@ -58,18 +56,24 @@ private:
 	void setTopLeftPosition(const sf::Vector2f& pos_top_left) override;
 
 public:
-	Board() {
-		number_of_rows = number_of_cols = 0;
-		pos_top_left.x = pos_top_left.y = 0;
+	Board(const int rows = 0, const int cols = 0, const sf::Vector2f pos_top_left = sf::Vector2f(0, 0)) {
+		this->pos_top_left = pos_top_left;
+		number_of_rows = rows;
+		number_of_cols = cols;
 
 		hovered_cell = Position(-1, -1);
 
-		board.clear();
+		board.resize(number_of_rows);
+		for (int i = 0; i < number_of_rows; i++) {
+			board[i].resize(number_of_cols);
+		}
+
+		Board::setTopLeftPosition(this->pos_top_left);
 	}
 
-	Board(const int rows, const int cols, const sf::Vector2f pos_top_left = sf::Vector2f(0, 0)) {
-		initialize(rows, cols, pos_top_left);
-	}
+
+	int getRows() const;
+	int getCols() const;
 
 	// Checks if a coordinate is valid on this board.
 	bool isValidPos(const Position& pos) const;

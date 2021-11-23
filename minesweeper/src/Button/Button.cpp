@@ -70,7 +70,7 @@ sf::Sprite Button::getDefaultSprite() const {
     Graphics::loadSpriteFromTexture(sprite, *texture, pos_top_left);
     sprite.setScale(scale);
 
-    return std::move(sprite);
+    return sprite;
 }
 
 
@@ -85,7 +85,7 @@ sf::Sprite Button::getHoveredSprite() const {
     sf::Color grey(100, 100, 100);
     sprite.setColor(grey);
 
-    return std::move(sprite);
+    return sprite;
 }
 
 
@@ -104,7 +104,6 @@ bool Button::isMouseHovering(const sf::Vector2i& mouse_position) const {
 
 Result Button::setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left, const sf::Vector2f& scale) {
     if (!ResourceVault::findTexture(texture_type)) {
-        std::cout << "NOT FOUND\n";
         return Result::failure;
     }
 
@@ -149,7 +148,7 @@ void Button::alignImageAndText() {
 
 
 Result Button::centerButtonHorizontally(const float window_width) {
-    float texture_width = getImageSize().x * scale.x;
+    float texture_width = getSize().x;
 
     if (window_width < texture_width)
         return Result::failure;

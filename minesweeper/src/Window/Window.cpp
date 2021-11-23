@@ -29,52 +29,26 @@ std::shared_ptr<Scene> Window::getCurrentScene() {
 }
 
 
-void Window::initializeMenuScene(sf::Vector2u window_size) {
-	auto menu_scene = std::static_pointer_cast<MenuScene>(map_scene[SceneType::Menu]);
-	menu_scene->initialize(window_size);
+void Window::initializeMenuScene() {
+	auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
+	map_scene[SceneType::Playing] = std::static_pointer_cast<Scene>(menu_scene);
 }
 
 
-void Window::initializePlayingScene(sf::Vector2u window_size, int board_rows, int board_cols) {
-	auto playing_scene = std::static_pointer_cast<PlayingScene>(map_scene[SceneType::Playing]);
-	playing_scene->initialize(window_size, board_rows, board_cols);
+void Window::initializePlayingScene(const int board_rows = -1, const int board_cols = -1) {
+	auto current_playing_scene = std::static_pointer_cast<PlayingScene>(map_scene[SceneType::Playing]);
+	int rows = board_rows < 0 ? current_playing_scene->getBoardRows() : board_rows;
+	int cols = board_cols < 0 ? current_playing_scene->getBoardCols() : board_cols;
+
+	auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, rows, cols));
+	map_scene[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
 }
 
 
 bool Window::changeMousePosition(const sf::Vector2i& mouse_position) {
 	pos_mouse = mouse_position;
-	bool change = false;
 
-	switch (current_scene_type) {
-	case SceneType::Playing:
-	{
-		auto playing_scene = std::static_pointer_cast<PlayingScene>(map_scene[SceneType::Playing]);
-		if (playing_scene->PlayingScene::changeMousePosition(pos_mouse))
-			change = true;
-
-		break;
-	}
-
-	case SceneType::Menu:
-		//break;
-	case SceneType::Won:
-		//break;
-	case SceneType::Lost:
-		//break;
-	case SceneType::Leaderboard:
-		//break;
-	case SceneType::Closing:
-		//break;
-	case SceneType::Unkown:
-		//break;
-
-	default:
-		auto scene = getCurrentScene();
-		if (scene->changeMousePosition(pos_mouse))
-			change = true;
-
-		break;
-	}
+	bool change = getCurrentScene()->changeMousePosition(pos_mouse);
 
 	return change;
 }
@@ -86,7 +60,7 @@ void Window::setCurrentSceneType(const SceneType& type) {
 
 
 void Window::createWindow() {
-	render_window.create(sf::VideoMode(width, height), title);
+	render_window.create(window_size, title);
 }
 
 

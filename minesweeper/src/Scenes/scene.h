@@ -16,11 +16,16 @@ class Scene {
 	friend class Window;
 
 protected:
+	sf::VideoMode window_size;
+
 	std::map <GameEvent, Button> map_button;
 	std::map <std::string, Text> map_text;
 
 	std::map <GameEvent, SceneType> next_scene;
 	GameEvent hovered_button;
+
+
+	void setWindowSize(const sf::VideoMode window_size);
 
 	// Call on a mouse button event.
 	virtual GameEvent handleMouseButtonEvent(const MouseActionType mouse_type);

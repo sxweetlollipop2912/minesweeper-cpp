@@ -47,38 +47,16 @@ private:
 
 public:
 	sf::RenderWindow render_window;
-	int width, height;
+	sf::VideoMode window_size;
 	std::string title;
 
-	// Initializes an untitled Window object with fullscreen size.
-	Window() {
-		this->width = sf::VideoMode::getDesktopMode().width;
-		this->height = sf::VideoMode::getDesktopMode().height;
-		this->title = "";
 
-		auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene());
-		auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene());
-		menu_scene->initialize(sf::Vector2u(width, height));
-		playing_scene->initialize(sf::Vector2u(width, height), 0, 0);
-
-		map_scene[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
-		map_scene[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
-
-		current_scene_type = SceneType::Unkown;
-		last_game_event = GameEvent::Unknown;
-		lock_mouse_button = MouseActionType::Unknown;
-	}
-
-	// Initializes a Window object with desired width, height, title.
-	Window(const int width, const int height, const std::string& title) {
-		this->width = width;
-		this->height = height;
+	Window(const sf::VideoMode window_size = sf::VideoMode::getDesktopMode(), const std::string& title = "") {
+		this->window_size = window_size;
 		this->title = title;
 
-		auto menu_scene = std::make_shared<MenuScene>();
-		auto playing_scene = std::make_shared<PlayingScene>();
-		menu_scene->initialize(sf::Vector2u(width, height));
-		playing_scene->initialize(sf::Vector2u(width, height), 0, 0);
+		auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
+		auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, 0, 0));
 
 		map_scene[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
 		map_scene[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
@@ -104,10 +82,10 @@ public:
 	// Gets current scene as Scene object.
 	std::shared_ptr<Scene> getCurrentScene();
 
-	// Initializes menu scene for window.
-	void initializeMenuScene(sf::Vector2u window_size);
-	// Initializes playing scene for window.
-	void initializePlayingScene(sf::Vector2u window_size, int board_rows, int board_cols);
+	// Initializes/Resets menu scene for window.
+	void initializeMenuScene();
+	// Initializes/Resets playing scene for window.
+	void initializePlayingScene(const int board_rows, const int board_cols);
 	// Changes window graphics base on new mouse position.
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
