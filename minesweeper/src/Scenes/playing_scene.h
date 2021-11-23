@@ -85,5 +85,7 @@ public:
 	int getBoardRows() const;
 	int getBoardCols() const;
 	// Checks if number of rows and cols of a board is valid for the window size.
-	static bool checkBoardSize(const sf::Vector2u& window_size, const int board_rows, const int board_cols);
+	static bool checkBoardSize(const sf::VideoMode& window_size, const int board_rows, const int board_cols);
+
+	DrawableList getDrawableList() override;
 };

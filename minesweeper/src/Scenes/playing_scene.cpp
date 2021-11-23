@@ -138,3 +138,21 @@ bool PlayingScene::checkBoardSize(const sf::VideoMode& window_size, const int bo
 
 	return true;
 }
+
+
+Scene::DrawableList PlayingScene::getDrawableList() {
+	DrawableList list = this->Scene::getDrawableList();
+
+	for (int i = 0; i < board.number_of_rows; i++) {
+		for (int j = 0; j < board.number_of_cols; j++) {
+			if (Position(i, j) == board.hovered_cell) {
+				list.sprites.push_back(std::make_shared<sf::Sprite>(board.board[i][j].getHoveredSprite()));
+			}
+			else {
+				list.sprites.push_back(std::make_shared<sf::Sprite>(board.board[i][j].getDefaultSprite()));
+			}
+		}
+	}
+
+	return list;
+}

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include <map>
+#include <vector>
 
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
@@ -42,4 +43,27 @@ public:
 
 		hovered_button = GameEvent::Unknown;
 	}
+
+
+	struct DrawableList {
+		std::vector <std::shared_ptr<sf::Sprite>> sprites;
+		std::vector <std::shared_ptr<sf::Text>> texts;
+
+		DrawableList() {
+			sprites.clear();
+			texts.clear();
+		}
+
+		void add(const DrawableList& list) {
+			for (auto e : list.sprites) {
+				sprites.push_back(e);
+			}
+			for (auto e : list.texts) {
+				texts.push_back(e);
+			}
+		}
+	};
+	
+	// Gets a DrawableList object that contains all sprites and texts in the scene.
+	virtual DrawableList getDrawableList();
 };

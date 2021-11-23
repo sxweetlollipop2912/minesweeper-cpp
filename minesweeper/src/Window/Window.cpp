@@ -281,32 +281,7 @@ bool Window::handleMouseButtonRelease(const sf::Mouse::Button& button, const sf:
 
 
 void Window::drawCurrentScene() {
-	switch (current_scene_type) {
-	case SceneType::Menu:
-	{
-		auto menu_scene = std::static_pointer_cast<MenuScene>(map_scene[SceneType::Menu]);
-		draw(*menu_scene);
-		break;
-	}
-	case SceneType::Playing:
-	{
-		auto playing_scene = std::static_pointer_cast<PlayingScene>(map_scene[SceneType::Playing]);
-		draw(*playing_scene);
-		break;
-	}
-	case SceneType::Won:
-		break;
-	case SceneType::Lost:
-		break;
-	case SceneType::Leaderboard:
-		break;
-	case SceneType::Closing:
-		break;
-	case SceneType::Unkown:
-		break;
-	default:
-		break;
-	}
+	draw(*getCurrentScene());
 }
 
 
@@ -335,38 +310,13 @@ void Window::draw(Button& button, const bool isHovered) {
 }
 
 
-void Window::draw(MenuScene& scene) {
-	draw((Scene&)scene);
-}
-
-
-void Window::draw(PlayingScene& scene) {
-	draw((Scene&)scene);
-
-	Board& board = scene.board;
-
-	for (int i = 0; i < board.number_of_rows; i++) {
-		for (int j = 0; j < board.number_of_cols; j++) {
-
-			if (Position(i, j) != board.hovered_cell) {
-				draw(board.board[i][j]);
-			}
-			else {
-				draw(board.board[i][j], true);
-			}
-		}
-	}
-}
-
-
 void Window::draw(Scene& scene) {
-	for (auto i = scene.map_button.begin(); i != scene.map_button.end(); i++) {
-		if (i->first != scene.hovered_button)
-			draw(i->second);
-		else
-			draw(i->second, true);
-	}
+	Scene::DrawableList list = scene.getDrawableList();
 
-	for (auto i = scene.map_text.begin(); i != scene.map_text.end(); i++)
-		draw(i->second);
+	for (auto sprite : list.sprites) {
+		draw(*sprite);
+	}
+	for (auto text : list.texts) {
+		draw(*text);
+	}
 }

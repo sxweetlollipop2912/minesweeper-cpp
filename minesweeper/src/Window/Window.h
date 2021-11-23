@@ -26,10 +26,6 @@ private:
 	// Locks mouse button when it is in use, i.e, a RMB won't be detected while a LMB is pressed and hasn't been released.
 	MouseActionType lock_mouse_button;
 
-	// Draws a menu scene on the window.
-	void draw(MenuScene& scene);
-	// Draws a playing scene on the window.
-	void draw(PlayingScene& scene);
 	// Draws a scene on the window.
 	void draw(Scene& scene);
 	// Draws a sprite on the window.
