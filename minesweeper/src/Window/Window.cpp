@@ -60,18 +60,12 @@ void Window::setCurrentSceneType(const SceneType& type) {
 
 
 void Window::createWindow() {
-	render_window.create(window_size, title);
+	render_window.create(window_size, title, window_style);
 }
 
 
 void Window::closeWindow() {
 	render_window.close();
-}
-
-
-void Window::onResize(const int width, const int height) {
-	this->width = width;
-	this->height = height;
 }
 
 

@@ -68,7 +68,7 @@ int main() {
     Window window(sf::VideoMode(1500, 1000), "minesweeper");
     window.createWindow();
 
-    sf::VideoMode window_size = sf::VideoMode(window.render_window.getSize().x, window.render_window.getSize().y);
+    sf::VideoMode window_size = sf::VideoMode(window.render_window.getSize().x, window.render_window.getSize().y, sf::Style::Close);
 
     window.initializeMenuScene();
     window.initializePlayingScene(30, 30);

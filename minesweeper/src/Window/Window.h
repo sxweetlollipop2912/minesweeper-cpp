@@ -44,12 +44,14 @@ private:
 public:
 	sf::RenderWindow render_window;
 	sf::VideoMode window_size;
+	int window_style;
 	std::string title;
 
 
-	Window(const sf::VideoMode window_size = sf::VideoMode::getDesktopMode(), const std::string& title = "") {
+	Window(const sf::VideoMode window_size = sf::VideoMode::getDesktopMode(), const std::string& title = "", const int window_style = sf::Style::Close) {
 		this->window_size = window_size;
 		this->title = title;
+		this->window_style = window_style;
 
 		auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
 		auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, 0, 0));
@@ -89,9 +91,6 @@ public:
 	// Sets current scene type.
 	void setCurrentSceneType(const SceneType& type);
 
-	// Actions on resizing window event.
-	// This method is empty.
-	void onResize(const int width, const int height);
 	// Call upon a mouse button PRESS event.
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
