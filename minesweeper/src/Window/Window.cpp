@@ -225,7 +225,7 @@ bool Window::handleMouseButtonRelease(const sf::Mouse::Button& button, const sf:
 		sf::Event event;
 
 		if (type == MouseActionType::LMB) {
-			while (elapse.getElapsedTime().asMilliseconds() < 100) {
+			while (elapse.getElapsedTime().asMilliseconds() < 50) {
 				while (render_window.pollEvent(event)) {
 					if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
 						lock_mouse_button = MouseActionType::DoubleLMB;
