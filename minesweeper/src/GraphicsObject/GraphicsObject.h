@@ -31,12 +31,13 @@ public:
 		const sf::Text::Style& style = sf::Text::Regular,
 		const sf::Vector2f pos_top_left = sf::Vector2f(0, 0));
 	// Tries to position a text inside a rectangle container.
-	// NOTE: The string will be changed permanently. There's no going back.
+	// NOTE: The string will be changed permanently. There's no turning back.
 	// Shouldn't cost much time if already positioned b4.
 	// > Returns `Result::failure` if text's content is too large to be positioned within the rectangle,
 	// > otherwise returns `Result::success`.
 	static Result positionTextInRect(sf::Text& text, const int width, const int height);
 
-	// Trims leading whitespaces on the front and back of a string.
+	// Trims leading whitespaces on the front and back of a string and deletes any consecutive whitespaces.
 	static std::string trim(std::string s);
+	static std::string normalizeStr(std::string s);
 };

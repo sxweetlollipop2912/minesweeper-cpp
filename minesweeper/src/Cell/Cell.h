@@ -85,7 +85,7 @@ public:
 	sf::Sprite getHoveredSprite() const override;
 
 	// Sets top-left position of the cell in respect of window size.
-	void setTopLeftPosition(const sf::Vector2f& pos_top_left) override;
+	void setTopLeftPos(const sf::Vector2f& pos_top_left) override;
 
 	Result setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1)) override;
 	void setPadding(const sf::Vector2f& padding) override;

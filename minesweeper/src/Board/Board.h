@@ -53,7 +53,7 @@ private:
 	// OVERRIDING BUTTON METHODS
 
 	// Sets top-left position of the whole board in respect of window size.
-	void setTopLeftPosition(const sf::Vector2f& pos_top_left) override;
+	void setTopLeftPos(const sf::Vector2f& pos_top_left) override;
 
 public:
 	Board(const int rows = 0, const int cols = 0, const sf::Vector2f pos_top_left = sf::Vector2f(0, 0)) {
@@ -68,7 +68,7 @@ public:
 			board[i].resize(number_of_cols);
 		}
 
-		Board::setTopLeftPosition(this->pos_top_left);
+		Board::setTopLeftPos(this->pos_top_left);
 	}
 
 

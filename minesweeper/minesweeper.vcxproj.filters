@@ -51,6 +51,9 @@
     <ClCompile Include="src\ResourceVault\ResourceVault.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\PopUp\PopUp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Window\Window.h">
@@ -90,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ResourceVault\ResourceVault.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PopUp\PopUp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -42,7 +42,7 @@ Result Graphics::positionTextInRect(sf::Text& text, const int width, const int h
     int size = text.getString().getSize();
 
     for (int space_1 = -1, space_2 = 0; space_2 < size; space_2++) {
-        if (text.getString()[space_2] != ' ')
+        if (space_2 < 1 || text.getString()[space_2] != ' ')
             continue;
         if (text.findCharacterPos(space_2 - 1).x <= width)
             continue;
@@ -68,8 +68,24 @@ Result Graphics::positionTextInRect(sf::Text& text, const int width, const int h
 
 std::string Graphics::trim(std::string s) {
     int l = 0, r = s.size();
-    while (s[l] == ' ') ++l;
-    while (s[r] == ' ') --r;
-    s = s.substr(l, r - l + 1);
+    while (l < s.size() && s[l] == ' ') ++l;
+    while (r >= 0 && s[r] == ' ') --r;
+    s = s.substr(l, std::max(l, r - l + 1));
+
+    for (int i = 1; i < s.size(); i++) {
+        if (s[i] == ' ' && s[i - 1] == ' ') {
+            s.erase(s.begin() + i);
+        }
+    }
+
+    return s;
+}
+
+std::string Graphics::normalizeStr(std::string s) {
+    for (int i = 0; i < s.size(); i++) {
+        if (s[i] == '\n') s[i] = ' ';
+    }
+    Graphics::trim(s);
+    
     return s;
 }

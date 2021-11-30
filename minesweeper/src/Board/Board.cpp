@@ -128,8 +128,8 @@ sf::Sprite Board::getHoveredSprite() const {
 }
 
 
-void Board::setTopLeftPosition(const sf::Vector2f& pos_top_left) {
-	this->Button::setTopLeftPosition(pos_top_left);
+void Board::setTopLeftPos(const sf::Vector2f& pos_top_left) {
+	this->Button::setTopLeftPos(pos_top_left);
 
 	for (int i = 0; i < number_of_rows; i++) {
 		for (int j = 0; j < number_of_cols; j++) {
@@ -137,7 +137,7 @@ void Board::setTopLeftPosition(const sf::Vector2f& pos_top_left) {
 			rel_pos.x = (DEFAULT_CELL_AREA) * (float)j;
 			rel_pos.y = (DEFAULT_CELL_AREA) * (float)i;
 
-			board[i][j].setTopLeftPosition(this->pos_top_left + rel_pos);
+			board[i][j].setTopLeftPos(this->pos_top_left + rel_pos);
 		}
 	}
 }

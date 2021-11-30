@@ -169,6 +169,11 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 			current_scene_type = SceneType::Lost;
 			break;
 		}
+		case GameEvent::ClosePopUp:
+		case GameEvent::OpenPopUp:
+		{
+			return true;
+		}
 		default:
 		{
 			return false;
@@ -242,32 +247,7 @@ bool Window::handleMouseButtonRelease(const sf::Mouse::Button& button, const sf:
 	// Gets the next game event, if exists
 	GameEvent nxt_event = GameEvent::Unknown;
 	{
-		switch (current_scene_type) {
-		case SceneType::Menu:
-		{
-			auto menu_scene = std::static_pointer_cast<MenuScene>(map_scene[SceneType::Menu]);
-			nxt_event = menu_scene->MenuScene::handleMouseButtonEvent(type);
-			break;
-		}
-		case SceneType::Playing:
-		{
-			auto playing_scene = std::static_pointer_cast<PlayingScene>(map_scene[SceneType::Playing]);
-			nxt_event = playing_scene->PlayingScene::handleMouseButtonEvent(type);
-			break;
-		}
-		case SceneType::Won:
-			break;
-		case SceneType::Lost:
-			break;
-		case SceneType::Leaderboard:
-			break;
-		case SceneType::Closing:
-			break;
-		case SceneType::Unkown:
-			break;
-		default:
-			break;
-		}
+		nxt_event = map_scene[current_scene_type]->handleMouseButtonEvent(type);
 	}
 
 	return handleGameEvents(nxt_event);
@@ -307,10 +287,12 @@ void Window::draw(Button& button, const bool isHovered) {
 void Window::draw(Scene& scene) {
 	Scene::DrawableList list = scene.getDrawableList();
 
-	for (auto sprite : list.sprites) {
-		draw(*sprite);
-	}
-	for (auto text : list.texts) {
-		draw(*text);
+	for (int rank = 0, sprite_idx = 0, text_idx = 0; sprite_idx < list.sprites.size() || text_idx < list.texts.size(); rank++) {
+		for (; sprite_idx < list.sprites.size() && list.sprites[sprite_idx].rank == rank; sprite_idx++) {
+			draw(*list.sprites[sprite_idx].sprite);
+		}
+		for (; text_idx < list.texts.size() && list.texts[text_idx].rank == rank; text_idx++) {
+			draw(*list.texts[text_idx].text);
+		}
 	}
 }
