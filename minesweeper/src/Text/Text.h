@@ -47,6 +47,10 @@ public:
 	float getWidth() const;
 	// Gets height of the text.
 	float getHeight() const;
+	// Gets top-left position of button.
+	sf::Vector2f getPosTopLeft() const;
+	// Gets right-down position of button.
+	sf::Vector2f getPosRightDown() const;
 	// Gets text as sf::Text.
 	sf::Text getSfText() const;
 	// Gets font size.
@@ -63,7 +67,11 @@ public:
 	void setText(const std::string& content);
 	void setFontType(const FontType font_type);
 	// Sets top-left position of text.
-	void setTopLeftPosition(const sf::Vector2f& pos_top_left);
+	void setTopLeftPos(const sf::Vector2f& pos_top_left);
+	// Sets top-left position of text on X-axis.
+	virtual void setTopLeftPosX(const float& pos_top_left_x);
+	// Sets top-left position of text on Y-axis.
+	virtual void setTopLeftPosY(const float& pos_top_left_y);
 	// Sets font size.
 	void setFontSize(int size);
 

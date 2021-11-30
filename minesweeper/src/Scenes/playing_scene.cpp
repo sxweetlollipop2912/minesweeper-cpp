@@ -59,44 +59,33 @@ std::string PlayingScene::highscoreStr(int h, int m, int s) {
 
 
 GameEvent PlayingScene::handleMouseButtonEvent(const MouseActionType mouse_type) {
-	switch (mouse_type) {
-		// RMB: Flag/Unflag a cell.
-		case MouseActionType::RMB:
-		{
-			Position cell_pos = board.hovered_cell;
+	// If mouse is hovering over a cell.
+	if (board.isValidPos(board.hovered_cell)) {
+		switch (mouse_type) {
+			// RMB: Flag/Unflag a cell.
+			case MouseActionType::RMB:
+			{
+				Position cell_pos = board.hovered_cell;
+				std::cout << "RMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
 
-			if (!board.isValidPos(cell_pos))
-				return GameEvent::Unknown;
+				return GameEvent::FlagCell;
+			}
+			// LMB: Open a cell.
+			case MouseActionType::LMB:
+			{
+				Position cell_pos = board.hovered_cell;
+				std::cout << "LMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
 
-			std::cout << "RMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
-		
-			return GameEvent::FlagCell;
-		}
+				return GameEvent::OpenCell;
+			}
+			// Double-LMB: Auto-open nearby safe cells.
+			case MouseActionType::DoubleLMB:
+			{
+				Position cell_pos = board.hovered_cell;
+				std::cout << "DoubleLMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
 
-		// LMB: Open a cell.
-		case MouseActionType::LMB:
-		{
-			Position cell_pos = board.hovered_cell;
-
-			if (!board.isValidPos(cell_pos))
-				return GameEvent::Unknown;
-
-			std::cout << "LMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
-
-			return GameEvent::OpenCell;
-		}
-
-		// Double-LMB: Auto-open nearby safe cells.
-		case MouseActionType::DoubleLMB:
-		{
-			Position cell_pos = board.hovered_cell;
-
-			if (!board.isValidPos(cell_pos))
-				return GameEvent::Unknown;
-
-			std::cout << "DoubleLMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
-
-			return GameEvent::AutoOpenCell;
+				return GameEvent::AutoOpenCell;
+			}
 		}
 	}
 
@@ -140,19 +129,21 @@ bool PlayingScene::checkBoardSize(const sf::VideoMode& window_size, const int bo
 }
 
 
-Scene::DrawableList PlayingScene::getDrawableList() {
-	DrawableList list = this->Scene::getDrawableList();
+Scene::DrawableList PlayingScene::getDrawableList(const bool isFocusing, const int rank) {
+	DrawableList list;
 
 	for (int i = 0; i < board.number_of_rows; i++) {
 		for (int j = 0; j < board.number_of_cols; j++) {
-			if (Position(i, j) == board.hovered_cell) {
-				list.sprites.push_back(std::make_shared<sf::Sprite>(board.board[i][j].getHoveredSprite()));
+			if (isFocusing && Position(i, j) == board.hovered_cell) {
+				list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(board.board[i][j].getHoveredSprite()), rank));
 			}
 			else {
-				list.sprites.push_back(std::make_shared<sf::Sprite>(board.board[i][j].getDefaultSprite()));
+				list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(board.board[i][j].getDefaultSprite()), rank));
 			}
 		}
 	}
+
+	list.append(Scene::getDrawableList(isFocusing, rank));
 
 	return list;
 }

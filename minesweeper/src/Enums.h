@@ -9,6 +9,8 @@ enum class Result {
 enum class GameEvent {
 	QuitGame,
 	QuitToMenu,
+	OpenPopUp,
+	ClosePopUp,
 	NewGame,
 	LoadGame,
 	ShowLeaderboard,

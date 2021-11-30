@@ -15,15 +15,24 @@
 
 class Scene {
 	friend class Window;
+	friend class MenuScene;
+	friend class PlayingScene;
+	friend class PopUp;
 
 protected:
+	const std::string STR_UNKNOWN = "unknown";
+
 	sf::VideoMode window_size;
 
-	std::map <GameEvent, Button> map_button;
-	std::map <std::string, Text> map_text;
+	// Only one pop-up holder for one scene.
+	std::shared_ptr<Scene> pop_up;
+
+	std::map <std::string, Button> buttons;
+	std::map <std::string, GameEvent> buttons_event;
+	std::map <std::string, Text> texts;
 
 	std::map <GameEvent, SceneType> next_scene;
-	GameEvent hovered_button;
+	std::string hovered_button;
 
 
 	void setWindowSize(const sf::VideoMode window_size);
@@ -37,24 +46,49 @@ protected:
 
 public:
 	Scene() {
-		map_button.clear();
-		map_text.clear();
+		pop_up = nullptr;
+		buttons.clear();
+		texts.clear();
 		next_scene.clear();
 
-		hovered_button = GameEvent::Unknown;
+		buttons_event[STR_UNKNOWN] = GameEvent::Unknown;
+		hovered_button = STR_UNKNOWN;
 	}
 
 
 	struct DrawableList {
-		std::vector <std::shared_ptr<sf::Sprite>> sprites;
-		std::vector <std::shared_ptr<sf::Text>> texts;
+		struct DrawableSprite {
+			std::shared_ptr<sf::Sprite> sprite;
+
+			// higher rank drawables overwrite lower ones.
+			int rank;
+
+			DrawableSprite(const std::shared_ptr<sf::Sprite> sprite = nullptr, const int rank = 0) {
+				this->sprite = sprite;
+				this->rank = rank;
+			}
+		};
+		struct DrawableText {
+			std::shared_ptr<sf::Text> text;
+
+			// higher rank drawables overwrite lower ones.
+			int rank;
+
+			DrawableText(const std::shared_ptr<sf::Text> text = nullptr, const int rank = 0) {
+				this->text = text;
+				this->rank = rank;
+			}
+		};
+
+		std::vector <DrawableSprite> sprites;
+		std::vector <DrawableText> texts;
 
 		DrawableList() {
 			sprites.clear();
 			texts.clear();
 		}
 
-		void add(const DrawableList& list) {
+		void append(const DrawableList& list) {
 			for (auto e : list.sprites) {
 				sprites.push_back(e);
 			}
@@ -65,5 +99,5 @@ public:
 	};
 	
 	// Gets a DrawableList object that contains all sprites and texts in the scene.
-	virtual DrawableList getDrawableList();
+	virtual DrawableList getDrawableList(const bool isFocusing = true, const int rank = 0);
 };

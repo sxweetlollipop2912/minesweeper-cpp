@@ -230,11 +230,11 @@ sf::Sprite Cell::getHoveredSprite() const {
 }
 
 
-void Cell::setTopLeftPosition(const sf::Vector2f& pos_top_left) {
-	this->Button::setTopLeftPosition(pos_top_left);
+void Cell::setTopLeftPos(const sf::Vector2f& pos_top_left) {
+	this->Button::setTopLeftPos(pos_top_left);
 
 	for (auto i = button_at_state.begin(); i != button_at_state.end(); i++) {
-		i->second.setTopLeftPosition(this->pos_top_left);
+		i->second.setTopLeftPos(this->pos_top_left);
 	}
 }
 

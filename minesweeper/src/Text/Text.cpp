@@ -40,6 +40,16 @@ float Text::getHeight() const {
 }
 
 
+sf::Vector2f Text::getPosTopLeft() const {
+    return pos_top_left;
+}
+
+
+sf::Vector2f Text::getPosRightDown() const {
+    return sf::Vector2f(pos_top_left.x + width, pos_top_left.y + height);
+}
+
+
 sf::Text Text::getSfText() const {
     std::shared_ptr<sf::Font> font = ResourceVault::getFont(font_type);
 
@@ -80,8 +90,18 @@ void Text::setFontType(const FontType font_type) {
 }
 
 
-void Text::setTopLeftPosition(const sf::Vector2f& pos_top_left) {
+void Text::setTopLeftPos(const sf::Vector2f& pos_top_left) {
     this->pos_top_left = pos_top_left;
+}
+
+
+void Text::setTopLeftPosX(const float& pos_top_left_x) {
+    pos_top_left.x = pos_top_left_x;
+}
+
+
+void Text::setTopLeftPosY(const float& pos_top_left_y) {
+    pos_top_left.y = pos_top_left_y;
 }
 
 

@@ -118,8 +118,18 @@ Result Button::setImage(const TextureType texture_type, const sf::Vector2f& pos_
 }
 
 
-void Button::setTopLeftPosition(const sf::Vector2f& pos_top_left) {
+void Button::setTopLeftPos(const sf::Vector2f& pos_top_left) {
     this->pos_top_left = pos_top_left;
+}
+
+
+void Button::setTopLeftPosX(const float& pos_top_left_x) {
+    pos_top_left.x = pos_top_left_x;
+}
+
+
+void Button::setTopLeftPosY(const float& pos_top_left_y) {
+    pos_top_left.y = pos_top_left_y;
 }
 
 
@@ -133,6 +143,14 @@ void Button::setScale(const sf::Vector2f& scale) {
 }
 
 
+void Button::setSize(const sf::Vector2f& size) {
+    sf::Vector2u img_size = getImageSize();
+
+    scale.x = size.x / (float)img_size.x;
+    scale.y = size.y / (float)img_size.y;
+}
+
+
 void Button::alignImageAndText() {
     float text_width = label.getWidth();
     float text_height = label.getHeight();
@@ -143,23 +161,85 @@ void Button::alignImageAndText() {
     scale.x = desired_width / getImageSize().x;
     scale.y = desired_height / getImageSize().y;
 
-    label.setTopLeftPosition(pos_top_left + padding);
+    label.setTopLeftPos(pos_top_left + padding);
 }
 
 
 Result Button::centerButtonHorizontally(const float window_width) {
-    float texture_width = getSize().x;
+    float button_width = getSize().x;
 
-    if (window_width < texture_width)
+    if (window_width < button_width)
         return Result::failure;
 
-    pos_top_left.x = (window_width / 2) - (texture_width / 2);
+    float old_x = pos_top_left.x;
+    pos_top_left.x = (window_width / 2) - (button_width / 2);
 
-    if (centerTextInButton() == Result::failure) {
+    if (pos_top_left.x < 0 || centerTextInButton() == Result::failure) {
+        pos_top_left.x = old_x;
+
         return Result::failure;
     }
 
     return Result::success;
+}
+
+
+Result Button::centerButtonVertically(const float window_height) {
+    float button_height = getSize().y;
+
+    if (window_height < button_height)
+        return Result::failure;
+
+    float old_y = pos_top_left.y;
+    pos_top_left.y = (window_height / 2) - (button_height / 2);
+
+    if (pos_top_left.y < 0 || centerTextInButton() == Result::failure) {
+        pos_top_left.y = old_y;
+
+        return Result::failure;
+    }
+
+    return Result::success;
+}
+
+
+Result Button::fitTextInsideButton() {
+    int width = getSize().x - getPadding().x * 2;
+    int height = getSize().y - getPadding().y * 2;
+
+    sf::Text text = label.getSfText();
+
+    {
+        std::string s = text.getString();
+        Graphics::normalizeStr(s);
+        text.setString(s);
+    }
+
+    int size = text.getString().getSize();
+
+    for (int space_1 = -1, space_2 = 0; space_2 < size; space_2++) {
+        if (space_2 < 1 || text.getString()[space_2] != ' ')
+            continue;
+        if (text.findCharacterPos(space_2 - 1).x <= width)
+            continue;
+        if (space_1 == -1)
+            return Result::failure;
+
+        std::string s = text.getString();
+        // Deletes whitespace at space_1
+        s.erase(s.begin() + space_1);
+        // Inserts newline.
+        s.insert(s.begin() + space_1, '\n');
+        text.setString(s);
+
+        if (text.findCharacterPos(space_2 - 1).x > width || text.findCharacterPos(space_2 - 1).y > height)
+            return Result::failure;
+
+        space_1 = space_2;
+    }
+
+    label.setText(text.getString());
+
 }
 
 
@@ -172,7 +252,11 @@ Result Button::centerTextInButton() {
     sf::Vector2f desired_pos;
     desired_pos.x = ((pos_top_left.x + pos_right_down.x) / 2) - (text_width / 2);
     desired_pos.y = ((pos_top_left.y + pos_right_down.y) / 2) - (text_height / 2);
-    label.setTopLeftPosition(desired_pos);
+
+    if (desired_pos.x < 0 || desired_pos.y < 0)
+        return Result::failure;
+
+    label.setTopLeftPos(desired_pos);
 
     return Result::success;
 }
