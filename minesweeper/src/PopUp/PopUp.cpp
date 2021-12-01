@@ -52,7 +52,7 @@ GameEvent PopUp::handleMouseButtonEvent(const MouseActionType mouse_type) {
 
 
 bool PopUp::changeMousePosition(const sf::Vector2i& pos) {
-	std::string last_hovered = hovered_button;
+	auto last_hovered = hovered_button;
 	hovered_button = STR_UNKNOWN;
 
 	for (auto i = buttons.begin(); i != buttons.end(); i++) {
@@ -63,37 +63,6 @@ bool PopUp::changeMousePosition(const sf::Vector2i& pos) {
 	}
 
 	return hovered_button != last_hovered;
-}
-
-
-std::shared_ptr<Scene> PopUp::createPopUp(const GameEvent game_event, const sf::VideoMode window_size) {
-	switch (game_event) {
-	case GameEvent::QuitGame:
-	{
-		PopUp pop_up(game_event, window_size, "You are about to quit the game.\nAre you sure?");
-		auto ptr = std::make_shared<PopUp>(pop_up);
-
-		return std::static_pointer_cast<Scene>(ptr);
-	}
-	case GameEvent::NewGame:
-	{
-		PopUp pop_up(game_event, window_size, "Do you want to create new game?\nCurrent save game will be lost.");
-		auto ptr = std::make_shared<PopUp>(pop_up);
-
-		return std::static_pointer_cast<Scene>(ptr);
-	}
-	case GameEvent::QuitToMenu:
-	{
-		PopUp pop_up(game_event, window_size, "Do you want to quit to menu?\nCurrent game will be saved.");
-		auto ptr = std::make_shared<PopUp>(pop_up);
-
-		return std::static_pointer_cast<Scene>(ptr);
-	}
-	default:
-		break;
-	}
-
-	return nullptr;
 }
 
 

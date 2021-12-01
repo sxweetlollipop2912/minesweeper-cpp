@@ -55,8 +55,5 @@ public:
 		PositionPopUp(window_size);
 	}
 
-
-	static std::shared_ptr<Scene> createPopUp(const GameEvent game_event, const sf::VideoMode window_size);
-
 	DrawableList getDrawableList(const bool isFocusing = false, const int rank = 0) override;
 };

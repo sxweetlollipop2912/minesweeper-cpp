@@ -11,7 +11,7 @@
 
 
 GameEvent MenuScene::handleMouseButtonEvent(const MouseActionType mouse_type) {
-	GameEvent game_event = GameEvent::Unknown;
+	auto game_event = GameEvent::Unknown;
 
 	// If pop-up already exists.
 	if (pop_up) {
@@ -27,10 +27,8 @@ GameEvent MenuScene::handleMouseButtonEvent(const MouseActionType mouse_type) {
 			game_event = buttons_event.at(hovered_button);
 		}
 
-		pop_up = PopUp::createPopUp(game_event, window_size);
-
 		// If pop-up is successfully created.
-		if (pop_up) game_event = GameEvent::OpenPopUp;
+		if (spawnPopUp(game_event)) game_event = GameEvent::OpenPopUp;
 	}
 
 	

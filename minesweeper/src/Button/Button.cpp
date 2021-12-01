@@ -36,7 +36,7 @@ Result Button::equalizeButtonsSize(Button& button1, Button& button2) {
 
 
 sf::Vector2f Button::getSize() const {
-    sf::Vector2u original_size = getImageSize();
+    auto original_size = getImageSize();
 
     return sf::Vector2f(original_size.x * scale.x, original_size.y * scale.y);
 }
@@ -144,7 +144,7 @@ void Button::setScale(const sf::Vector2f& scale) {
 
 
 void Button::setSize(const sf::Vector2f& size) {
-    sf::Vector2u img_size = getImageSize();
+    auto img_size = getImageSize();
 
     scale.x = size.x / (float)img_size.x;
     scale.y = size.y / (float)img_size.y;
@@ -203,44 +203,44 @@ Result Button::centerButtonVertically(const float window_height) {
 }
 
 
-Result Button::fitTextInsideButton() {
-    int width = getSize().x - getPadding().x * 2;
-    int height = getSize().y - getPadding().y * 2;
-
-    sf::Text text = label.getSfText();
-
-    {
-        std::string s = text.getString();
-        Graphics::normalizeStr(s);
-        text.setString(s);
-    }
-
-    int size = text.getString().getSize();
-
-    for (int space_1 = -1, space_2 = 0; space_2 < size; space_2++) {
-        if (space_2 < 1 || text.getString()[space_2] != ' ')
-            continue;
-        if (text.findCharacterPos(space_2 - 1).x <= width)
-            continue;
-        if (space_1 == -1)
-            return Result::failure;
-
-        std::string s = text.getString();
-        // Deletes whitespace at space_1
-        s.erase(s.begin() + space_1);
-        // Inserts newline.
-        s.insert(s.begin() + space_1, '\n');
-        text.setString(s);
-
-        if (text.findCharacterPos(space_2 - 1).x > width || text.findCharacterPos(space_2 - 1).y > height)
-            return Result::failure;
-
-        space_1 = space_2;
-    }
-
-    label.setText(text.getString());
-
-}
+//Result Button::fitTextInsideButton() {
+//    int width = getSize().x - getPadding().x * 2;
+//    int height = getSize().y - getPadding().y * 2;
+//
+//    sf::Text text = label.getSfText();
+//
+//    {
+//        std::string s = text.getString();
+//        Graphics::normalizeStr(s);
+//        text.setString(s);
+//    }
+//
+//    int size = text.getString().getSize();
+//
+//    for (int space_1 = -1, space_2 = 0; space_2 < size; space_2++) {
+//        if (space_2 < 1 || text.getString()[space_2] != ' ')
+//            continue;
+//        if (text.findCharacterPos(space_2 - 1).x <= width)
+//            continue;
+//        if (space_1 == -1)
+//            return Result::failure;
+//
+//        std::string s = text.getString();
+//        // Deletes whitespace at space_1
+//        s.erase(s.begin() + space_1);
+//        // Inserts newline.
+//        s.insert(s.begin() + space_1, '\n');
+//        text.setString(s);
+//
+//        if (text.findCharacterPos(space_2 - 1).x > width || text.findCharacterPos(space_2 - 1).y > height)
+//            return Result::failure;
+//
+//        space_1 = space_2;
+//    }
+//
+//    label.setText(text.getString());
+//
+//}
 
 
 Result Button::centerTextInButton() {

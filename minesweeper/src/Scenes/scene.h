@@ -43,6 +43,10 @@ protected:
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
 	virtual bool changeMousePosition(const sf::Vector2i& pos);
+	// Spawn a PopUp in current Scene base on current GameEvent.
+	// Returns false if no PopUp is spawned running the method (either because another PopUp has already been spawned or there is no PopUp for the GameEvent.
+	// Otherwise, returns true.
+	bool spawnPopUp(const GameEvent game_event);
 
 public:
 	Scene() {

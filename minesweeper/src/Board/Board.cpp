@@ -11,7 +11,7 @@ Result Board::setCellType(const Position& pos, const CellType type, const int nu
 }
 
 
-Result Board::updateBoard(const GameCell new_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int rows, const int cols) {
+Result Board::updateBoard(const GameCell cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int rows, const int cols) {
 	bool change = false;
 	
 	if (number_of_rows != rows || number_of_cols != cols) {
@@ -34,8 +34,8 @@ Result Board::updateBoard(const GameCell new_board[][MAX_COLUMN], const char min
 			}
 
 			else {
-				if (new_board[i][j].mineCount != 0) {
-					if (board[i][j].setType(CellType::Number, new_board[i][j].mineCount) == Result::success)
+				if (cell_board[i][j].mineCount != 0) {
+					if (board[i][j].setType(CellType::Number, cell_board[i][j].mineCount) == Result::success)
 						change = true;
 				}
 				else {
@@ -43,8 +43,8 @@ Result Board::updateBoard(const GameCell new_board[][MAX_COLUMN], const char min
 						change = true;
 				}
 
-				if (new_board[i][j].isOpened) {
-					if (new_board[i][j].isFlag) {
+				if (cell_board[i][j].isOpened) {
+					if (cell_board[i][j].isFlag) {
 						if (board[i][j].setState(CellState::Flagged) == Result::success)
 							change = true;
 					}
@@ -117,14 +117,12 @@ sf::Vector2u Board::getImageSize() const {
 
 
 sf::Sprite Board::getDefaultSprite() const {
-	sf::Sprite sprite;
-	return sprite;
+	return sf::Sprite();
 }
 
 
 sf::Sprite Board::getHoveredSprite() const {
-	sf::Sprite sprite;
-	return sprite;
+	return sf::Sprite();
 }
 
 

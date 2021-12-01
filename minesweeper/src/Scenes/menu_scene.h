@@ -26,7 +26,6 @@ public:
 	MenuScene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode()) {
 		next_scene[GameEvent::LoadGame] = SceneType::Playing;
 		next_scene[GameEvent::NewGame] = SceneType::Playing;
-		next_scene[GameEvent::QuitGame] = SceneType::Closing;
 
 		buttons_event[STR_LOAD_GAME] = GameEvent::LoadGame;
 		buttons_event[STR_NEW_GAME] = GameEvent::NewGame;

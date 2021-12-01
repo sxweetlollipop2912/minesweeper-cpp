@@ -27,10 +27,7 @@ enum class GameEvent {
 enum class SceneType {
 	Menu,
 	Playing,
-	Won,
-	Lost,
 	Leaderboard,
-	Closing,
 	Unkown
 };
 

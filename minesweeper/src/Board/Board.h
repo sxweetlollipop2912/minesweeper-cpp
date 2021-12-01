@@ -36,7 +36,7 @@ private:
 	//	> success: board is successfully updated.
 	//	> failure: board has not been changed after calling this method.
 	// Regardless of the result, the board is up-to-date at return time.
-	Result updateBoard(const GameCell new_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int rows, const int cols);
+	Result updateBoard(const GameCell cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int rows, const int cols);
 	// Determines the hovered cell given current mouse position.
 	// Returns true if the hovered cell is changed.
 	// Otherwise, returns false.

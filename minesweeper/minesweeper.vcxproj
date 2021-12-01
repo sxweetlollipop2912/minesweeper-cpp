@@ -23,6 +23,7 @@
     <ClCompile Include="src\Board\Position.cpp" />
     <ClCompile Include="src\Button\Button.cpp" />
     <ClCompile Include="src\Cell\Cell.cpp" />
+    <ClCompile Include="src\Comms\Comms.cpp" />
     <ClCompile Include="src\GraphicsObject\GraphicsObject.cpp" />
     <ClCompile Include="src\minesweeper.cpp" />
     <ClCompile Include="src\PopUp\PopUp.cpp" />
@@ -38,6 +39,7 @@
     <ClInclude Include="src\Board\Position.h" />
     <ClInclude Include="src\Button\Button.h" />
     <ClInclude Include="src\Cell\Cell.h" />
+    <ClInclude Include="src\Comms\Comms.h" />
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Enums.h" />
     <ClInclude Include="src\GraphicsObject\GraphicsObject.h" />

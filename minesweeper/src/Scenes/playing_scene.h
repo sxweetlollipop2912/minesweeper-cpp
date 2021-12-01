@@ -14,13 +14,13 @@ class PlayingScene : public Scene {
 
 private:
 	const std::string timer_str = "timer";
-	const std::string highscore_str = "highscore";
+	const std::string record_str = "record";
 
 	Board board;
 
 
 	std::string timerStr(int h, int m, int s);
-	std::string highscoreStr(int h, int m, int s);
+	std::string recordStr(int h, int m, int s);
 
 
 	// OVERRIDING SCENE METHODS
@@ -40,9 +40,6 @@ public:
 			return;
 
 		next_scene[GameEvent::Playing] = SceneType::Playing;
-		next_scene[GameEvent::Lost] = SceneType::Lost;
-		next_scene[GameEvent::Won] = SceneType::Won;
-		next_scene[GameEvent::QuitGame] = SceneType::Closing;
 		next_scene[GameEvent::QuitToMenu] = SceneType::Menu;
 
 		this->window_size = window_size;
@@ -71,14 +68,14 @@ public:
 		timer.setTopLeftPos(TL_timer);
 
 
-		Text& highscore = texts[highscore_str];
-		highscore.setText(highscoreStr(0, 0, 0));
-		highscore.setFontSize(DEFAULT_FONT_SIZE);
+		Text& record = texts[record_str];
+		record.setText(recordStr(0, 0, 0));
+		record.setFontSize(DEFAULT_FONT_SIZE);
 
-		sf::Vector2f TL_highscore;
-		TL_highscore.x = window_size.width * POS_COEF_HIGHSCORE.x;
-		TL_highscore.y = window_size.height * POS_COEF_HIGHSCORE.y;
-		highscore.setTopLeftPos(TL_highscore);
+		sf::Vector2f TL_record;
+		TL_record.x = window_size.width * POS_COEF_record.x;
+		TL_record.y = window_size.height * POS_COEF_record.y;
+		record.setTopLeftPos(TL_record);
 	}
 
 

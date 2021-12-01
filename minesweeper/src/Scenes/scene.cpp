@@ -41,6 +41,49 @@ bool Scene::changeMousePosition(const sf::Vector2i& mouse_position) {
 }
 
 
+bool Scene::spawnPopUp(const GameEvent game_event) {
+	if (pop_up) {
+		return false;
+	}
+
+	switch (game_event) {
+	case GameEvent::QuitGame:
+	{
+		PopUp pu(game_event, window_size, "You are about to quit the game.\nAre you sure?");
+		auto ptr = std::make_shared<PopUp>(pu);
+
+		pop_up = std::static_pointer_cast<Scene>(ptr);
+
+		break;
+	}
+	case GameEvent::NewGame:
+	{
+		PopUp pu(game_event, window_size, "Do you want to create new game?\nCurrent save game will be lost.");
+		auto ptr = std::make_shared<PopUp>(pu);
+
+		pop_up = std::static_pointer_cast<Scene>(ptr);
+
+		break;
+	}
+	case GameEvent::QuitToMenu:
+	{
+		PopUp pu(game_event, window_size, "Do you want to quit to menu?\nCurrent game will be saved.");
+		auto ptr = std::make_shared<PopUp>(pu);
+
+		pop_up = std::static_pointer_cast<Scene>(ptr);
+
+		break;
+	}
+	default:
+		pop_up = nullptr;
+
+		break;
+	}
+
+	return pop_up != nullptr;
+}
+
+
 Scene::DrawableList Scene::getDrawableList(const bool isFocusing, const int rank) {
 	DrawableList list;
 	std::mutex listLock;

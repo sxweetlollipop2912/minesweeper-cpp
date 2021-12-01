@@ -35,10 +35,10 @@ std::string PlayingScene::timerStr(int h, int m, int s) {
 }
 
 
-std::string PlayingScene::highscoreStr(int h, int m, int s) {
-	if (h < 0 || m < 0 || s < 0) return "highscore -1";
+std::string PlayingScene::recordStr(int h, int m, int s) {
+	if (h < 0 || m < 0 || s < 0) return "record -1";
 
-	std::string str = "highscore ";
+	std::string str = "record ";
 	std::string s_h, s_m, s_s;
 
 	for (; h != 0; h /= 10) s_h += (char)('0' + (h % 10));
