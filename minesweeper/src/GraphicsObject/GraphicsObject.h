@@ -35,9 +35,9 @@ public:
 	// Shouldn't cost much time if already positioned b4.
 	// > Returns `Result::failure` if text's content is too large to be positioned within the rectangle,
 	// > otherwise returns `Result::success`.
-	static Result positionTextInRect(sf::Text& text, const int width, const int height);
+	//static Result positionTextInRect(sf::Text& text, const int width, const int height);
 
 	// Trims leading whitespaces on the front and back of a string and deletes any consecutive whitespaces.
 	static std::string trim(std::string s);
-	static std::string normalizeStr(std::string s);
+	//static std::string normalizeStr(std::string s);
 };

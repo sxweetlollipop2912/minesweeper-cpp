@@ -91,7 +91,7 @@ public:
 	// Shouldn't cost much time if already positioned b4.
 	// > Returns `Result::failure` if text's content is too large to be positioned within the rectangle,
 	// > otherwise returns `Result::success`.
-	Result fitTextInsideButton();
+	//Result fitTextInsideButton();
 	// Centers text in button's image.
 	// NOTE: This method does not resize or re-position image.
 	// > Returns Result::failure if it is unable to center text (due to out-of-bound top-left position after centering).

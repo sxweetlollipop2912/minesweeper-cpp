@@ -40,7 +40,7 @@ const float DEFAULT_CELL_AREA = DEFAULT_CELL_SIZE;// +(DEFAULT_CELL_SIZE / (floa
 const sf::Vector2f TOP_LEFT_COEF_BOARD_AREA = sf::Vector2f(0, 0);
 const sf::Vector2f RIGHT_DOWN_COEF_BOARD_AREA = sf::Vector2f(4 / (float)5, 1);
 const sf::Vector2f POS_COEF_TIMER = sf::Vector2f(4 / (float)5, 1 / (float)3);
-const sf::Vector2f POS_COEF_record = sf::Vector2f(4 / (float)5, 2 / (float)5);
+const sf::Vector2f POS_COEF_RECORD = sf::Vector2f(4 / (float)5, 2 / (float)5);
 
 
 // IMAGE PATHS

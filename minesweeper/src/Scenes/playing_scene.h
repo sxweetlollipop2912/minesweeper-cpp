@@ -73,8 +73,8 @@ public:
 		record.setFontSize(DEFAULT_FONT_SIZE);
 
 		sf::Vector2f TL_record;
-		TL_record.x = window_size.width * POS_COEF_record.x;
-		TL_record.y = window_size.height * POS_COEF_record.y;
+		TL_record.x = window_size.width * POS_COEF_RECORD.x;
+		TL_record.y = window_size.height * POS_COEF_RECORD.y;
 		record.setTopLeftPos(TL_record);
 	}
 
