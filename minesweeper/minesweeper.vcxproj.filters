@@ -1,108 +1,135 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{7451334a-abad-47ba-922a-704d229a25f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Interface\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{d7d95226-88d0-4793-98e9-dd5cecc06bba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Header Files">
+      <UniqueIdentifier>{ec3a7c1d-3428-4d7d-8cdf-ad7af1befff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Source Files">
+      <UniqueIdentifier>{d45760c1-007c-405a-b42d-35000165aa59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comms">
+      <UniqueIdentifier>{a02bb9a1-4818-475f-b80b-a94ded530723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main">
+      <UniqueIdentifier>{c319ae84-1463-4a52-870d-a213a99a78f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\minesweeper.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Interface\Window\Window.cpp">
+      <Filter>Interface\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Window\Window.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Interface\Scenes\scene.cpp">
+      <Filter>Interface\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GraphicsObject\GraphicsObject.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Interface\Scenes\menu_scene.cpp">
+      <Filter>Interface\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Button\Button.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Interface\Scenes\playing_scene.cpp">
+      <Filter>Interface\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Text\Text.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Interface\Board\Board.cpp">
+      <Filter>Interface\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scenes\scene.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Interface\Button\Button.cpp">
+      <Filter>Interface\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scenes\menu_scene.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Interface\GraphicsObject\GraphicsObject.cpp">
+      <Filter>Interface\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Board\Board.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Interface\PopUp\PopUp.cpp">
+      <Filter>Interface\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Cell\Cell.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Interface\Text\Text.cpp">
+      <Filter>Interface\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Board\Position.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Interface\Cell\Cell.cpp">
+      <Filter>Interface\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scenes\playing_scene.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Interface\ResourceVault\ResourceVault.cpp">
+      <Filter>Interface\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ResourceVault\ResourceVault.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\PopUp\PopUp.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Interface\Board\Position.cpp">
+      <Filter>Interface\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Comms\Comms.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Comms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\GameTools.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\minesweeper.cpp">
+      <Filter>main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Window\Window.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Interface\Scenes\playing_scene.h">
+      <Filter>Interface\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\GraphicsObject\GraphicsObject.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Interface\GraphicsObject\GraphicsObject.h">
+      <Filter>Interface\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Button\Button.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Interface\Button\Button.h">
+      <Filter>Interface\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Constants.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Interface\Window\Window.h">
+      <Filter>Interface\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Enums.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Interface\Scenes\scene.h">
+      <Filter>Interface\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Text\Text.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Interface\Scenes\menu_scene.h">
+      <Filter>Interface\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scenes\scene.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Interface\PopUp\PopUp.h">
+      <Filter>Interface\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scenes\menu_scene.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Interface\Board\Board.h">
+      <Filter>Interface\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Board\Board.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Interface\Text\Text.h">
+      <Filter>Interface\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Cell\Cell.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Interface\Cell\Cell.h">
+      <Filter>Interface\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Board\Position.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Interface\ResourceVault\ResourceVault.h">
+      <Filter>Interface\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scenes\playing_scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ResourceVault\ResourceVault.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\PopUp\PopUp.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Interface\Board\Position.h">
+      <Filter>Interface\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Comms\Comms.h">
-      <Filter>Header Files</Filter>
+      <Filter>Comms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\GameTools.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Constants.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Enums.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Structs.h">
+      <Filter>main</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

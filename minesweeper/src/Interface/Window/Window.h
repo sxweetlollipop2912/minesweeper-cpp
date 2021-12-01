@@ -5,7 +5,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Window.hpp>
 
-#include "../Enums.h"
+#include "../../Enums.h"
 #include "../ResourceVault/ResourceVault.h"
 #include "../Button/Button.h"
 #include "../Text/Text.h"
@@ -13,7 +13,7 @@
 #include "../Scenes/scene.h"
 #include "../Scenes/menu_scene.h"
 #include "../Scenes/playing_scene.h"
-#include "../Comms/Comms.h"
+#include "../../Comms/Comms.h"
 
 
 // This is a singleton.

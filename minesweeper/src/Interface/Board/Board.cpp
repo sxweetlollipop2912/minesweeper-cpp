@@ -1,6 +1,6 @@
 #include "Board.h"
 #include "Position.h"
-#include "../Enums.h"
+#include "../../Enums.h"
 
 
 Result Board::setCellType(const Position& pos, const CellType type, const int number) {

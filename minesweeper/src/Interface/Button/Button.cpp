@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Button.h"
-#include "../Enums.h"
+#include "../../Enums.h"
 #include "../ResourceVault/ResourceVault.h"
 #include "../GraphicsObject/GraphicsObject.h"
 

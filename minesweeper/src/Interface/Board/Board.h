@@ -8,8 +8,8 @@
 #include "../Cell/Cell.h"
 #include "Position.h"
 #include "../Button/Button.h"
-#include "../Enums.h"
-#include "../Constants.h"
+#include "../../Enums.h"
+#include "../../Constants.h"
 
 
 struct GameCell {

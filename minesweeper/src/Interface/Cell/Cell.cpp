@@ -6,8 +6,8 @@
 
 #include "Cell.h"
 #include "../Button/Button.h"
-#include "../Enums.h"
-#include "../Constants.h"
+#include "../../Enums.h"
+#include "../../Constants.h"
 
 
 sf::Vector2f Cell::getScale() const {
