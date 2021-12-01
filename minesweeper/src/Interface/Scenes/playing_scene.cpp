@@ -8,7 +8,7 @@
 #include "../Button/Button.h"
 #include "../Text/Text.h"
 #include "../Board/Position.h"
-#include "../Constants.h"
+#include "../../Constants.h"
 #include "playing_scene.h"
 
 

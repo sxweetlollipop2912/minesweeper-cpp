@@ -1,8 +1,16 @@
 #pragma once
 
+
 enum class Result {
 	success,
 	failure
+};
+
+
+enum class GameState {
+	Ongoing,
+	Won,
+	Lost
 };
 
 

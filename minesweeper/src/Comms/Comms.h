@@ -4,25 +4,9 @@
 
 #include "../Constants.h"
 #include "../Enums.h"
-#include "../Board/Position.h"
-#include "../Board/Board.h"
-
-
-// Temporary definitions. Will be deleted in code merging.
-// Tui copy từ bên ông qua á, nên ông cứ xoá đống này r xài cái của ông khi code cũng đc.
-struct Timer {
-	int hours = 0;
-	int minutes = 0;
-	int seconds = 0;
-	bool STOP = false;
-};
-struct PLAYER {
-	std::string name;
-	Timer timePlay = { 0,0,0, 0 };
-	int level = -1;
-};
-typedef std::vector<PLAYER> Record;
-//********************************************************
+#include "../Interface/Board/Position.h"
+#include "../Interface/Board/Board.h"
+#include "../Structs.h"
 
 
 namespace Comms {
@@ -59,15 +43,14 @@ namespace Comms {
 	struct GameInfo {
 		// Only needed in SceneType::Playing.
 		// These should be the info of current saved game.
+		GameState game_state;
 		GameCell cell_board[MAX_ROW][MAX_COLUMN];
 		char mine_board[MAX_ROW][MAX_COLUMN];
 		Timer current_timer;
 
 		// Only needed in SceneType::Leaderboard or in GameEvent::ShowLeaderboard.
-		// Just use std::make_shared<Record>(record_var) to create a shared pointer.
-		std::shared_ptr<Record> beginner = nullptr;
-		std::shared_ptr<Record> intermediate = nullptr;
-		std::shared_ptr<Record> expert = nullptr;
+		// Xài std::make_shared<Records>(records_var) để tạo shared pointer.
+		std::shared_ptr<Records> records = nullptr;
 	};
 	
 

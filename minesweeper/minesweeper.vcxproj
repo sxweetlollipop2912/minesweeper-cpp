@@ -19,37 +19,40 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Board\Board.cpp" />
-    <ClCompile Include="src\Board\Position.cpp" />
-    <ClCompile Include="src\Button\Button.cpp" />
-    <ClCompile Include="src\Cell\Cell.cpp" />
     <ClCompile Include="src\Comms\Comms.cpp" />
-    <ClCompile Include="src\GraphicsObject\GraphicsObject.cpp" />
+    <ClCompile Include="src\Game\GameTools.cpp" />
+    <ClCompile Include="src\Interface\Board\Board.cpp" />
+    <ClCompile Include="src\Interface\Board\Position.cpp" />
+    <ClCompile Include="src\Interface\Button\Button.cpp" />
+    <ClCompile Include="src\Interface\Cell\Cell.cpp" />
+    <ClCompile Include="src\Interface\GraphicsObject\GraphicsObject.cpp" />
+    <ClCompile Include="src\Interface\PopUp\PopUp.cpp" />
+    <ClCompile Include="src\Interface\ResourceVault\ResourceVault.cpp" />
+    <ClCompile Include="src\Interface\Scenes\menu_scene.cpp" />
+    <ClCompile Include="src\Interface\Scenes\playing_scene.cpp" />
+    <ClCompile Include="src\Interface\Scenes\scene.cpp" />
+    <ClCompile Include="src\Interface\Text\Text.cpp" />
+    <ClCompile Include="src\Interface\Window\Window.cpp" />
     <ClCompile Include="src\minesweeper.cpp" />
-    <ClCompile Include="src\PopUp\PopUp.cpp" />
-    <ClCompile Include="src\ResourceVault\ResourceVault.cpp" />
-    <ClCompile Include="src\Scenes\playing_scene.cpp" />
-    <ClCompile Include="src\Scenes\scene.cpp" />
-    <ClCompile Include="src\Scenes\menu_scene.cpp" />
-    <ClCompile Include="src\Text\Text.cpp" />
-    <ClCompile Include="src\Window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Board\Board.h" />
-    <ClInclude Include="src\Board\Position.h" />
-    <ClInclude Include="src\Button\Button.h" />
-    <ClInclude Include="src\Cell\Cell.h" />
     <ClInclude Include="src\Comms\Comms.h" />
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Enums.h" />
-    <ClInclude Include="src\GraphicsObject\GraphicsObject.h" />
-    <ClInclude Include="src\PopUp\PopUp.h" />
-    <ClInclude Include="src\ResourceVault\ResourceVault.h" />
-    <ClInclude Include="src\Scenes\playing_scene.h" />
-    <ClInclude Include="src\Scenes\scene.h" />
-    <ClInclude Include="src\Scenes\menu_scene.h" />
-    <ClInclude Include="src\Text\Text.h" />
-    <ClInclude Include="src\Window\Window.h" />
+    <ClInclude Include="src\Game\GameTools.h" />
+    <ClInclude Include="src\Interface\Board\Board.h" />
+    <ClInclude Include="src\Interface\Board\Position.h" />
+    <ClInclude Include="src\Interface\Button\Button.h" />
+    <ClInclude Include="src\Interface\Cell\Cell.h" />
+    <ClInclude Include="src\Interface\GraphicsObject\GraphicsObject.h" />
+    <ClInclude Include="src\Interface\PopUp\PopUp.h" />
+    <ClInclude Include="src\Interface\ResourceVault\ResourceVault.h" />
+    <ClInclude Include="src\Interface\Scenes\menu_scene.h" />
+    <ClInclude Include="src\Interface\Scenes\playing_scene.h" />
+    <ClInclude Include="src\Interface\Scenes\scene.h" />
+    <ClInclude Include="src\Interface\Text\Text.h" />
+    <ClInclude Include="src\Interface\Window\Window.h" />
+    <ClInclude Include="src\Structs.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -149,13 +152,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>SFML_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Music\OneDrive - VNU-HCMUS\Assignment Documents\CS161 - Final Project\minesweeper\minesweeper\SFML\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\SFML\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Music\OneDrive - VNU-HCMUS\Assignment Documents\CS161 - Final Project\minesweeper\minesweeper\SFML\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\SFML\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-main.lib;sfml-audio-s.lib;sfml-graphics-s.lib;sfml-system-s.lib;sfml-window-s.lib;freetype.lib;flac.lib;ogg.lib;openal32.lib;opengl32.lib;winmm.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <PerUserRedirection>true</PerUserRedirection>
     </Link>
@@ -168,7 +171,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>SFML_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Music\OneDrive - VNU-HCMUS\Assignment Documents\CS161 - Final Project\minesweeper\minesweeper\SFML\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\SFML\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -176,7 +179,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Music\OneDrive - VNU-HCMUS\Assignment Documents\CS161 - Final Project\minesweeper\minesweeper\SFML\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\SFML\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-main.lib;sfml-audio-s.lib;sfml-graphics-s.lib;sfml-system-s.lib;sfml-window-s.lib;freetype.lib;flac.lib;ogg.lib;openal32.lib;opengl32.lib;winmm.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <PerUserRedirection>true</PerUserRedirection>
     </Link>

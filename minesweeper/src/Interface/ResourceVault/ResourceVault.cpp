@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "ResourceVault.h"
-#include "../Enums.h"
+#include "../../Enums.h"
 
 
 std::map <TextureType, std::shared_ptr<sf::Texture>> ResourceVault::map_texture = {};

@@ -2,8 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../Enums.h"
-#include "../Constants.h"
+#include "../../Enums.h"
+#include "../../Constants.h"
 
 
 class Graphics {

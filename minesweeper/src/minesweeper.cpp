@@ -1,15 +1,18 @@
-// Run with configuration: release, x64
+﻿// Run with configuration: release, x64
 
 #include <iostream>
 
-#include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 
-#include "../src/Window/Window.h"
-#include "../src/ResourceVault/ResourceVault.h"
-#include "../src/Scenes/menu_scene.h"
-#include "../src/Scenes/playing_scene.h"
-#include "../src/Button/Button.h"
+#include "Game/GameTools.h"
+#include "Constants.h"
+
+#include "Interface/Window/Window.h"
+#include "Interface/ResourceVault/ResourceVault.h"
+#include "Interface/Scenes/menu_scene.h"
+#include "Interface/Scenes/playing_scene.h"
+#include "Interface/Button/Button.h"
 
 
 void registerResources() {
@@ -63,6 +66,27 @@ void registerResources() {
 
 
 int main() {
+    int choice;
+
+    PLAYER newPlayer, oldPlayer;
+
+    GAMEPREDICATE game_Feature, old_game_Feature;
+
+    GAMECELL game_Board[MAX_ROW][MAX_COLUMN], old_game_Board[MAX_ROW][MAX_COLUMN];
+
+    char mine_Board[MAX_ROW][MAX_COLUMN], old_mine_Board[MAX_ROW][MAX_COLUMN];
+    do {
+        welcomePlayer(choice);
+        implementChoice(choice, mine_Board, old_mine_Board, game_Feature, old_game_Feature,
+            newPlayer, oldPlayer, game_Board, old_game_Board);
+    } while (true);
+
+    // Phần này bị warning gì á tui k rõ nữa, ông xem làm gì đc k
+    // C6262: Function uses '16396' bytes of stack: exceeds /analyze:stacksize '16384'. Consider moving some data to heap.
+    //
+    // Comment phần trên để chạy phần dưới
+    //*************************************************************************
+
     registerResources();
 
     auto window = Window::getInstance();

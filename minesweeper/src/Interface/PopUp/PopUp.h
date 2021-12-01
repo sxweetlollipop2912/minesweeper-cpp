@@ -3,8 +3,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "../Scenes/scene.h"
-#include "../Enums.h"
-#include "../Constants.h"
+#include "../../Enums.h"
+#include "../../Constants.h"
 #include "../Button/Button.h"
 #include "../Text/Text.h"
 

@@ -6,8 +6,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "../Button/Button.h"
-#include "../Enums.h"
-#include "../Constants.h"
+#include "../../Enums.h"
+#include "../../Constants.h"
 
 
 class Cell : public Button {

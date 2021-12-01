@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "GraphicsObject.h"
-#include "../Enums.h"
+#include "../../Enums.h"
 
 
 Result Graphics::loadTextureFromFilepath(sf::Texture& texture, const std::string& img_path) {
