@@ -1,5 +1,5 @@
 ﻿#include "Comms.h"
-#include "../Window/Window.h"
+#include "../Interface/Window/Window.h"
 
 
 Result Comms::interfaceInfoSending(const InterfaceInfo info) {
