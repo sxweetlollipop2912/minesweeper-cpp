@@ -13,10 +13,34 @@
 #include "../Scenes/scene.h"
 #include "../Scenes/menu_scene.h"
 #include "../Scenes/playing_scene.h"
+#include "../Comms/Comms.h"
 
 
+// This is a singleton.
 class Window {
+	friend Result Comms::gameInfoSending(const GameInfo info);
+
 private:
+	static Window* instance;
+
+
+	Window(const sf::VideoMode& window_size = sf::VideoMode(1500, 1000), const std::string& title = TITLE, const int window_style = sf::Style::Close) {
+		this->window_size = window_size;
+		this->title = title;
+		this->window_style = window_style;
+
+		auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
+		auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, 0, 0));
+
+		map_scene[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
+		map_scene[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
+
+		current_scene_type = SceneType::Menu;
+		last_game_event = GameEvent::Unknown;
+		lock_mouse_button = MouseActionType::Unknown;
+	}
+
+
 	std::map <SceneType, std::shared_ptr<Scene>> map_scene;
 
 	SceneType current_scene_type;
@@ -37,53 +61,10 @@ private:
 	// Draws a button on the window.
 	void draw(Button& button, const bool isHovered = false);
 
+	Result updateGameInfo(const Comms::GameInfo info);
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
 	bool handleGameEvents(const GameEvent game_event);
-
-public:
-	sf::RenderWindow render_window;
-	sf::VideoMode window_size;
-	int window_style;
-	std::string title;
-
-
-	Window(const sf::VideoMode window_size = sf::VideoMode::getDesktopMode(), const std::string& title = "", const int window_style = sf::Style::Close) {
-		this->window_size = window_size;
-		this->title = title;
-		this->window_style = window_style;
-
-		auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
-		auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, 0, 0));
-
-		map_scene[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
-		map_scene[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
-
-		current_scene_type = SceneType::Unkown;
-		last_game_event = GameEvent::Unknown;
-		lock_mouse_button = MouseActionType::Unknown;
-	}
-
-
-	// Creates (or recreates) the window with previously assigned width, height, title.
-	// If the window was already created, closes it first.
-	void createWindow();
-	// Closes the window.
-	void closeWindow();
-
-	// Gets current mouse position.
-	sf::Vector2i getMousePosition() const;
-	// Gets current scene type.
-	SceneType getCurrentSceneType() const;
-	// Gets last game event.
-	GameEvent getLastGameEvent() const;
-	// Gets current scene as Scene object.
-	std::shared_ptr<Scene> getCurrentScene();
-
-	// Initializes/Resets menu scene for window.
-	void initializeMenuScene();
-	// Initializes/Resets playing scene for window.
-	void initializePlayingScene(const int board_rows, const int board_cols);
 	// Changes window graphics base on new mouse position.
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
@@ -99,6 +80,49 @@ public:
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
 	bool handleMouseButtonRelease(const sf::Mouse::Button& button, const sf::Vector2i& position);
+
+public:
+	sf::RenderWindow render_window;
+	sf::VideoMode window_size;
+	int window_style;
+	std::string title;
+
+
+	/**
+	 * Singletons should not be cloneable.
+	 */
+	Window(Window& other) = delete;
+	/**
+	 * Singletons should not be assignable.
+	 */
+	void operator=(const Window&) = delete;
+
+	static std::shared_ptr<Window*> getInstance();
+
+
+	// Creates (or recreates) the window with previously assigned width, height, title.
+	// If the window was already created, closes it first.
+	void createWindow();
+	// Closes the window.
+	void closeWindow();
+	// Makes changes in the game according to sf::Event.
+	// Returns true if there are changes in the scene.
+	// Otherwise, returns false
+	bool handleSfEvent(const sf::Event& event);
+
+	// Gets current mouse position.
+	sf::Vector2i getMousePosition() const;
+	// Gets current scene type.
+	SceneType getCurrentSceneType() const;
+	// Gets last game event.
+	GameEvent getLastGameEvent() const;
+	// Gets current scene as Scene object.
+	std::shared_ptr<Scene> getCurrentScene();
+
+	// Initializes/Resets menu scene for window.
+	void initializeMenuScene();
+	// Initializes/Resets playing scene for window.
+	void initializePlayingScene(const int board_rows, const int board_cols);
 
 	// Draws current scene.
 	void drawCurrentScene();
