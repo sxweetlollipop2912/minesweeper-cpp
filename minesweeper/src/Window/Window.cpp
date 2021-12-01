@@ -7,6 +7,9 @@
 #include "../Board/Board.h"
 
 
+Window* Window::instance = nullptr;
+
+
 sf::Vector2i Window::getMousePosition() const {
 	return pos_mouse;
 }
@@ -59,6 +62,14 @@ void Window::setCurrentSceneType(const SceneType& type) {
 }
 
 
+std::shared_ptr<Window*> Window::getInstance() {
+	if (!instance) {
+		instance = new Window();
+	}
+	return std::make_shared<Window*>(instance);
+}
+
+
 void Window::createWindow() {
 	render_window.create(window_size, title, window_style);
 }
@@ -66,6 +77,30 @@ void Window::createWindow() {
 
 void Window::closeWindow() {
 	render_window.close();
+}
+
+
+bool Window::handleSfEvent(const sf::Event& event) {
+	bool change = false;
+
+	switch (event.type) {
+	case sf::Event::Closed:
+		change |= handleGameEvents(GameEvent::QuitGame);
+		break;
+	case sf::Event::MouseMoved:
+		change |= changeMousePosition(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
+		break;
+	case sf::Event::MouseButtonPressed:
+		change |= handleMouseButtonPress(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+		break;
+	case sf::Event::MouseButtonReleased:
+		change |= handleMouseButtonRelease(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+		break;
+	default:
+		break;
+	}
+
+	return change;
 }
 
 
@@ -160,13 +195,11 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 		case GameEvent::Won:
 		{
 			// Load whole board, splash screen etc.
-			current_scene_type = SceneType::Won;
 			break;
 		}
 		case GameEvent::Lost: 
 		{
 			// Load whole board, splash screen etc.
-			current_scene_type = SceneType::Lost;
 			break;
 		}
 		case GameEvent::ClosePopUp:
@@ -281,6 +314,11 @@ void Window::draw(Button& button, const bool isHovered) {
 		draw(button.getHoveredSprite());
 
 	draw(button.label);
+}
+
+
+Result Window::updateGameInfo(const Comms::GameInfo info) {
+	return Result::failure;
 }
 
 

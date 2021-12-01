@@ -8,6 +8,10 @@ const int MAX_COLUMN = 30;
 const int MAX_ROW = 30;
 
 
+// WINDOW
+const sf::VideoMode DEFAULT_WINDOW_SIZE = sf::VideoMode(1500, 1000);
+
+
 // TEXT
 const int DEFAULT_FONT_SIZE = 23;
 const int DEFAULT_TITLE_FONT_SIZE = DEFAULT_FONT_SIZE * 4.5;
@@ -36,7 +40,7 @@ const float DEFAULT_CELL_AREA = DEFAULT_CELL_SIZE;// +(DEFAULT_CELL_SIZE / (floa
 const sf::Vector2f TOP_LEFT_COEF_BOARD_AREA = sf::Vector2f(0, 0);
 const sf::Vector2f RIGHT_DOWN_COEF_BOARD_AREA = sf::Vector2f(4 / (float)5, 1);
 const sf::Vector2f POS_COEF_TIMER = sf::Vector2f(4 / (float)5, 1 / (float)3);
-const sf::Vector2f POS_COEF_HIGHSCORE = sf::Vector2f(4 / (float)5, 2 / (float)5);
+const sf::Vector2f POS_COEF_record = sf::Vector2f(4 / (float)5, 2 / (float)5);
 
 
 // IMAGE PATHS

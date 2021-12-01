@@ -65,62 +65,35 @@ void registerResources() {
 int main() {
     registerResources();
 
-    Window window(sf::VideoMode(1500, 1000), "minesweeper");
-    window.createWindow();
+    auto window = Window::getInstance();
 
-    sf::VideoMode window_size = sf::VideoMode(window.render_window.getSize().x, window.render_window.getSize().y, sf::Style::Close);
+    (*window)->initializeMenuScene();
+    (*window)->initializePlayingScene(30, 30);
 
-    window.initializeMenuScene();
-    window.initializePlayingScene(30, 30);
-
-    window.setCurrentSceneType(SceneType::Menu);
-
+    (*window)->createWindow();
     bool change = true;
-    while (window.render_window.isOpen()) {
+
+    while ((*window)->render_window.isOpen()) {
         sf::Event event;
 
-        while (window.render_window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.closeWindow();
-
-            switch (event.type) {
-            case sf::Event::Closed:
-                window.closeWindow();
-                break;
-            case sf::Event::LostFocus:
-                break;
-            case sf::Event::GainedFocus:
-                break;
-
-            case sf::Event::MouseMoved:
-                change |= window.changeMousePosition(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
-                break;
-            case sf::Event::MouseButtonPressed:
-                change |= window.handleMouseButtonPress(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
-                break;
-            case sf::Event::MouseButtonReleased:
-                change |= window.handleMouseButtonRelease(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
-                break;
-            default:
-                break;
-            }
-        }
-
-        switch (window.getLastGameEvent()) {
-        case GameEvent::QuitGame:
-        {
-            window.closeWindow();
-            break;
-        }
-
-        default:
-            break;
+        while ((*window)->render_window.pollEvent(event)) {
+            change |= (*window)->handleSfEvent(event);
         }
 
         if (change) {
-            window.render_window.clear();
-            window.drawCurrentScene();
-            window.render_window.display();
+            (*window)->render_window.clear();
+            (*window)->drawCurrentScene();
+            (*window)->render_window.display();
+        }
+
+        switch ((*window)->getLastGameEvent()) {
+        case GameEvent::QuitGame:
+        {
+            (*window)->closeWindow();
+            break;
+        }
+        default:
+            break;
         }
 
         change = false;
