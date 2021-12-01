@@ -1,2 +1,2 @@
 # minesweeper-cpp
-a game that is both explosive and fun
+a game that is both explosive and mind blowing.
