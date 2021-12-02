@@ -40,7 +40,7 @@ GameEvent Scene::handleMouseButtonEvent(const MouseActionType mouse_type) {
 		}
 
 		// If pop-up is successfully created.
-		if (spawnPopUp(game_event)) game_event = GameEvent::OpenPopUp;
+		if (scene_type != SceneType::PopUp && spawnPopUp(game_event)) game_event = GameEvent::OpenPopUp;
 	}
 
 	return game_event;

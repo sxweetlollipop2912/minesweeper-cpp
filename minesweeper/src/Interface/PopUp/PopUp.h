@@ -25,15 +25,13 @@ private:
 
 	// OVERRIDING METHODS
 
-	// Call on a mouse button event.
-	GameEvent handleMouseButtonEvent(const MouseActionType mouse_type) override;
 	// Changes window graphics base on new mouse position.
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
 	bool changeMousePosition(const sf::Vector2i& pos) override;
 
 public:
-	PopUp(const GameEvent game_event = GameEvent::Unknown, const sf::VideoMode& window_size = sf::VideoMode(0, 0), const std::string& msg = "", const std::string& yes_msg = "YES", const std::string& no_msg = "NO") {
+	PopUp(const GameEvent game_event = GameEvent::Unknown, const sf::VideoMode& window_size = sf::VideoMode(0, 0), const std::string& msg = "", const std::string& yes_msg = "YES", const std::string& no_msg = "NO") : Scene(SceneType::PopUp) {
 		buttons_event[STR_YES] = game_event;
 		buttons_event[STR_NO] = GameEvent::ClosePopUp;
 

@@ -10,6 +10,7 @@
 #include "../Text/Text.h"
 #include "../Board/Position.h"
 #include "../../Constants.h"
+#include "../../Structs.h"
 
 
 std::string LeaderboardScene::timeToStr(int h, int m, int s) {
@@ -32,4 +33,37 @@ std::string LeaderboardScene::timeToStr(int h, int m, int s) {
 	str += s_h + ":" + s_m + ":" + s_s;
 
 	return str;
+}
+
+
+void LeaderboardScene::updateRecords(const std::shared_ptr<Records> records) {
+	if (!records) {
+		this->records = std::make_shared<Records>();
+	}
+	else {
+		this->records = records;
+	}
+
+	std::string beginner = "Beginner\n\n";
+	std::string inter = "Intermediate\n\n";
+	std::string expert = "Expert\n\n";
+
+	for (int i = 0; i < MAX_RECORDS_PER_DIFF; i++) {
+		if (i < records->beginner.size()) {
+			PLAYER player = records->beginner[i];
+			beginner += timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
+		}
+		if (i < records->intermediate.size()) {
+			PLAYER player = records->intermediate[i];
+			inter += timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
+		}
+		if (i < records->expert.size()) {
+			PLAYER player = records->expert[i];
+			expert += timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
+		}
+	}
+
+	texts[STR_BEGINNER_COL].setText(beginner);
+	texts[STR_INTER_COL].setText(inter);
+	texts[STR_EXPERT_COL].setText(expert);
 }

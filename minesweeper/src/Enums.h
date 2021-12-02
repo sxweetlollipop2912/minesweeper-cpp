@@ -36,6 +36,7 @@ enum class SceneType {
 	Menu,
 	Playing,
 	Leaderboard,
+	PopUp,
 	Unkown
 };
 
