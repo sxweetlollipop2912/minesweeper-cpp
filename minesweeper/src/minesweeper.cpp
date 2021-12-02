@@ -92,6 +92,7 @@ int main() {
     auto window = Window::getInstance();
 
     (*window)->initializeMenuScene();
+    (*window)->initializeLeaderboardScene();
     (*window)->initializePlayingScene(30, 30);
 
     (*window)->createWindow();
