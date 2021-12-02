@@ -38,20 +38,9 @@ void PopUp::PositionPopUp(const sf::VideoMode& window_size) {
 }
 
 
-GameEvent PopUp::handleMouseButtonEvent(const MouseActionType mouse_type) {
-	if (mouse_type != MouseActionType::LMB && mouse_type != MouseActionType::DoubleLMB) {
-		return GameEvent::Unknown;
-	}
-
-	if (buttons_event.find(hovered_button) != buttons_event.end()) {
-		return buttons_event.at(hovered_button);
-	}
-
-	return GameEvent::Unknown;
-}
-
-
 bool PopUp::changeMousePosition(const sf::Vector2i& pos) {
+	pos_mouse = pos;
+
 	auto last_hovered = hovered_button;
 	hovered_button = STR_UNKNOWN;
 
