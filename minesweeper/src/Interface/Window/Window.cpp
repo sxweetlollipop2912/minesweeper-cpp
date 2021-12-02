@@ -5,6 +5,7 @@
 
 #include "Window.h"
 #include "../Board/Board.h"
+#include "../Scenes/leaderboard_scene.h"
 
 
 Window* Window::instance = nullptr;
@@ -34,7 +35,13 @@ std::shared_ptr<Scene> Window::getCurrentScene() {
 
 void Window::initializeMenuScene() {
 	auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
-	map_scene[SceneType::Playing] = std::static_pointer_cast<Scene>(menu_scene);
+	map_scene[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
+}
+
+
+void Window::initializeLeaderboardScene() {
+	auto leaderboard_scene = std::shared_ptr<LeaderboardScene>(new LeaderboardScene(window_size));
+	map_scene[SceneType::Leaderboard] = std::static_pointer_cast<Scene>(leaderboard_scene);
 }
 
 

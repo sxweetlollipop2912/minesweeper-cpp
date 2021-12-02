@@ -13,6 +13,7 @@
 #include "../Scenes/scene.h"
 #include "../Scenes/menu_scene.h"
 #include "../Scenes/playing_scene.h"
+#include "../Scenes/leaderboard_scene.h"
 #include "../../Comms/Comms.h"
 
 
@@ -122,6 +123,8 @@ public:
 
 	// Initializes/Resets menu scene for window.
 	void initializeMenuScene();
+	// Initializes/Resets menu scene for window.
+	void initializeLeaderboardScene();
 	// Initializes/Resets playing scene for window.
 	void initializePlayingScene(const int board_rows, const int board_cols);
 

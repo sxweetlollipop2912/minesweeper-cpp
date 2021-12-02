@@ -31,16 +31,21 @@ const sf::Vector2f DEFAULT_PADDING_SIZE = sf::Vector2f(20, 20);
 // POSITION
 // START SCENE
 const float POS_Y_COEF_TITLE = 1 / (float)7;
-const float POS_Y_COEF_LOAD_GAME_BUTTON = 1 / (float)2;
-const float POS_Y_COEF_NEW_GAME_BUTTON = 5 / (float)8;
-const float pos_Y_COEF_QUIT_BUTTON = 6 / (float)8;
+const float SPACE_BETWEEN_BUTTONS_Y_COEF = 1 / (float)8;
+const float POS_Y_COEF_LOAD_GAME_BUTTON = 3 / (float)7;
+const float POS_Y_COEF_NEW_GAME_BUTTON = POS_Y_COEF_LOAD_GAME_BUTTON + SPACE_BETWEEN_BUTTONS_Y_COEF;
+const float POS_Y_COEF_LEADERBOARD_BUTTON = POS_Y_COEF_NEW_GAME_BUTTON + SPACE_BETWEEN_BUTTONS_Y_COEF;
+const float POS_Y_COEF_QUIT_BUTTON = POS_Y_COEF_LEADERBOARD_BUTTON + SPACE_BETWEEN_BUTTONS_Y_COEF;
 // BOARD
 const int DEFAULT_CELL_SIZE = 30;
-const float DEFAULT_CELL_AREA = DEFAULT_CELL_SIZE;// +(DEFAULT_CELL_SIZE / (float)7);
+const float DEFAULT_CELL_AREA = DEFAULT_CELL_SIZE;// + (DEFAULT_CELL_SIZE / (float)7);
 const sf::Vector2f TOP_LEFT_COEF_BOARD_AREA = sf::Vector2f(0, 0);
 const sf::Vector2f RIGHT_DOWN_COEF_BOARD_AREA = sf::Vector2f(4 / (float)5, 1);
 const sf::Vector2f POS_COEF_TIMER = sf::Vector2f(4 / (float)5, 1 / (float)3);
 const sf::Vector2f POS_COEF_RECORD = sf::Vector2f(4 / (float)5, 2 / (float)5);
+// LEADERBOARD
+const float POS_Y_COEF_LEADERBOARD_TITLE = 1 / (float)8;
+const float POS_Y_COEF_COL = 1 / (float)3;
 
 
 // IMAGE PATHS
