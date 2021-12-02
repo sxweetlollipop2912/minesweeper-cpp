@@ -16,4 +16,6 @@ Result Comms::interfaceInfoSending(const InterfaceInfo info) {
 Result Comms::gameInfoSending(const GameInfo info) {
     auto window = Window::getInstance();
     (*window)->updateGameInfo(info);
+
+    return Result::success;
 }
