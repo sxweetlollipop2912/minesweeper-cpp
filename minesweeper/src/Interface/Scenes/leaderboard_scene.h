@@ -23,7 +23,11 @@ private:
 
 	std::shared_ptr<Records> records;
 
+
 	std::string timeToStr(int h, int m, int s);
+
+	// Call to update new records.
+	void updateRecords(const std::shared_ptr<Records> records);
 
 public:
 	LeaderboardScene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode()) : Scene(SceneType::Leaderboard) {
@@ -48,19 +52,21 @@ public:
 
 			Text& beginner_col = texts[STR_BEGINNER_COL];
 			beginner_col.setText("Beginner\n\n");
-			beginner_col.setFontSize(DEFAULT_TITLE_FONT_SIZE / 3);
+			beginner_col.setFontSize(DEFAULT_TITLE_FONT_SIZE / 3.5);
 			beginner_col.setTopLeftPos(sf::Vector2f(padding_x, pos_y_col));
 
 			Text& inter_col = texts[STR_INTER_COL];
 			inter_col.setText("Intermediate\n\n");
-			inter_col.setFontSize(DEFAULT_TITLE_FONT_SIZE / 3);
+			inter_col.setFontSize(DEFAULT_TITLE_FONT_SIZE / 3.5);
 			inter_col.setTopLeftPosY(pos_y_col);
 			inter_col.centerTextHorizontally(this->window_size.width);
 
 			Text& expert_col = texts[STR_EXPERT_COL];
 			expert_col.setText("Expert\n\n");
-			expert_col.setFontSize(DEFAULT_TITLE_FONT_SIZE / 3);
+			expert_col.setFontSize(DEFAULT_TITLE_FONT_SIZE / 3.5);
 			expert_col.setTopLeftPos(sf::Vector2f(this->window_size.width - padding_x - expert_col.getWidth(), pos_y_col));
+
+			updateRecords(std::make_shared<Records>());
 		}
 
 		// Buttons

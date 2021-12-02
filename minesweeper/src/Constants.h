@@ -6,6 +6,7 @@
 const std::string TITLE = "minesweeper";
 const int MAX_COLUMN = 30;
 const int MAX_ROW = 30;
+const int MAX_RECORDS_PER_DIFF = 3;
 
 
 // WINDOW

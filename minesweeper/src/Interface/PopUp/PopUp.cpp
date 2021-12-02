@@ -6,7 +6,7 @@ void PopUp::PositionPopUp(const sf::VideoMode& window_size) {
 	Button& yes_button = buttons[STR_YES];
 	Button& no_button = buttons[STR_NO];
 
-	box.setSize(sf::Vector2f(window_size.width / 2.5, window_size.height / 2.5));
+	box.setSize(sf::Vector2f(window_size.width / 2.2, window_size.height / 3));
 	box.centerButtonHorizontally(window_size.width);
 	box.centerButtonVertically(window_size.height);
 
