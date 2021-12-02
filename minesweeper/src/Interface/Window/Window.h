@@ -38,6 +38,7 @@ private:
 		current_scene_type = SceneType::Menu;
 		last_game_event = GameEvent::Unknown;
 		lock_mouse_button = MouseActionType::Unknown;
+		pos_mouse = sf::Vector2i(-1, -1);
 	}
 
 

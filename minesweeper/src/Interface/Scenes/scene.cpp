@@ -19,11 +19,37 @@ void Scene::setWindowSize(const sf::VideoMode window_size) {
 
 
 GameEvent Scene::handleMouseButtonEvent(const MouseActionType mouse_type) {
-	return GameEvent::Unknown;
+	auto game_event = GameEvent::Unknown;
+
+	// If pop-up already exists.
+	if (pop_up) {
+		game_event = pop_up->handleMouseButtonEvent(mouse_type);
+		if (game_event != GameEvent::Unknown) {
+			pop_up = nullptr;
+			changeMousePosition(pos_mouse);
+		}
+	}
+	// Otherwise,
+	else {
+		if (mouse_type != MouseActionType::LMB && mouse_type != MouseActionType::DoubleLMB) {
+			return GameEvent::Unknown;
+		}
+
+		if (buttons_event.find(hovered_button) != buttons_event.end()) {
+			game_event = buttons_event.at(hovered_button);
+		}
+
+		// If pop-up is successfully created.
+		if (spawnPopUp(game_event)) game_event = GameEvent::OpenPopUp;
+	}
+
+	return game_event;
 }
 
 
 bool Scene::changeMousePosition(const sf::Vector2i& mouse_position) {
+	pos_mouse = mouse_position;
+
 	if (pop_up) {
 		return pop_up->changeMousePosition(mouse_position);
 	}
@@ -67,10 +93,12 @@ bool Scene::spawnPopUp(const GameEvent game_event) {
 	}
 	case GameEvent::QuitToMenu:
 	{
-		PopUp pu(game_event, window_size, "Do you want to quit to menu?\nCurrent game will be saved.");
-		auto ptr = std::make_shared<PopUp>(pu);
+		if (scene_type == SceneType::Playing) {
+			PopUp pu(game_event, window_size, "Do you want to quit to menu?\nCurrent game will be saved.");
+			auto ptr = std::make_shared<PopUp>(pu);
 
-		pop_up = std::static_pointer_cast<Scene>(ptr);
+			pop_up = std::static_pointer_cast<Scene>(ptr);
+		}
 
 		break;
 	}

@@ -59,10 +59,13 @@ std::string PlayingScene::recordStr(int h, int m, int s) {
 
 
 GameEvent PlayingScene::handleMouseButtonEvent(const MouseActionType mouse_type) {
-	// If mouse is hovering over a cell.
-	if (board.isValidPos(board.hovered_cell)) {
-		switch (mouse_type) {
-			// RMB: Flag/Unflag a cell.
+	auto game_event = this->Scene::handleMouseButtonEvent(mouse_type);
+
+	if (game_event == GameEvent::Unknown && !pop_up) {
+		// If mouse is hovering over a cell.
+		if (board.isValidPos(board.hovered_cell)) {
+			switch (mouse_type) {
+				// RMB: Flag/Unflag a cell.
 			case MouseActionType::RMB:
 			{
 				Position cell_pos = board.hovered_cell;
@@ -86,17 +89,24 @@ GameEvent PlayingScene::handleMouseButtonEvent(const MouseActionType mouse_type)
 
 				return GameEvent::AutoOpenCell;
 			}
+			}
 		}
 	}
 
-	return GameEvent::Unknown;
+	return game_event;
 }
 
 
 bool PlayingScene::changeMousePosition(const sf::Vector2i& pos) {
 	bool re = false;
+
 	re |= Scene::changeMousePosition(pos);
-	re |= board.determineHoveredCell(pos);
+	if (!pop_up) {
+		re |= board.determineHoveredCell(pos);
+	}
+	else {
+		board.hovered_cell = Position(-1, -1);
+	}
 
 	return re;
 }

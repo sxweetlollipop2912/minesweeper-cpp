@@ -17,13 +17,8 @@ private:
 	const std::string STR_LEADERBOARD = "leaderboard";
 	const std::string STR_QUIT_GAME = "quit_game";
 
-	// OVERRIDING METHODS
-
-	// Call on a mouse button event.
-	GameEvent handleMouseButtonEvent(const MouseActionType mouse_type) override;
-
 public:
-	MenuScene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode()) {
+	MenuScene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode()) : Scene(SceneType::Menu) {
 		next_scene[GameEvent::LoadGame] = SceneType::Playing;
 		next_scene[GameEvent::NewGame] = SceneType::Playing;
 

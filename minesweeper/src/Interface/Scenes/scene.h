@@ -22,7 +22,9 @@ class Scene {
 protected:
 	const std::string STR_UNKNOWN = "unknown";
 
+	SceneType scene_type;
 	sf::VideoMode window_size;
+	sf::Vector2i pos_mouse;
 
 	// Only one pop-up holder for one scene.
 	std::shared_ptr<Scene> pop_up;
@@ -49,7 +51,9 @@ protected:
 	bool spawnPopUp(const GameEvent game_event);
 
 public:
-	Scene() {
+	Scene(const SceneType scene_type = SceneType::Unkown) {
+		this->scene_type = scene_type;
+
 		pop_up = nullptr;
 		buttons.clear();
 		texts.clear();
@@ -57,6 +61,7 @@ public:
 
 		buttons_event[STR_UNKNOWN] = GameEvent::Unknown;
 		hovered_button = STR_UNKNOWN;
+		pos_mouse = sf::Vector2i(-1, -1);
 	}
 
 

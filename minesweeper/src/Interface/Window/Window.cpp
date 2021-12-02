@@ -80,6 +80,11 @@ void Window::closeWindow() {
 }
 
 
+Result Window::updateGameInfo(const Comms::GameInfo info) {
+	return Result::failure;
+}
+
+
 bool Window::handleSfEvent(const sf::Event& event) {
 	bool change = false;
 
@@ -214,6 +219,7 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 	}
 
 	last_game_event = game_event;
+	getCurrentScene()->changeMousePosition(pos_mouse);
 
 	return true;
 }
@@ -314,11 +320,6 @@ void Window::draw(Button& button, const bool isHovered) {
 		draw(button.getHoveredSprite());
 
 	draw(button.label);
-}
-
-
-Result Window::updateGameInfo(const Comms::GameInfo info) {
-	return Result::failure;
 }
 
 
