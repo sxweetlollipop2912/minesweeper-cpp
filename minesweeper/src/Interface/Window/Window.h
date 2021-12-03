@@ -54,9 +54,9 @@ private:
 
 	// Draws a scene on the window.
 	void draw(Scene& scene);
-	// Draws a sprite on the window.
+	// Draws a sf::Sprite on the window.
 	void draw(const sf::Sprite& sprite);
-	// Draws a text on the window.
+	// Draws a sf::Text on the window.
 	void draw(const sf::Text& text);
 	// Draws a text on the window.
 	void draw(Text& text);
@@ -75,13 +75,14 @@ private:
 	void setCurrentSceneType(const SceneType& type);
 
 	// Call upon a mouse button PRESS event.
+	// Cannot detect a DoubleLMB at this stage.
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
-	bool handleMouseButtonPress(const sf::Mouse::Button& button, const sf::Vector2i& position);
+	bool onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vector2i& position);
 	// Call upon a mouse button RELEASE event.
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
-	bool handleMouseButtonRelease(const sf::Mouse::Button& button, const sf::Vector2i& position);
+	bool onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position);
 
 public:
 	sf::RenderWindow render_window;
@@ -110,7 +111,7 @@ public:
 	// Makes changes in the game according to sf::Event.
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
-	bool handleSfEvent(const sf::Event& event);
+	bool handleSfEvents(const sf::Event& event);
 
 	// Gets current mouse position.
 	sf::Vector2i getMousePosition() const;

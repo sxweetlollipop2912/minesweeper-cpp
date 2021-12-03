@@ -17,7 +17,7 @@ private:
 	sf::Color text_color;
 	sf::Text::Style style;
 
-	sf::Vector2f pos_top_left;
+	sf::Vector2f top_left_pos;
 	float width, height;
 
 	// Calculates width and height of the space taken by text.
@@ -31,7 +31,7 @@ public:
 	Text() {
 		width = 0;
 		height = 0;
-		pos_top_left.x = pos_top_left.y = 0;
+		top_left_pos.x = top_left_pos.y = 0;
 
 		setFontType(FontType::FontDefault);
 
@@ -62,16 +62,16 @@ public:
 		const int size = DEFAULT_FONT_SIZE,
 		const sf::Color& color = DEFAULT_TEXT_COLOR,
 		const sf::Text::Style& style = sf::Text::Regular,
-		const sf::Vector2f pos_top_left = sf::Vector2f(0, 0));
+		const sf::Vector2f top_left_pos = sf::Vector2f(0, 0));
 
 	void setText(const std::string& content);
 	void setFontType(const FontType font_type);
 	// Sets top-left position of text.
-	void setTopLeftPos(const sf::Vector2f& pos_top_left);
+	void setTopLeftPos(const sf::Vector2f& top_left_pos);
 	// Sets top-left position of text on X-axis.
-	virtual void setTopLeftPosX(const float& pos_top_left_x);
+	virtual void setTopLeftPosX(const float& top_left_pos_x);
 	// Sets top-left position of text on Y-axis.
-	virtual void setTopLeftPosY(const float& pos_top_left_y);
+	virtual void setTopLeftPosY(const float& top_left_pos_y);
 	// Sets font size.
 	void setFontSize(int size);
 

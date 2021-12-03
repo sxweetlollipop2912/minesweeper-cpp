@@ -11,6 +11,14 @@
 Window* Window::instance = nullptr;
 
 
+std::shared_ptr<Window*> Window::getInstance() {
+	if (!instance) {
+		instance = new Window();
+	}
+	return std::make_shared<Window*>(instance);
+}
+
+
 sf::Vector2i Window::getMousePosition() const {
 	return pos_mouse;
 }
@@ -69,14 +77,6 @@ void Window::setCurrentSceneType(const SceneType& type) {
 }
 
 
-std::shared_ptr<Window*> Window::getInstance() {
-	if (!instance) {
-		instance = new Window();
-	}
-	return std::make_shared<Window*>(instance);
-}
-
-
 void Window::createWindow() {
 	render_window.create(window_size, title, window_style);
 }
@@ -92,7 +92,7 @@ Result Window::updateGameInfo(const Comms::GameInfo info) {
 }
 
 
-bool Window::handleSfEvent(const sf::Event& event) {
+bool Window::handleSfEvents(const sf::Event& event) {
 	bool change = false;
 
 	switch (event.type) {
@@ -103,10 +103,10 @@ bool Window::handleSfEvent(const sf::Event& event) {
 		change |= changeMousePosition(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
 		break;
 	case sf::Event::MouseButtonPressed:
-		change |= handleMouseButtonPress(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+		change |= onMouseButtonPressed(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
 		break;
 	case sf::Event::MouseButtonReleased:
-		change |= handleMouseButtonRelease(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+		change |= onMouseButtonReleased(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
 		break;
 	default:
 		break;
@@ -232,7 +232,7 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 }
 
 
-bool Window::handleMouseButtonPress(const sf::Mouse::Button& button, const sf::Vector2i& position) {
+bool Window::onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vector2i& position) {
 	if (lock_mouse_button != MouseActionType::Unknown) {
 		return false;
 	}
@@ -248,11 +248,18 @@ bool Window::handleMouseButtonPress(const sf::Mouse::Button& button, const sf::V
 		break;
 	}
 
-	return false;
+	// Runs scene-specific mouse released event handling methods.
+	// Gets the next game event, if exists
+	GameEvent nxt_event = GameEvent::Unknown;
+	{
+		nxt_event = map_scene[current_scene_type]->onMouseButtonPressed(lock_mouse_button);
+	}
+
+	return handleGameEvents(nxt_event);
 }
 
 
-bool Window::handleMouseButtonRelease(const sf::Mouse::Button& button, const sf::Vector2i& position) {
+bool Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position) {
 	bool match = false;
 
 	if (lock_mouse_button == MouseActionType::DoubleLMB && button == sf::Mouse::Left)
@@ -289,11 +296,11 @@ bool Window::handleMouseButtonRelease(const sf::Mouse::Button& button, const sf:
 	}
 
 
-	// Runs scene-specific mouse action handling methods.
+	// Runs scene-specific mouse released event handling methods.
 	// Gets the next game event, if exists
 	GameEvent nxt_event = GameEvent::Unknown;
 	{
-		nxt_event = map_scene[current_scene_type]->handleMouseButtonEvent(type);
+		nxt_event = map_scene[current_scene_type]->onMouseButtonReleased(type);
 	}
 
 	return handleGameEvents(nxt_event);

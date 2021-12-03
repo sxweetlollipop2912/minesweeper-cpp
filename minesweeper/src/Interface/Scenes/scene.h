@@ -39,8 +39,12 @@ protected:
 
 	void setWindowSize(const sf::VideoMode window_size);
 
-	// Call on a mouse button event.
-	virtual GameEvent handleMouseButtonEvent(const MouseActionType mouse_type);
+	// Call on a mouse button released event.
+	// Returns corresponding GameEvent.
+	virtual GameEvent onMouseButtonReleased(const MouseActionType mouse_type);
+	// Call on a mouse button pressed event.
+	// Returns corresponding GameEvent.
+	virtual GameEvent onMouseButtonPressed(const MouseActionType mouse_type);
 	// Changes window graphics base on new mouse position.
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
@@ -63,6 +67,10 @@ public:
 		hovered_button = STR_UNKNOWN;
 		pos_mouse = sf::Vector2i(-1, -1);
 	}
+
+
+	// Returns SceneType::Unknown if no next scene corresponding with game_event is found.
+	SceneType getNextScene(const GameEvent game_event) const;
 
 
 	struct DrawableList {
@@ -108,5 +116,5 @@ public:
 	};
 	
 	// Gets a DrawableList object that contains all sprites and texts in the scene.
-	virtual DrawableList getDrawableList(const bool isFocusing = true, const int rank = 0);
+	virtual DrawableList getDrawableList(const bool is_focusing = true, const int rank = 0);
 };

@@ -28,9 +28,8 @@ private:
 	// OVERRIDING SCENE METHODS
 
 	// Call on a mouse button event.
-	// Returns true if there are changes in the scene.
-	// Otherwise, returns false
-	GameEvent handleMouseButtonEvent(const MouseActionType mouse_type) override;
+	// Returns corresponding GameEvent.
+	GameEvent onMouseButtonReleased(const MouseActionType mouse_type) override;
 	// Changes window graphics base on new mouse position.
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
@@ -41,7 +40,9 @@ public:
 		if (!checkBoardSize(window_size, board_rows, board_cols))
 			return;
 
-		next_scene[GameEvent::Playing] = SceneType::Playing;
+		next_scene[GameEvent::AutoOpenCell] = SceneType::Playing;
+		next_scene[GameEvent::OpenCell] = SceneType::Playing;
+		next_scene[GameEvent::FlagCell] = SceneType::Playing;
 		next_scene[GameEvent::QuitToMenu] = SceneType::Menu;
 
 		buttons_event[STR_RETURN_BUTTON] = GameEvent::QuitToMenu;
@@ -103,5 +104,5 @@ public:
 	// Checks if number of rows and cols of a board is valid for the window size.
 	static bool checkBoardSize(const sf::VideoMode& window_size, const int board_rows, const int board_cols);
 
-	DrawableList getDrawableList(const bool isFocusing = false, const int rank = 0) override;
+	DrawableList getDrawableList(const bool is_focusing = false, const int rank = 0) override;
 };

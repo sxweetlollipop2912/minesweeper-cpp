@@ -16,7 +16,7 @@ protected:
 	TextureType texture_type;
 	sf::Vector2f scale;
 
-	sf::Vector2f pos_top_left, padding;
+	sf::Vector2f top_left_pos, padding;
 
 public:
 	Text label;
@@ -29,7 +29,7 @@ public:
 	Button() {
 		texture_type = TextureType::Unknown;
 
-		pos_top_left = sf::Vector2f(0, 0);
+		top_left_pos = sf::Vector2f(0, 0);
 		padding = DEFAULT_PADDING_SIZE;
 		scale = sf::Vector2f(1, 1);
 	}
@@ -60,13 +60,13 @@ public:
 	// Sets and scales image for the button. Also, sets its top-left position, padding size, scale.
 	// > Returns Result::failure if image cannot be loaded,
 	// > otherwise, returns Result::success.
-	virtual Result setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1));
+	virtual Result setImage(const TextureType texture_type, const sf::Vector2f& top_left_pos = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1));
 	// Sets top-left position of the button.
-	virtual void setTopLeftPos(const sf::Vector2f& pos_top_left);
+	virtual void setTopLeftPos(const sf::Vector2f& top_left_pos);
 	// Sets top-left position of the button on X-axis.
-	virtual void setTopLeftPosX(const float& pos_top_left_x);
+	virtual void setTopLeftPosX(const float& top_left_pos_x);
 	// Sets top-left position of the button on Y-axis.
-	virtual void setTopLeftPosY(const float& pos_top_left_y);
+	virtual void setTopLeftPosY(const float& top_left_pos_y);
 	// Sets padding size of the button.
 	// NOTE: if button is already scaled to fit text, it is recommended to rescale it.
 	virtual void setPadding(const sf::Vector2f& padding);

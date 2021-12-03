@@ -102,7 +102,7 @@ int main() {
         sf::Event event;
 
         while ((*window)->render_window.pollEvent(event)) {
-            change |= (*window)->handleSfEvent(event);
+            change |= (*window)->handleSfEvents(event);
         }
 
         if (change) {

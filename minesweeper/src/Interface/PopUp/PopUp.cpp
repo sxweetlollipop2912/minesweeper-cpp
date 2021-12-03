@@ -55,11 +55,11 @@ bool PopUp::changeMousePosition(const sf::Vector2i& pos) {
 }
 
 
-Scene::DrawableList PopUp::getDrawableList(const bool isFocusing, const int rank) {
+Scene::DrawableList PopUp::getDrawableList(const bool is_focusing, const int rank) {
 	DrawableList list;
 
 	for (auto e : buttons) {
-		if (isFocusing && hovered_button != STR_BOX && e.first == hovered_button) {
+		if (is_focusing && hovered_button != STR_BOX && e.first == hovered_button) {
 			list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(e.second.getHoveredSprite()), rank));
 		}
 		else {

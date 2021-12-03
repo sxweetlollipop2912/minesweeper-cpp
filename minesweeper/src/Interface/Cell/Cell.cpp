@@ -230,16 +230,16 @@ sf::Sprite Cell::getHoveredSprite() const {
 }
 
 
-void Cell::setTopLeftPos(const sf::Vector2f& pos_top_left) {
-	this->Button::setTopLeftPos(pos_top_left);
+void Cell::setTopLeftPos(const sf::Vector2f& top_left_pos) {
+	this->Button::setTopLeftPos(top_left_pos);
 
 	for (auto i = button_at_state.begin(); i != button_at_state.end(); i++) {
-		i->second.setTopLeftPos(this->pos_top_left);
+		i->second.setTopLeftPos(this->top_left_pos);
 	}
 }
 
 
-Result Cell::setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left, const sf::Vector2f& scale) {
+Result Cell::setImage(const TextureType texture_type, const sf::Vector2f& top_left_pos, const sf::Vector2f& scale) {
 	return Result::failure;
 }
 

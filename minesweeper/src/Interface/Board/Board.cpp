@@ -70,8 +70,8 @@ bool Board::determineHoveredCell(const sf::Vector2i mouse_pos) {
 	hovered_cell = Position(-1, -1);
 
 	if (isMouseHovering(mouse_pos)) {
-		hovered_cell.r = ((float)mouse_pos.y - pos_top_left.y) / (float)DEFAULT_CELL_AREA;
-		hovered_cell.c = ((float)mouse_pos.x - pos_top_left.x) / (float)DEFAULT_CELL_AREA;
+		hovered_cell.r = ((float)mouse_pos.y - top_left_pos.y) / (float)DEFAULT_CELL_AREA;
+		hovered_cell.c = ((float)mouse_pos.x - top_left_pos.x) / (float)DEFAULT_CELL_AREA;
 	}
 
 	
@@ -126,8 +126,8 @@ sf::Sprite Board::getHoveredSprite() const {
 }
 
 
-void Board::setTopLeftPos(const sf::Vector2f& pos_top_left) {
-	this->Button::setTopLeftPos(pos_top_left);
+void Board::setTopLeftPos(const sf::Vector2f& top_left_pos) {
+	this->Button::setTopLeftPos(top_left_pos);
 
 	for (int i = 0; i < number_of_rows; i++) {
 		for (int j = 0; j < number_of_cols; j++) {
@@ -135,13 +135,13 @@ void Board::setTopLeftPos(const sf::Vector2f& pos_top_left) {
 			rel_pos.x = (DEFAULT_CELL_AREA) * (float)j;
 			rel_pos.y = (DEFAULT_CELL_AREA) * (float)i;
 
-			board[i][j].setTopLeftPos(this->pos_top_left + rel_pos);
+			board[i][j].setTopLeftPos(this->top_left_pos + rel_pos);
 		}
 	}
 }
 
 
-Result Board::setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left, const sf::Vector2f& scale) {
+Result Board::setImage(const TextureType texture_type, const sf::Vector2f& top_left_pos, const sf::Vector2f& scale) {
 	return Result::failure;
 }
 

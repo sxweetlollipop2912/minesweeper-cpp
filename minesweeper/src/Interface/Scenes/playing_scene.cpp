@@ -58,8 +58,8 @@ std::string PlayingScene::recordStr(int h, int m, int s) {
 }
 
 
-GameEvent PlayingScene::handleMouseButtonEvent(const MouseActionType mouse_type) {
-	auto game_event = this->Scene::handleMouseButtonEvent(mouse_type);
+GameEvent PlayingScene::onMouseButtonReleased(const MouseActionType mouse_type) {
+	auto game_event = this->Scene::onMouseButtonReleased(mouse_type);
 
 	if (game_event == GameEvent::Unknown && !pop_up) {
 		// If mouse is hovering over a cell.
@@ -139,12 +139,12 @@ bool PlayingScene::checkBoardSize(const sf::VideoMode& window_size, const int bo
 }
 
 
-Scene::DrawableList PlayingScene::getDrawableList(const bool isFocusing, const int rank) {
+Scene::DrawableList PlayingScene::getDrawableList(const bool is_focusing, const int rank) {
 	DrawableList list;
 
 	for (int i = 0; i < board.number_of_rows; i++) {
 		for (int j = 0; j < board.number_of_cols; j++) {
-			if (isFocusing && Position(i, j) == board.hovered_cell) {
+			if (is_focusing && Position(i, j) == board.hovered_cell) {
 				list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(board.board[i][j].getHoveredSprite()), rank));
 			}
 			else {
@@ -153,7 +153,7 @@ Scene::DrawableList PlayingScene::getDrawableList(const bool isFocusing, const i
 		}
 	}
 
-	list.append(Scene::getDrawableList(isFocusing, rank));
+	list.append(Scene::getDrawableList(is_focusing, rank));
 
 	return list;
 }

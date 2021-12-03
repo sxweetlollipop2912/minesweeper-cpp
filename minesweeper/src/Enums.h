@@ -22,7 +22,6 @@ enum class GameEvent {
 	NewGame,
 	LoadGame,
 	ShowLeaderboard,
-	Playing,
 	OpenCell,
 	FlagCell,
 	AutoOpenCell,
