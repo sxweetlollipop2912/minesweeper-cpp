@@ -43,6 +43,10 @@ GameEvent Scene::onMouseButtonReleased(const MouseActionType mouse_type) {
 		if (scene_type != SceneType::PopUp && spawnPopUp(game_event)) game_event = GameEvent::OpenPopUp;
 	}
 
+	if (game_event == GameEvent::OpenPopUp || game_event == GameEvent::ClosePopUp) {
+		game_event = GameEvent::ChangesInScene;
+	}
+
 	return game_event;
 }
 

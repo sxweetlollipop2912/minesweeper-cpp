@@ -37,7 +37,6 @@ private:
 
 	static Window* instance;
 
-
 	Window(const sf::VideoMode& window_size = sf::VideoMode(1500, 1000), const std::string& title = TITLE, const int window_style = sf::Style::Close) {
 		this->window_size = window_size;
 		this->title = title;

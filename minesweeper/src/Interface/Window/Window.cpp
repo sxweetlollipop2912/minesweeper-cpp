@@ -88,7 +88,9 @@ void Window::closeWindow() {
 
 
 Result Window::updateGameInfo(const Comms::GameInfo info) {
-	return Result::failure;
+	current_game_info = info;
+
+	return Result::success;
 }
 
 
@@ -117,10 +119,6 @@ bool Window::handleSfEvents(const sf::Event& event) {
 
 
 bool Window::handleGameEvents(const GameEvent game_event) {
-	if (game_event == GameEvent::Unknown)
-		return false;
-
-
 	switch (game_event) {
 		case GameEvent::QuitGame:
 		{
@@ -134,7 +132,6 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 			if (current_scene_type == SceneType::Playing) {
 				// Send quit game event to back end.
 			}
-			current_scene_type = SceneType::Menu;
 
 			break;
 		}
@@ -148,7 +145,6 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 		}
 		case GameEvent::LoadGame:
 		{
-			current_scene_type = SceneType::Playing;
 			// Send load game event to back end.
 			// Update board.
 
@@ -156,7 +152,6 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 		}
 		case GameEvent::ShowLeaderboard:
 		{
-			current_scene_type = SceneType::Leaderboard;
 			// Send load leaderboard to back end.
 			// Update leaderboard.
 
@@ -214,21 +209,23 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 			// Load whole board, splash screen etc.
 			break;
 		}
-		case GameEvent::ClosePopUp:
-		case GameEvent::OpenPopUp:
-		{
-			return true;
-		}
-		default:
-		{
-			return false;
-		}
 	}
 
-	last_game_event = game_event;
-	getCurrentScene()->changeMousePosition(pos_mouse);
+	if (game_event != GameEvent::Unknown) {
+		if (game_event != GameEvent::ChangesInScene) {
+			last_game_event = game_event;
+		}
 
-	return true;
+		auto scene = getCurrentScene();
+
+		if (scene->getNextScene(game_event) != SceneType::Unkown) {
+			current_scene_type = scene->getNextScene(game_event);
+		}
+		
+		getCurrentScene()->changeMousePosition(pos_mouse);
+	}
+
+	return game_event != GameEvent::Unknown;
 }
 
 

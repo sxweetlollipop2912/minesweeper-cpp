@@ -27,6 +27,7 @@ enum class GameEvent {
 	AutoOpenCell,
 	Won,
 	Lost,
+	ChangesInScene,
 	Unknown
 };
 
