@@ -69,7 +69,7 @@ public:
 		{
 			Text& timer = texts[STR_TIMER];
 			timer.setText(timerStr(0, 0, 0));
-			timer.setFontSize(DEFAULT_FONT_SIZE);
+			timer.setFontSize(DEFAULT_LARGE_FONT_SIZE);
 
 			sf::Vector2f TL_timer;
 			TL_timer.x = window_size.width * POS_COEF_TIMER.x;
@@ -79,7 +79,7 @@ public:
 
 			Text& record = texts[STR_RECORD];
 			record.setText(recordStr(0, 0, 0));
-			record.setFontSize(DEFAULT_FONT_SIZE);
+			record.setFontSize(DEFAULT_LARGE_FONT_SIZE);
 
 			sf::Vector2f TL_record;
 			TL_record.x = window_size.width * POS_COEF_RECORD.x;
@@ -93,7 +93,7 @@ public:
 			return_button.setImage(TextureType::ButtonDefault);
 			return_button.setPadding(sf::Vector2f(DEFAULT_PADDING_SIZE.x / 2, DEFAULT_PADDING_SIZE.y / 2));
 			return_button.label.setText("Back to Menu");
-			return_button.label.setFontSize(DEFAULT_FONT_SIZE / 1.5);
+			return_button.label.setFontSize(DEFAULT_SMALL_FONT_SIZE);
 			return_button.alignImageAndText();
 		}
 	}

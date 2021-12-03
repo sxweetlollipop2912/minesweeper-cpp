@@ -36,7 +36,7 @@ public:
 		setFontType(FontType::FontDefault);
 
 		content.clear();
-		font_size = DEFAULT_FONT_SIZE;
+		font_size = DEFAULT_LARGE_FONT_SIZE;
 		text_color = DEFAULT_TEXT_COLOR;
 		style = sf::Text::Style::Regular;
 	}
@@ -59,7 +59,7 @@ public:
 	// Initializes the text with content, font, size (optional), color (optional), style (optional).
 	void createText(const std::string& content,
 		const FontType font_type = FontType::FontDefault,
-		const int size = DEFAULT_FONT_SIZE,
+		const int size = DEFAULT_LARGE_FONT_SIZE,
 		const sf::Color& color = DEFAULT_TEXT_COLOR,
 		const sf::Text::Style& style = sf::Text::Regular,
 		const sf::Vector2f top_left_pos = sf::Vector2f(0, 0));

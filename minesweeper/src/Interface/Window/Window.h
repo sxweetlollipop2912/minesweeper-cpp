@@ -22,6 +22,19 @@ class Window {
 	friend Result Comms::gameInfoSending(const GameInfo info);
 
 private:
+	std::map <SceneType, std::shared_ptr<Scene>> map_scene;
+
+	Comms::GameInfo current_game_info;
+	Comms::InterfaceInfo current_interface_info;
+
+	SceneType current_scene_type;
+	GameEvent last_game_event;
+
+	sf::Vector2i pos_mouse;
+	// Locks mouse button when it is in use, i.e, a RMB won't be detected while a LMB is pressed and hasn't been released.
+	MouseActionType lock_mouse_button;
+
+
 	static Window* instance;
 
 
@@ -41,16 +54,6 @@ private:
 		lock_mouse_button = MouseActionType::Unknown;
 		pos_mouse = sf::Vector2i(-1, -1);
 	}
-
-
-	std::map <SceneType, std::shared_ptr<Scene>> map_scene;
-
-	SceneType current_scene_type;
-	GameEvent last_game_event;
-
-	sf::Vector2i pos_mouse;
-	// Locks mouse button when it is in use, i.e, a RMB won't be detected while a LMB is pressed and hasn't been released.
-	MouseActionType lock_mouse_button;
 
 	// Draws a scene on the window.
 	void draw(Scene& scene);

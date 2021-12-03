@@ -75,7 +75,7 @@ public:
 			return_button.setImage(TextureType::ButtonDefault);
 			return_button.setPadding(sf::Vector2f(DEFAULT_PADDING_SIZE.x / 2, DEFAULT_PADDING_SIZE.y / 2));
 			return_button.label.setText("Back to Menu");
-			return_button.label.setFontSize(DEFAULT_FONT_SIZE / 1.5);
+			return_button.label.setFontSize(DEFAULT_SMALL_FONT_SIZE);
 			return_button.alignImageAndText();
 		}
 	}

@@ -14,8 +14,10 @@ const sf::VideoMode DEFAULT_WINDOW_SIZE = sf::VideoMode(1500, 1000);
 
 
 // TEXT
-const int DEFAULT_FONT_SIZE = 23;
-const int DEFAULT_TITLE_FONT_SIZE = DEFAULT_FONT_SIZE * 4.5;
+const int DEFAULT_LARGE_FONT_SIZE = 23;
+const int DEFAULT_NORMAL_FONT_SIZE = DEFAULT_LARGE_FONT_SIZE / 1.2;
+const int DEFAULT_SMALL_FONT_SIZE = DEFAULT_LARGE_FONT_SIZE / 1.5;
+const int DEFAULT_TITLE_FONT_SIZE = DEFAULT_LARGE_FONT_SIZE * 4.5;
 const std::string DEFAULT_FONT_PATH = ".\\assets\\fonts\\MochiyPopOne.ttf";
 
 
@@ -26,7 +28,7 @@ const sf::Color DEFAULT_TEXT_COLOR = sf::Color::White;
 
 
 // BUTTON
-const sf::Vector2f DEFAULT_PADDING_SIZE = sf::Vector2f(20, 20);
+const sf::Vector2f DEFAULT_PADDING_SIZE = sf::Vector2f(15, 15);
 
 
 // POSITION

@@ -10,6 +10,7 @@
 #include "../Text/Text.h"
 
 
+// This is a singleton.
 class ResourceVault {
 private:
 	static std::map <TextureType, std::shared_ptr<sf::Texture>> map_texture;
