@@ -39,8 +39,12 @@ protected:
 
 	void setWindowSize(const sf::VideoMode window_size);
 
-	// Call on a mouse button event.
-	virtual GameEvent handleMouseButtonEvent(const MouseActionType mouse_type);
+	// Call on a mouse button released event.
+	// Returns corresponding GameEvent.
+	virtual GameEvent onMouseButtonReleased(const MouseActionType mouse_type);
+	// Call on a mouse button pressed event.
+	// Returns corresponding GameEvent.
+	virtual GameEvent onMouseButtonPressed(const MouseActionType mouse_type);
 	// Changes window graphics base on new mouse position.
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
@@ -65,6 +69,10 @@ public:
 	}
 
 
+	// Returns SceneType::Unknown if no next scene corresponding with game_event is found.
+	SceneType getNextScene(const GameEvent game_event) const;
+
+
 	struct DrawableList {
 		struct DrawableSprite {
 			std::shared_ptr<sf::Sprite> sprite;
@@ -74,6 +82,17 @@ public:
 
 			DrawableSprite(const std::shared_ptr<sf::Sprite> sprite = nullptr, const int rank = 0) {
 				this->sprite = sprite;
+				this->rank = rank;
+			}
+		};
+		struct DrawableRect {
+			std::shared_ptr<sf::RectangleShape> rect;
+
+			// higher rank drawables overwrite lower ones.
+			int rank;
+
+			DrawableRect(const std::shared_ptr<sf::RectangleShape> rect = nullptr, const int rank = 0) {
+				this->rect = rect;
 				this->rank = rank;
 			}
 		};
@@ -91,10 +110,12 @@ public:
 
 		std::vector <DrawableSprite> sprites;
 		std::vector <DrawableText> texts;
+		std::vector <DrawableRect> rects;
 
 		DrawableList() {
 			sprites.clear();
 			texts.clear();
+			rects.clear();
 		}
 
 		void append(const DrawableList& list) {
@@ -104,9 +125,12 @@ public:
 			for (auto e : list.texts) {
 				texts.push_back(e);
 			}
+			for (auto e : list.rects) {
+				rects.push_back(e);
+			}
 		}
 	};
 	
 	// Gets a DrawableList object that contains all sprites and texts in the scene.
-	virtual DrawableList getDrawableList(const bool isFocusing = true, const int rank = 0);
+	virtual DrawableList getDrawableList(const bool is_focusing = true, const int rank = 0);
 };

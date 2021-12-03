@@ -18,12 +18,12 @@ void Scene::setWindowSize(const sf::VideoMode window_size) {
 }
 
 
-GameEvent Scene::handleMouseButtonEvent(const MouseActionType mouse_type) {
+GameEvent Scene::onMouseButtonReleased(const MouseActionType mouse_type) {
 	auto game_event = GameEvent::Unknown;
 
 	// If pop-up already exists.
 	if (pop_up) {
-		game_event = pop_up->handleMouseButtonEvent(mouse_type);
+		game_event = pop_up->onMouseButtonReleased(mouse_type);
 		if (game_event != GameEvent::Unknown) {
 			pop_up = nullptr;
 			changeMousePosition(pos_mouse);
@@ -43,7 +43,16 @@ GameEvent Scene::handleMouseButtonEvent(const MouseActionType mouse_type) {
 		if (scene_type != SceneType::PopUp && spawnPopUp(game_event)) game_event = GameEvent::OpenPopUp;
 	}
 
+	if (game_event == GameEvent::OpenPopUp || game_event == GameEvent::ClosePopUp) {
+		game_event = GameEvent::ChangesInScene;
+	}
+
 	return game_event;
+}
+
+
+GameEvent Scene::onMouseButtonPressed(const MouseActionType mouse_type) {
+	return GameEvent::Unknown;
 }
 
 
@@ -112,17 +121,25 @@ bool Scene::spawnPopUp(const GameEvent game_event) {
 }
 
 
-Scene::DrawableList Scene::getDrawableList(const bool isFocusing, const int rank) {
+SceneType Scene::getNextScene(const GameEvent game_event) const {
+	if (next_scene.find(game_event) != next_scene.end()) {
+		return next_scene.at(game_event);
+	}
+	return SceneType::Unkown;
+}
+
+
+Scene::DrawableList Scene::getDrawableList(const bool is_focusing, const int rank) {
 	DrawableList list;
 	std::mutex listLock;
 
-	bool isFocusingOnCurrent = isFocusing;
+	bool is_focusing_on_current = is_focusing;
 	if (pop_up) 
-		isFocusingOnCurrent = false;
+		is_focusing_on_current = false;
 
 	auto t1 = std::thread([&]() {
 		for (auto e : buttons) {
-			if (isFocusingOnCurrent && e.first == hovered_button) {
+			if (is_focusing_on_current && e.first == hovered_button) {
 				list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(e.second.getHoveredSprite()), rank));
 			}
 			else {
@@ -146,7 +163,7 @@ Scene::DrawableList Scene::getDrawableList(const bool isFocusing, const int rank
 
 	// Pop-up drawable objects will overwrite those of current scene.
 	if (pop_up) {
-		list.append(pop_up->getDrawableList(isFocusing, rank + 1));
+		list.append(pop_up->getDrawableList(is_focusing, rank + 1));
 	}
 
 	return list;

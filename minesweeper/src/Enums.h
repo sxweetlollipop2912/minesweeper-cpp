@@ -19,21 +19,23 @@ enum class GameEvent {
 	QuitToMenu,
 	OpenPopUp,
 	ClosePopUp,
+	ShowDifficulties,
 	NewGame,
 	LoadGame,
 	ShowLeaderboard,
-	Playing,
 	OpenCell,
 	FlagCell,
 	AutoOpenCell,
 	Won,
 	Lost,
+	ChangesInScene,
 	Unknown
 };
 
 
 enum class SceneType {
 	Menu,
+	Difficulties,
 	Playing,
 	Leaderboard,
 	PopUp,

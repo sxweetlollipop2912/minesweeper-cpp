@@ -53,11 +53,11 @@ private:
 	// OVERRIDING BUTTON METHODS
 
 	// Sets top-left position of the whole board in respect of window size.
-	void setTopLeftPos(const sf::Vector2f& pos_top_left) override;
+	void setTopLeftPos(const sf::Vector2f& top_left_pos) override;
 
 public:
-	Board(const int rows = 0, const int cols = 0, const sf::Vector2f pos_top_left = sf::Vector2f(0, 0)) {
-		this->pos_top_left = pos_top_left;
+	Board(const int rows = 0, const int cols = 0, const sf::Vector2f top_left_pos = sf::Vector2f(0, 0)) {
+		this->top_left_pos = top_left_pos;
 		number_of_rows = rows;
 		number_of_cols = cols;
 
@@ -68,7 +68,7 @@ public:
 			board[i].resize(number_of_cols);
 		}
 
-		Board::setTopLeftPos(this->pos_top_left);
+		Board::setTopLeftPos(this->top_left_pos);
 	}
 
 
@@ -90,7 +90,7 @@ public:
 	// Gets hovered (not hovered) button's sprite.
 	sf::Sprite getHoveredSprite() const override;
 
-	Result setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1)) override;
+	Result setImage(const TextureType texture_type, const sf::Vector2f& top_left_pos = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1)) override;
 	void setPadding(const sf::Vector2f& padding) override;
 	void setScale(const sf::Vector2f& scale) override;
 	void alignImageAndText() override;

@@ -56,7 +56,7 @@ public:
 		button_at_state.clear();
 		setDefaultImages();
 
-		pos_top_left.x = pos_top_left.y = 0;
+		top_left_pos.x = top_left_pos.y = 0;
 
 		cell_type = CellType::Unknown;
 		cell_state = CellState::Closed;
@@ -85,9 +85,9 @@ public:
 	sf::Sprite getHoveredSprite() const override;
 
 	// Sets top-left position of the cell in respect of window size.
-	void setTopLeftPos(const sf::Vector2f& pos_top_left) override;
+	void setTopLeftPos(const sf::Vector2f& top_left_pos) override;
 
-	Result setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1)) override;
+	Result setImage(const TextureType texture_type, const sf::Vector2f& top_left_pos = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1)) override;
 	void setPadding(const sf::Vector2f& padding) override;
 	void setScale(const sf::Vector2f& scale) override;
 	void alignImageAndText() override;

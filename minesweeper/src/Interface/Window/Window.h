@@ -14,6 +14,7 @@
 #include "../Scenes/menu_scene.h"
 #include "../Scenes/playing_scene.h"
 #include "../Scenes/leaderboard_scene.h"
+#include "../Scenes/difficulties_scene.h"
 #include "../../Comms/Comms.h"
 
 
@@ -22,8 +23,20 @@ class Window {
 	friend Result Comms::gameInfoSending(const GameInfo info);
 
 private:
-	static Window* instance;
+	std::map <SceneType, std::shared_ptr<Scene>> map_scene;
 
+	Comms::GameInfo current_game_info;
+	Comms::InterfaceInfo current_interface_info;
+
+	SceneType current_scene_type;
+	GameEvent last_game_event;
+
+	sf::Vector2i pos_mouse;
+	// Locks mouse button when it is in use, i.e, a RMB won't be detected while a LMB is pressed and hasn't been released.
+	MouseActionType lock_mouse_button;
+
+
+	static Window* instance;
 
 	Window(const sf::VideoMode& window_size = sf::VideoMode(1500, 1000), const std::string& title = TITLE, const int window_style = sf::Style::Close) {
 		this->window_size = window_size;
@@ -42,22 +55,14 @@ private:
 		pos_mouse = sf::Vector2i(-1, -1);
 	}
 
-
-	std::map <SceneType, std::shared_ptr<Scene>> map_scene;
-
-	SceneType current_scene_type;
-	GameEvent last_game_event;
-
-	sf::Vector2i pos_mouse;
-	// Locks mouse button when it is in use, i.e, a RMB won't be detected while a LMB is pressed and hasn't been released.
-	MouseActionType lock_mouse_button;
-
 	// Draws a scene on the window.
 	void draw(Scene& scene);
-	// Draws a sprite on the window.
+	// Draws a sf::Sprite on the window.
 	void draw(const sf::Sprite& sprite);
-	// Draws a text on the window.
+	// Draws a sf::Text on the window.
 	void draw(const sf::Text& text);
+	// Draws a RectangleShape on window.
+	void draw(const sf::RectangleShape& rect);
 	// Draws a text on the window.
 	void draw(Text& text);
 	// Draws a button on the window.
@@ -75,13 +80,14 @@ private:
 	void setCurrentSceneType(const SceneType& type);
 
 	// Call upon a mouse button PRESS event.
+	// Cannot detect a DoubleLMB at this stage.
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
-	bool handleMouseButtonPress(const sf::Mouse::Button& button, const sf::Vector2i& position);
+	bool onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vector2i& position);
 	// Call upon a mouse button RELEASE event.
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
-	bool handleMouseButtonRelease(const sf::Mouse::Button& button, const sf::Vector2i& position);
+	bool onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position);
 
 public:
 	sf::RenderWindow render_window;
@@ -110,7 +116,7 @@ public:
 	// Makes changes in the game according to sf::Event.
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
-	bool handleSfEvent(const sf::Event& event);
+	bool handleSfEvents(const sf::Event& event);
 
 	// Gets current mouse position.
 	sf::Vector2i getMousePosition() const;
@@ -125,6 +131,8 @@ public:
 	void initializeMenuScene();
 	// Initializes/Resets menu scene for window.
 	void initializeLeaderboardScene();
+	// Initializes/Resets showing difficulties scene for window.
+	void initializeDifficultiesScene();
 	// Initializes/Resets playing scene for window.
 	void initializePlayingScene(const int board_rows, const int board_cols);
 

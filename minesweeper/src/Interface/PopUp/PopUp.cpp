@@ -6,7 +6,7 @@ void PopUp::PositionPopUp(const sf::VideoMode& window_size) {
 	Button& yes_button = buttons[STR_YES];
 	Button& no_button = buttons[STR_NO];
 
-	box.setSize(sf::Vector2f(window_size.width / 2.2, window_size.height / 3));
+	box.setSize(sf::Vector2f(window_size.width / 2.8, window_size.height / 3));
 	box.centerButtonHorizontally(window_size.width);
 	box.centerButtonVertically(window_size.height);
 
@@ -55,11 +55,11 @@ bool PopUp::changeMousePosition(const sf::Vector2i& pos) {
 }
 
 
-Scene::DrawableList PopUp::getDrawableList(const bool isFocusing, const int rank) {
+Scene::DrawableList PopUp::getDrawableList(const bool is_focusing, const int rank) {
 	DrawableList list;
 
 	for (auto e : buttons) {
-		if (isFocusing && hovered_button != STR_BOX && e.first == hovered_button) {
+		if (is_focusing && hovered_button != STR_BOX && e.first == hovered_button) {
 			list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(e.second.getHoveredSprite()), rank));
 		}
 		else {

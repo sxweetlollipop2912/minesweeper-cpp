@@ -26,10 +26,10 @@ public:
 	static void createText(sf::Text& text,
 		const std::string& content,
 		const sf::Font& font,
-		const int size = DEFAULT_FONT_SIZE,
+		const int size = DEFAULT_LARGE_FONT_SIZE,
 		const sf::Color& color = DEFAULT_TEXT_COLOR,
 		const sf::Text::Style& style = sf::Text::Regular,
-		const sf::Vector2f pos_top_left = sf::Vector2f(0, 0));
+		const sf::Vector2f top_left_pos = sf::Vector2f(0, 0));
 	// Tries to position a text inside a rectangle container.
 	// NOTE: The string will be changed permanently. There's no turning back.
 	// Shouldn't cost much time if already positioned b4.

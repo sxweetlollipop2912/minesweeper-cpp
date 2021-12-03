@@ -49,12 +49,12 @@ sf::Vector2u Button::getImageSize() const {
 
 
 sf::Vector2f Button::getPosTopLeft() const {
-    return pos_top_left;
+    return top_left_pos;
 }
 
 
 sf::Vector2f Button::getPosRightDown() const {
-    return pos_top_left + getSize();
+    return top_left_pos + getSize();
 }
 
 
@@ -67,7 +67,7 @@ sf::Sprite Button::getDefaultSprite() const {
     auto texture = ResourceVault::getTexture(texture_type);
 
     sf::Sprite sprite;
-    Graphics::loadSpriteFromTexture(sprite, *texture, pos_top_left);
+    Graphics::loadSpriteFromTexture(sprite, *texture, top_left_pos);
     sprite.setScale(scale);
 
     return sprite;
@@ -78,7 +78,7 @@ sf::Sprite Button::getHoveredSprite() const {
     auto texture = ResourceVault::getTexture(texture_type);
 
     sf::Sprite sprite;
-    Graphics::loadSpriteFromTexture(sprite, *texture, pos_top_left);
+    Graphics::loadSpriteFromTexture(sprite, *texture, top_left_pos);
     sprite.setScale(scale);
 
     // Darken the hovered sprite a bit.
@@ -92,17 +92,17 @@ sf::Sprite Button::getHoveredSprite() const {
 bool Button::isMouseHovering(const sf::Vector2i& mouse_position) const {
     sf::Vector2f pos_right_down = getPosRightDown();
 
-    if (mouse_position.x < pos_top_left.x || mouse_position.x > pos_right_down.x) {
+    if (mouse_position.x < top_left_pos.x || mouse_position.x > pos_right_down.x) {
         return false;
     }
-    if (mouse_position.y < pos_top_left.y || mouse_position.y > pos_right_down.y) {
+    if (mouse_position.y < top_left_pos.y || mouse_position.y > pos_right_down.y) {
         return false;
     }
     return true;
 }
 
 
-Result Button::setImage(const TextureType texture_type, const sf::Vector2f& pos_top_left, const sf::Vector2f& scale) {
+Result Button::setImage(const TextureType texture_type, const sf::Vector2f& top_left_pos, const sf::Vector2f& scale) {
     if (!ResourceVault::findTexture(texture_type)) {
         return Result::failure;
     }
@@ -110,26 +110,26 @@ Result Button::setImage(const TextureType texture_type, const sf::Vector2f& pos_
     this->texture_type = texture_type;
     this->scale = scale;
 
-    if (pos_top_left.x != -1) {
-        this->pos_top_left = pos_top_left;
+    if (top_left_pos.x != -1) {
+        this->top_left_pos = top_left_pos;
     }
 
     return Result::success;
 }
 
 
-void Button::setTopLeftPos(const sf::Vector2f& pos_top_left) {
-    this->pos_top_left = pos_top_left;
+void Button::setTopLeftPos(const sf::Vector2f& top_left_pos) {
+    this->top_left_pos = top_left_pos;
 }
 
 
-void Button::setTopLeftPosX(const float& pos_top_left_x) {
-    pos_top_left.x = pos_top_left_x;
+void Button::setTopLeftPosX(const float& top_left_pos_x) {
+    top_left_pos.x = top_left_pos_x;
 }
 
 
-void Button::setTopLeftPosY(const float& pos_top_left_y) {
-    pos_top_left.y = pos_top_left_y;
+void Button::setTopLeftPosY(const float& top_left_pos_y) {
+    top_left_pos.y = top_left_pos_y;
 }
 
 
@@ -161,7 +161,7 @@ void Button::alignImageAndText() {
     scale.x = desired_width / getImageSize().x;
     scale.y = desired_height / getImageSize().y;
 
-    label.setTopLeftPos(pos_top_left + padding);
+    label.setTopLeftPos(top_left_pos + padding);
 }
 
 
@@ -171,11 +171,11 @@ Result Button::centerButtonHorizontally(const float window_width) {
     if (window_width < button_width)
         return Result::failure;
 
-    float old_x = pos_top_left.x;
-    pos_top_left.x = (window_width / 2) - (button_width / 2);
+    float old_x = top_left_pos.x;
+    top_left_pos.x = (window_width / 2) - (button_width / 2);
 
-    if (pos_top_left.x < 0 || centerTextInButton() == Result::failure) {
-        pos_top_left.x = old_x;
+    if (top_left_pos.x < 0 || centerTextInButton() == Result::failure) {
+        top_left_pos.x = old_x;
 
         return Result::failure;
     }
@@ -190,11 +190,11 @@ Result Button::centerButtonVertically(const float window_height) {
     if (window_height < button_height)
         return Result::failure;
 
-    float old_y = pos_top_left.y;
-    pos_top_left.y = (window_height / 2) - (button_height / 2);
+    float old_y = top_left_pos.y;
+    top_left_pos.y = (window_height / 2) - (button_height / 2);
 
-    if (pos_top_left.y < 0 || centerTextInButton() == Result::failure) {
-        pos_top_left.y = old_y;
+    if (top_left_pos.y < 0 || centerTextInButton() == Result::failure) {
+        top_left_pos.y = old_y;
 
         return Result::failure;
     }
@@ -250,8 +250,8 @@ Result Button::centerTextInButton() {
     sf::Vector2f pos_right_down = getPosRightDown();
 
     sf::Vector2f desired_pos;
-    desired_pos.x = ((pos_top_left.x + pos_right_down.x) / 2) - (text_width / 2);
-    desired_pos.y = ((pos_top_left.y + pos_right_down.y) / 2) - (text_height / 2);
+    desired_pos.x = ((top_left_pos.x + pos_right_down.x) / 2) - (text_width / 2);
+    desired_pos.y = ((top_left_pos.y + pos_right_down.y) / 2) - (text_height / 2);
 
     if (desired_pos.x < 0 || desired_pos.y < 0)
         return Result::failure;

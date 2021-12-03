@@ -2,10 +2,18 @@
 
 #include <SFML/Graphics.hpp>
 
-// GAME_INFO
+// GAME
 const std::string TITLE = "minesweeper";
+const int MIN_COLUMN = 9;
 const int MAX_COLUMN = 30;
+const int MIN_ROW = 9;
 const int MAX_ROW = 30;
+const int BEGINNER_ROW = 9;
+const int BEGINNER_COL = 9;
+const int INTERMEDIATE_ROW = 16;
+const int INTERMEDIATE_COL = 16;
+const int EXPERT_ROW = 16;
+const int EXPERT_COL = 30;
 const int MAX_RECORDS_PER_DIFF = 3;
 
 
@@ -14,8 +22,10 @@ const sf::VideoMode DEFAULT_WINDOW_SIZE = sf::VideoMode(1500, 1000);
 
 
 // TEXT
-const int DEFAULT_FONT_SIZE = 23;
-const int DEFAULT_TITLE_FONT_SIZE = DEFAULT_FONT_SIZE * 4.5;
+const int DEFAULT_LARGE_FONT_SIZE = 23;
+const int DEFAULT_NORMAL_FONT_SIZE = DEFAULT_LARGE_FONT_SIZE / 1.2;
+const int DEFAULT_SMALL_FONT_SIZE = DEFAULT_LARGE_FONT_SIZE / 1.5;
+const int DEFAULT_TITLE_FONT_SIZE = DEFAULT_LARGE_FONT_SIZE * 4.5;
 const std::string DEFAULT_FONT_PATH = ".\\assets\\fonts\\MochiyPopOne.ttf";
 
 
@@ -26,7 +36,7 @@ const sf::Color DEFAULT_TEXT_COLOR = sf::Color::White;
 
 
 // BUTTON
-const sf::Vector2f DEFAULT_PADDING_SIZE = sf::Vector2f(20, 20);
+const sf::Vector2f DEFAULT_PADDING_SIZE = sf::Vector2f(15, 15);
 
 
 // POSITION
@@ -37,6 +47,11 @@ const float POS_Y_COEF_LOAD_GAME_BUTTON = 3 / (float)7;
 const float POS_Y_COEF_NEW_GAME_BUTTON = POS_Y_COEF_LOAD_GAME_BUTTON + SPACE_BETWEEN_BUTTONS_Y_COEF;
 const float POS_Y_COEF_LEADERBOARD_BUTTON = POS_Y_COEF_NEW_GAME_BUTTON + SPACE_BETWEEN_BUTTONS_Y_COEF;
 const float POS_Y_COEF_QUIT_BUTTON = POS_Y_COEF_LEADERBOARD_BUTTON + SPACE_BETWEEN_BUTTONS_Y_COEF;
+// DIFFICULTIES SCENE
+const float POS_Y_COEF_DIFF_BUTTON = 3 / (float)12;
+const float POS_Y_COEF_CONTINUE_BUTTON = 4 / (float)6;
+const float POS_Y_COEF_SLIDER_ROW = 3 / (float)7;
+const float POS_Y_COEF_SLODER_COL = 4 / (float)7;
 // BOARD
 const int DEFAULT_CELL_SIZE = 30;
 const float DEFAULT_CELL_AREA = DEFAULT_CELL_SIZE;// + (DEFAULT_CELL_SIZE / (float)7);

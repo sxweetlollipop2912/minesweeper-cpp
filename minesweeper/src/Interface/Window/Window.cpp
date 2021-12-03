@@ -11,6 +11,14 @@
 Window* Window::instance = nullptr;
 
 
+std::shared_ptr<Window*> Window::getInstance() {
+	if (!instance) {
+		instance = new Window();
+	}
+	return std::make_shared<Window*>(instance);
+}
+
+
 sf::Vector2i Window::getMousePosition() const {
 	return pos_mouse;
 }
@@ -45,6 +53,12 @@ void Window::initializeLeaderboardScene() {
 }
 
 
+void Window::initializeDifficultiesScene() {
+	auto difficulties_scene = std::shared_ptr<DifficultiesScene>(new DifficultiesScene(window_size));
+	map_scene[SceneType::Difficulties] = std::static_pointer_cast<Scene>(difficulties_scene);
+}
+
+
 void Window::initializePlayingScene(const int board_rows = -1, const int board_cols = -1) {
 	auto current_playing_scene = std::static_pointer_cast<PlayingScene>(map_scene[SceneType::Playing]);
 	int rows = board_rows < 0 ? current_playing_scene->getBoardRows() : board_rows;
@@ -69,14 +83,6 @@ void Window::setCurrentSceneType(const SceneType& type) {
 }
 
 
-std::shared_ptr<Window*> Window::getInstance() {
-	if (!instance) {
-		instance = new Window();
-	}
-	return std::make_shared<Window*>(instance);
-}
-
-
 void Window::createWindow() {
 	render_window.create(window_size, title, window_style);
 }
@@ -88,11 +94,13 @@ void Window::closeWindow() {
 
 
 Result Window::updateGameInfo(const Comms::GameInfo info) {
-	return Result::failure;
+	current_game_info = info;
+
+	return Result::success;
 }
 
 
-bool Window::handleSfEvent(const sf::Event& event) {
+bool Window::handleSfEvents(const sf::Event& event) {
 	bool change = false;
 
 	switch (event.type) {
@@ -103,10 +111,10 @@ bool Window::handleSfEvent(const sf::Event& event) {
 		change |= changeMousePosition(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
 		break;
 	case sf::Event::MouseButtonPressed:
-		change |= handleMouseButtonPress(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+		change |= onMouseButtonPressed(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
 		break;
 	case sf::Event::MouseButtonReleased:
-		change |= handleMouseButtonRelease(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+		change |= onMouseButtonReleased(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
 		break;
 	default:
 		break;
@@ -117,10 +125,6 @@ bool Window::handleSfEvent(const sf::Event& event) {
 
 
 bool Window::handleGameEvents(const GameEvent game_event) {
-	if (game_event == GameEvent::Unknown)
-		return false;
-
-
 	switch (game_event) {
 		case GameEvent::QuitGame:
 		{
@@ -134,13 +138,22 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 			if (current_scene_type == SceneType::Playing) {
 				// Send quit game event to back end.
 			}
-			current_scene_type = SceneType::Menu;
 
 			break;
 		}
 		case GameEvent::NewGame:
 		{
-			current_scene_type = SceneType::Playing;
+			if (getCurrentSceneType() == SceneType::Difficulties) {
+				auto scene = std::static_pointer_cast<DifficultiesScene>(getCurrentScene());
+				
+				current_interface_info.new_row = std::min(scene->getCurrentRow(), scene->getCurrentCol());
+				current_interface_info.new_col = std::max(scene->getCurrentRow(), scene->getCurrentCol());
+
+				std::cout << "ROW " << current_interface_info.new_row << '\n';
+				std::cout << "COL " << current_interface_info.new_col << '\n';
+			}
+
+			// Comms::interfaceInfoSending(current_interface_info);
 			// Send new game event to back end.
 			// Update board.
 
@@ -148,7 +161,6 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 		}
 		case GameEvent::LoadGame:
 		{
-			current_scene_type = SceneType::Playing;
 			// Send load game event to back end.
 			// Update board.
 
@@ -156,7 +168,6 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 		}
 		case GameEvent::ShowLeaderboard:
 		{
-			current_scene_type = SceneType::Leaderboard;
 			// Send load leaderboard to back end.
 			// Update leaderboard.
 
@@ -214,25 +225,27 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 			// Load whole board, splash screen etc.
 			break;
 		}
-		case GameEvent::ClosePopUp:
-		case GameEvent::OpenPopUp:
-		{
-			return true;
-		}
-		default:
-		{
-			return false;
-		}
 	}
 
-	last_game_event = game_event;
-	getCurrentScene()->changeMousePosition(pos_mouse);
+	if (game_event != GameEvent::Unknown) {
+		if (game_event != GameEvent::ChangesInScene) {
+			last_game_event = game_event;
+		}
 
-	return true;
+		auto scene = getCurrentScene();
+
+		if (scene->getNextScene(game_event) != SceneType::Unkown) {
+			current_scene_type = scene->getNextScene(game_event);
+		}
+		
+		getCurrentScene()->changeMousePosition(pos_mouse);
+	}
+
+	return game_event != GameEvent::Unknown;
 }
 
 
-bool Window::handleMouseButtonPress(const sf::Mouse::Button& button, const sf::Vector2i& position) {
+bool Window::onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vector2i& position) {
 	if (lock_mouse_button != MouseActionType::Unknown) {
 		return false;
 	}
@@ -248,11 +261,18 @@ bool Window::handleMouseButtonPress(const sf::Mouse::Button& button, const sf::V
 		break;
 	}
 
-	return false;
+	// Runs scene-specific mouse released event handling methods.
+	// Gets the next game event, if exists
+	GameEvent nxt_event = GameEvent::Unknown;
+	{
+		nxt_event = map_scene[current_scene_type]->onMouseButtonPressed(lock_mouse_button);
+	}
+
+	return handleGameEvents(nxt_event);
 }
 
 
-bool Window::handleMouseButtonRelease(const sf::Mouse::Button& button, const sf::Vector2i& position) {
+bool Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position) {
 	bool match = false;
 
 	if (lock_mouse_button == MouseActionType::DoubleLMB && button == sf::Mouse::Left)
@@ -289,11 +309,11 @@ bool Window::handleMouseButtonRelease(const sf::Mouse::Button& button, const sf:
 	}
 
 
-	// Runs scene-specific mouse action handling methods.
+	// Runs scene-specific mouse released event handling methods.
 	// Gets the next game event, if exists
 	GameEvent nxt_event = GameEvent::Unknown;
 	{
-		nxt_event = map_scene[current_scene_type]->handleMouseButtonEvent(type);
+		nxt_event = map_scene[current_scene_type]->onMouseButtonReleased(type);
 	}
 
 	return handleGameEvents(nxt_event);
@@ -315,6 +335,11 @@ void Window::draw(const sf::Text& text) {
 }
 
 
+void Window::draw(const sf::RectangleShape& rect) {
+	render_window.draw(rect);
+}
+
+
 void Window::draw(Text& text) {
 	draw(text.getSfText());
 }
@@ -333,12 +358,15 @@ void Window::draw(Button& button, const bool isHovered) {
 void Window::draw(Scene& scene) {
 	Scene::DrawableList list = scene.getDrawableList();
 
-	for (int rank = 0, sprite_idx = 0, text_idx = 0; sprite_idx < list.sprites.size() || text_idx < list.texts.size(); rank++) {
+	for (int rank = 0, sprite_idx = 0, text_idx = 0, rect_idx = 0; sprite_idx < list.sprites.size() || text_idx < list.texts.size(); rank++) {
 		for (; sprite_idx < list.sprites.size() && list.sprites[sprite_idx].rank == rank; sprite_idx++) {
 			draw(*list.sprites[sprite_idx].sprite);
 		}
 		for (; text_idx < list.texts.size() && list.texts[text_idx].rank == rank; text_idx++) {
 			draw(*list.texts[text_idx].text);
+		}
+		for (; rect_idx < list.rects.size() && list.rects[rect_idx].rank == rank; rect_idx++) {
+			draw(*list.rects[rect_idx].rect);
 		}
 	}
 }

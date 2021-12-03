@@ -93,6 +93,7 @@ int main() {
 
     (*window)->initializeMenuScene();
     (*window)->initializeLeaderboardScene();
+    (*window)->initializeDifficultiesScene();
     (*window)->initializePlayingScene(30, 30);
 
     (*window)->createWindow();
@@ -102,7 +103,7 @@ int main() {
         sf::Event event;
 
         while ((*window)->render_window.pollEvent(event)) {
-            change |= (*window)->handleSfEvent(event);
+            change |= (*window)->handleSfEvents(event);
         }
 
         if (change) {

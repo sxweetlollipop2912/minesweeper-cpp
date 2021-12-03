@@ -28,13 +28,13 @@ Result Graphics::loadFont(sf::Font& font, const std::string& font_path) {
 }
 
 
-void Graphics::createText(sf::Text& text, const std::string& content, const sf::Font& font, const int size, const sf::Color& color, const sf::Text::Style& style, const sf::Vector2f pos_top_left) {
+void Graphics::createText(sf::Text& text, const std::string& content, const sf::Font& font, const int size, const sf::Color& color, const sf::Text::Style& style, const sf::Vector2f top_left_pos) {
     text.setFont(font);
     text.setString(content);
     text.setCharacterSize(size);
     text.setFillColor(color);
     text.setStyle(style);
-    text.setPosition(pos_top_left);
+    text.setPosition(top_left_pos);
 }
 
 

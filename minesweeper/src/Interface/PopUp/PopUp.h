@@ -53,5 +53,5 @@ public:
 		PositionPopUp(window_size);
 	}
 
-	DrawableList getDrawableList(const bool isFocusing = false, const int rank = 0) override;
+	DrawableList getDrawableList(const bool is_focusing = false, const int rank = 0) override;
 };

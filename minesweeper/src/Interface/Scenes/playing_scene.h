@@ -28,9 +28,8 @@ private:
 	// OVERRIDING SCENE METHODS
 
 	// Call on a mouse button event.
-	// Returns true if there are changes in the scene.
-	// Otherwise, returns false
-	GameEvent handleMouseButtonEvent(const MouseActionType mouse_type) override;
+	// Returns corresponding GameEvent.
+	GameEvent onMouseButtonReleased(const MouseActionType mouse_type) override;
 	// Changes window graphics base on new mouse position.
 	// Returns true if there are changes in the scene.
 	// Otherwise, returns false
@@ -41,7 +40,9 @@ public:
 		if (!checkBoardSize(window_size, board_rows, board_cols))
 			return;
 
-		next_scene[GameEvent::Playing] = SceneType::Playing;
+		next_scene[GameEvent::AutoOpenCell] = SceneType::Playing;
+		next_scene[GameEvent::OpenCell] = SceneType::Playing;
+		next_scene[GameEvent::FlagCell] = SceneType::Playing;
 		next_scene[GameEvent::QuitToMenu] = SceneType::Menu;
 
 		buttons_event[STR_RETURN_BUTTON] = GameEvent::QuitToMenu;
@@ -68,7 +69,7 @@ public:
 		{
 			Text& timer = texts[STR_TIMER];
 			timer.setText(timerStr(0, 0, 0));
-			timer.setFontSize(DEFAULT_FONT_SIZE);
+			timer.setFontSize(DEFAULT_LARGE_FONT_SIZE);
 
 			sf::Vector2f TL_timer;
 			TL_timer.x = window_size.width * POS_COEF_TIMER.x;
@@ -78,7 +79,7 @@ public:
 
 			Text& record = texts[STR_RECORD];
 			record.setText(recordStr(0, 0, 0));
-			record.setFontSize(DEFAULT_FONT_SIZE);
+			record.setFontSize(DEFAULT_LARGE_FONT_SIZE);
 
 			sf::Vector2f TL_record;
 			TL_record.x = window_size.width * POS_COEF_RECORD.x;
@@ -92,7 +93,7 @@ public:
 			return_button.setImage(TextureType::ButtonDefault);
 			return_button.setPadding(sf::Vector2f(DEFAULT_PADDING_SIZE.x / 2, DEFAULT_PADDING_SIZE.y / 2));
 			return_button.label.setText("Back to Menu");
-			return_button.label.setFontSize(DEFAULT_FONT_SIZE / 1.5);
+			return_button.label.setFontSize(DEFAULT_SMALL_FONT_SIZE);
 			return_button.alignImageAndText();
 		}
 	}
@@ -103,5 +104,5 @@ public:
 	// Checks if number of rows and cols of a board is valid for the window size.
 	static bool checkBoardSize(const sf::VideoMode& window_size, const int board_rows, const int board_cols);
 
-	DrawableList getDrawableList(const bool isFocusing = false, const int rank = 0) override;
+	DrawableList getDrawableList(const bool is_focusing = false, const int rank = 0) override;
 };
