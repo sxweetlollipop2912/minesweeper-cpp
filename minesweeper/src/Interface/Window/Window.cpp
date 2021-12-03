@@ -53,6 +53,12 @@ void Window::initializeLeaderboardScene() {
 }
 
 
+void Window::initializeDifficultiesScene() {
+	auto difficulties_scene = std::shared_ptr<DifficultiesScene>(new DifficultiesScene(window_size));
+	map_scene[SceneType::Difficulties] = std::static_pointer_cast<Scene>(difficulties_scene);
+}
+
+
 void Window::initializePlayingScene(const int board_rows = -1, const int board_cols = -1) {
 	auto current_playing_scene = std::static_pointer_cast<PlayingScene>(map_scene[SceneType::Playing]);
 	int rows = board_rows < 0 ? current_playing_scene->getBoardRows() : board_rows;
@@ -137,7 +143,17 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 		}
 		case GameEvent::NewGame:
 		{
-			current_scene_type = SceneType::Playing;
+			if (getCurrentSceneType() == SceneType::Difficulties) {
+				auto scene = std::static_pointer_cast<DifficultiesScene>(getCurrentScene());
+				
+				current_interface_info.new_row = std::min(scene->getCurrentRow(), scene->getCurrentCol());
+				current_interface_info.new_col = std::max(scene->getCurrentRow(), scene->getCurrentCol());
+
+				std::cout << "ROW " << current_interface_info.new_row << '\n';
+				std::cout << "COL " << current_interface_info.new_col << '\n';
+			}
+
+			// Comms::interfaceInfoSending(current_interface_info);
 			// Send new game event to back end.
 			// Update board.
 
@@ -319,6 +335,11 @@ void Window::draw(const sf::Text& text) {
 }
 
 
+void Window::draw(const sf::RectangleShape& rect) {
+	render_window.draw(rect);
+}
+
+
 void Window::draw(Text& text) {
 	draw(text.getSfText());
 }
@@ -337,12 +358,15 @@ void Window::draw(Button& button, const bool isHovered) {
 void Window::draw(Scene& scene) {
 	Scene::DrawableList list = scene.getDrawableList();
 
-	for (int rank = 0, sprite_idx = 0, text_idx = 0; sprite_idx < list.sprites.size() || text_idx < list.texts.size(); rank++) {
+	for (int rank = 0, sprite_idx = 0, text_idx = 0, rect_idx = 0; sprite_idx < list.sprites.size() || text_idx < list.texts.size(); rank++) {
 		for (; sprite_idx < list.sprites.size() && list.sprites[sprite_idx].rank == rank; sprite_idx++) {
 			draw(*list.sprites[sprite_idx].sprite);
 		}
 		for (; text_idx < list.texts.size() && list.texts[text_idx].rank == rank; text_idx++) {
 			draw(*list.texts[text_idx].text);
+		}
+		for (; rect_idx < list.rects.size() && list.rects[rect_idx].rank == rank; rect_idx++) {
+			draw(*list.rects[rect_idx].rect);
 		}
 	}
 }

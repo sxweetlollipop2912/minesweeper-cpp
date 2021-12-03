@@ -85,6 +85,17 @@ public:
 				this->rank = rank;
 			}
 		};
+		struct DrawableRect {
+			std::shared_ptr<sf::RectangleShape> rect;
+
+			// higher rank drawables overwrite lower ones.
+			int rank;
+
+			DrawableRect(const std::shared_ptr<sf::RectangleShape> rect = nullptr, const int rank = 0) {
+				this->rect = rect;
+				this->rank = rank;
+			}
+		};
 		struct DrawableText {
 			std::shared_ptr<sf::Text> text;
 
@@ -99,10 +110,12 @@ public:
 
 		std::vector <DrawableSprite> sprites;
 		std::vector <DrawableText> texts;
+		std::vector <DrawableRect> rects;
 
 		DrawableList() {
 			sprites.clear();
 			texts.clear();
+			rects.clear();
 		}
 
 		void append(const DrawableList& list) {
@@ -111,6 +124,9 @@ public:
 			}
 			for (auto e : list.texts) {
 				texts.push_back(e);
+			}
+			for (auto e : list.rects) {
+				rects.push_back(e);
 			}
 		}
 	};

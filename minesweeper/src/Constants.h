@@ -2,10 +2,18 @@
 
 #include <SFML/Graphics.hpp>
 
-// GAME_INFO
+// GAME
 const std::string TITLE = "minesweeper";
+const int MIN_COLUMN = 9;
 const int MAX_COLUMN = 30;
+const int MIN_ROW = 9;
 const int MAX_ROW = 30;
+const int BEGINNER_ROW = 9;
+const int BEGINNER_COL = 9;
+const int INTERMEDIATE_ROW = 16;
+const int INTERMEDIATE_COL = 16;
+const int EXPERT_ROW = 16;
+const int EXPERT_COL = 30;
 const int MAX_RECORDS_PER_DIFF = 3;
 
 
@@ -39,6 +47,11 @@ const float POS_Y_COEF_LOAD_GAME_BUTTON = 3 / (float)7;
 const float POS_Y_COEF_NEW_GAME_BUTTON = POS_Y_COEF_LOAD_GAME_BUTTON + SPACE_BETWEEN_BUTTONS_Y_COEF;
 const float POS_Y_COEF_LEADERBOARD_BUTTON = POS_Y_COEF_NEW_GAME_BUTTON + SPACE_BETWEEN_BUTTONS_Y_COEF;
 const float POS_Y_COEF_QUIT_BUTTON = POS_Y_COEF_LEADERBOARD_BUTTON + SPACE_BETWEEN_BUTTONS_Y_COEF;
+// DIFFICULTIES SCENE
+const float POS_Y_COEF_DIFF_BUTTON = 3 / (float)12;
+const float POS_Y_COEF_CONTINUE_BUTTON = 4 / (float)6;
+const float POS_Y_COEF_SLIDER_ROW = 3 / (float)7;
+const float POS_Y_COEF_SLODER_COL = 4 / (float)7;
 // BOARD
 const int DEFAULT_CELL_SIZE = 30;
 const float DEFAULT_CELL_AREA = DEFAULT_CELL_SIZE;// + (DEFAULT_CELL_SIZE / (float)7);

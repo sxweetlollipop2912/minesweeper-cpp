@@ -20,11 +20,11 @@ private:
 public:
 	MenuScene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode()) : Scene(SceneType::Menu) {
 		next_scene[GameEvent::LoadGame] = SceneType::Playing;
-		next_scene[GameEvent::NewGame] = SceneType::Playing;
+		next_scene[GameEvent::ShowDifficulties] = SceneType::Difficulties;
 		next_scene[GameEvent::ShowLeaderboard] = SceneType::Leaderboard;
 
 		buttons_event[STR_LOAD_GAME] = GameEvent::LoadGame;
-		buttons_event[STR_NEW_GAME] = GameEvent::NewGame;
+		buttons_event[STR_NEW_GAME] = GameEvent::ShowDifficulties;
 		buttons_event[STR_LEADERBOARD] = GameEvent::ShowLeaderboard;
 		buttons_event[STR_QUIT_GAME] = GameEvent::QuitGame;
 

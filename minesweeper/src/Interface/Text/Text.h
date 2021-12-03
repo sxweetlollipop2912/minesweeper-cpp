@@ -73,7 +73,9 @@ public:
 	// Sets top-left position of text on Y-axis.
 	virtual void setTopLeftPosY(const float& top_left_pos_y);
 	// Sets font size.
-	void setFontSize(int size);
+	void setFontSize(const int size);
+	// Sets text color.
+	void setTextColor(const sf::Color& color);
 
 	// Centers text on X-axis.
 	// > Returns Result::failure if text is wider than screen,

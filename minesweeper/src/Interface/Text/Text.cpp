@@ -105,10 +105,15 @@ void Text::setTopLeftPosY(const float& top_left_pos_y) {
 }
 
 
-void Text::setFontSize(int size) {
+void Text::setFontSize(const int size) {
     font_size = size;
 
     calSpaceTaken();
+}
+
+
+void Text::setTextColor(const sf::Color& color) {
+    text_color = color;
 }
 
 

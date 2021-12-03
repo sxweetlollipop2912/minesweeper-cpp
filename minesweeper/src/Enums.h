@@ -19,6 +19,7 @@ enum class GameEvent {
 	QuitToMenu,
 	OpenPopUp,
 	ClosePopUp,
+	ShowDifficulties,
 	NewGame,
 	LoadGame,
 	ShowLeaderboard,
@@ -34,6 +35,7 @@ enum class GameEvent {
 
 enum class SceneType {
 	Menu,
+	Difficulties,
 	Playing,
 	Leaderboard,
 	PopUp,

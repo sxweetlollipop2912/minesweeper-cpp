@@ -81,6 +81,12 @@
     <ClCompile Include="src\Interface\Scenes\leaderboard_scene.cpp">
       <Filter>Interface\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Interface\Slider\Slider.cpp">
+      <Filter>Interface\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Interface\Scenes\difficulties_scene.cpp">
+      <Filter>Interface\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Interface\Scenes\playing_scene.h">
@@ -135,6 +141,12 @@
       <Filter>main</Filter>
     </ClInclude>
     <ClInclude Include="src\Interface\Scenes\leaderboard_scene.h">
+      <Filter>Interface\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Interface\Slider\Slider.h">
+      <Filter>Interface\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Interface\Scenes\difficulties_scene.h">
       <Filter>Interface\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -14,6 +14,7 @@
 #include "../Scenes/menu_scene.h"
 #include "../Scenes/playing_scene.h"
 #include "../Scenes/leaderboard_scene.h"
+#include "../Scenes/difficulties_scene.h"
 #include "../../Comms/Comms.h"
 
 
@@ -60,6 +61,8 @@ private:
 	void draw(const sf::Sprite& sprite);
 	// Draws a sf::Text on the window.
 	void draw(const sf::Text& text);
+	// Draws a RectangleShape on window.
+	void draw(const sf::RectangleShape& rect);
 	// Draws a text on the window.
 	void draw(Text& text);
 	// Draws a button on the window.
@@ -128,6 +131,8 @@ public:
 	void initializeMenuScene();
 	// Initializes/Resets menu scene for window.
 	void initializeLeaderboardScene();
+	// Initializes/Resets showing difficulties scene for window.
+	void initializeDifficultiesScene();
 	// Initializes/Resets playing scene for window.
 	void initializePlayingScene(const int board_rows, const int board_cols);
 
