@@ -131,35 +131,24 @@ SceneType Scene::getNextScene(const GameEvent game_event) const {
 
 Scene::DrawableList Scene::getDrawableList(const bool is_focusing, const int rank) {
 	DrawableList list;
-	std::mutex listLock;
 
 	bool is_focusing_on_current = is_focusing;
-	if (pop_up) 
+	if (pop_up)
 		is_focusing_on_current = false;
 
-	auto t1 = std::thread([&]() {
-		for (auto e : buttons) {
-			if (is_focusing_on_current && e.first == hovered_button) {
-				list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(e.second.getHoveredSprite()), rank));
-			}
-			else {
-				list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(e.second.getDefaultSprite()), rank));
-			}
-
-			std::unique_lock<std::mutex>(listLock);
-			list.texts.push_back(DrawableList::DrawableText(std::make_shared<sf::Text>(e.second.label.getSfText()), rank));
+	for (auto e : buttons) {
+		if (is_focusing_on_current && e.first == hovered_button) {
+			list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(e.second.getHoveredSprite()), rank));
 		}
-	});
-
-	auto t2 = std::thread([&]() {
-		for (auto e : texts) {
-			std::unique_lock<std::mutex>(listLock);
-			list.texts.push_back(DrawableList::DrawableText(std::make_shared<sf::Text>(e.second.getSfText()), rank));
+		else {
+			list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(e.second.getDefaultSprite()), rank));
 		}
-	});
+		list.texts.push_back(DrawableList::DrawableText(std::make_shared<sf::Text>(e.second.label.getSfText()), rank));
+	}
 
-	t1.join();
-	t2.join();
+	for (auto e : texts) {
+		list.texts.push_back(DrawableList::DrawableText(std::make_shared<sf::Text>(e.second.getSfText()), rank));
+	}
 
 	// Pop-up drawable objects will overwrite those of current scene.
 	if (pop_up) {
