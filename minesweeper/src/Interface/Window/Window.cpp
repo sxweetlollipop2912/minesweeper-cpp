@@ -59,10 +59,14 @@ void Window::initializeDifficultiesScene() {
 }
 
 
-void Window::initializePlayingScene(const int board_rows = -1, const int board_cols = -1) {
-	auto current_playing_scene = std::static_pointer_cast<PlayingScene>(map_scene[SceneType::Playing]);
-	int rows = board_rows < 0 ? current_playing_scene->getBoardRows() : board_rows;
-	int cols = board_cols < 0 ? current_playing_scene->getBoardCols() : board_cols;
+void Window::initializePlayingScene(const int board_rows, const int board_cols) {
+	int rows = std::max(board_rows, 0);
+	int cols = std::max(board_cols, 0);
+	if ((board_rows < 0 || board_cols < 0) && map_scene.find(SceneType::Playing) != map_scene.end()) {
+		auto current_playing_scene = std::dynamic_pointer_cast<PlayingScene>(map_scene.at(SceneType::Playing));
+		rows = current_playing_scene->getBoardRows();
+		cols = current_playing_scene->getBoardCols();
+	}
 
 	auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, rows, cols));
 	map_scene[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
@@ -144,7 +148,7 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 		case GameEvent::NewGame:
 		{
 			if (getCurrentSceneType() == SceneType::Difficulties) {
-				auto scene = std::static_pointer_cast<DifficultiesScene>(getCurrentScene());
+				auto scene = std::dynamic_pointer_cast<DifficultiesScene>(getCurrentScene());
 				
 				current_interface_info.new_row = std::min(scene->getCurrentRow(), scene->getCurrentCol());
 				current_interface_info.new_col = std::max(scene->getCurrentRow(), scene->getCurrentCol());

@@ -134,7 +134,7 @@ public:
 	// Initializes/Resets showing difficulties scene for window.
 	void initializeDifficultiesScene();
 	// Initializes/Resets playing scene for window.
-	void initializePlayingScene(const int board_rows, const int board_cols);
+	void initializePlayingScene(const int board_rows = -1, const int board_cols = -1);
 
 	// Draws current scene.
 	void drawCurrentScene();
