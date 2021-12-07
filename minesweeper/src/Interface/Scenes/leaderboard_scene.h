@@ -66,6 +66,20 @@ public:
 			expert_col.setFontSize(DEFAULT_TITLE_FONT_SIZE / 3.5);
 			expert_col.setTopLeftPos(sf::Vector2f(this->window_size.width - padding_x - expert_col.getWidth(), pos_y_col));
 
+
+			/*PLAYER player;
+			player.timePlay.hours = 1;
+			player.timePlay.minutes = 23;
+			player.timePlay.seconds = 46;
+
+			Records records;
+			for (int i = 0; i < 3; i++) {
+				records.beginner.push_back(player);
+				records.intermediate.push_back(player);
+				records.expert.push_back(player);
+			}
+
+			updateRecords(std::make_shared<Records>(records));*/
 			updateRecords(std::make_shared<Records>());
 		}
 

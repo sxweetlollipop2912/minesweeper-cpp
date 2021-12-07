@@ -51,15 +51,18 @@ void LeaderboardScene::updateRecords(const std::shared_ptr<Records> records) {
 	for (int i = 0; i < MAX_RECORDS_PER_DIFF; i++) {
 		if (i < records->beginner.size()) {
 			PLAYER player = records->beginner[i];
-			beginner += timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
+			beginner += std::to_string(i + 1) + ". " +
+				timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
 		}
 		if (i < records->intermediate.size()) {
 			PLAYER player = records->intermediate[i];
-			inter += timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
+			inter += "   " + std::to_string(i + 1) + ". " +
+				timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
 		}
 		if (i < records->expert.size()) {
 			PLAYER player = records->expert[i];
-			expert += timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
+			expert += std::to_string(i + 1) + ". " +
+				timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
 		}
 	}
 
