@@ -7,6 +7,7 @@
 
 #include "../Scenes/scene.h"
 #include "../Board/Board.h"
+#include "../../Structs.h"
 
 
 class PlayingScene : public Scene {
@@ -14,7 +15,6 @@ class PlayingScene : public Scene {
 
 private:
 	const std::string STR_TIMER = "timer";
-	const std::string STR_RECORD = "record";
 
 	const std::string STR_RETURN_BUTTON = "return";
 
@@ -22,7 +22,8 @@ private:
 
 
 	std::string timerStr(int h, int m, int s);
-	std::string recordStr(int h, int m, int s);
+
+	void updateTimer(const Timer timer);
 
 
 	// OVERRIDING SCENE METHODS
@@ -65,7 +66,7 @@ public:
 			board = Board(board_rows, board_cols, TL_board);
 		}
 
-		// Timer & Record
+		// Timer
 		{
 			Text& timer = texts[STR_TIMER];
 			timer.setText(timerStr(0, 0, 0));
@@ -75,16 +76,6 @@ public:
 			TL_timer.x = window_size.width * POS_COEF_TIMER.x;
 			TL_timer.y = window_size.height * POS_COEF_TIMER.y;
 			timer.setTopLeftPos(TL_timer);
-
-
-			Text& record = texts[STR_RECORD];
-			record.setText(recordStr(0, 0, 0));
-			record.setFontSize(DEFAULT_LARGE_FONT_SIZE);
-
-			sf::Vector2f TL_record;
-			TL_record.x = window_size.width * POS_COEF_RECORD.x;
-			TL_record.y = window_size.height * POS_COEF_RECORD.y;
-			record.setTopLeftPos(TL_record);
 		}
 
 		// Buttons
