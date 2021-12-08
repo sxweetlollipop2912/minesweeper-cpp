@@ -121,6 +121,10 @@ int PlayingScene::getBoardCols() const {
 	return board.getCols();
 }
 
+Position PlayingScene::getLastPressedCell() const {
+	return board.getLastPressedCell();
+}
+
 
 bool PlayingScene::checkBoardSize(const sf::VideoMode& window_size, const int board_rows, const int board_cols) {
 	sf::Vector2f top_left_board_area;
