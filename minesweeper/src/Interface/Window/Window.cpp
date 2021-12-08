@@ -59,10 +59,14 @@ void Window::initializeDifficultiesScene() {
 }
 
 
-void Window::initializePlayingScene(const int board_rows = -1, const int board_cols = -1) {
-	auto current_playing_scene = std::static_pointer_cast<PlayingScene>(scenes[SceneType::Playing]);
-	int rows = board_rows < 0 ? current_playing_scene->getBoardRows() : board_rows;
-	int cols = board_cols < 0 ? current_playing_scene->getBoardCols() : board_cols;
+void Window::initializePlayingScene(const int board_rows, const int board_cols) {
+	int rows = std::max(board_rows, 0);
+	int cols = std::max(board_cols, 0);
+	if ((board_rows < 0 || board_cols < 0) && scenes.find(SceneType::Playing) != scenes.end()) {
+		auto current_playing_scene = std::dynamic_pointer_cast<PlayingScene>(scenes.at(SceneType::Playing));
+		rows = current_playing_scene->getBoardRows();
+		cols = current_playing_scene->getBoardCols();
+	}
 
 	auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, rows, cols));
 	scenes[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
@@ -155,11 +159,6 @@ void Window::updateGameInfo(const Comms::GameInfo info) {
 		default:
 			break;
 	}
-
-	last_game_event = current_interface_info.game_event;
-	current_scene_type = current_interface_info.current_scene;
-
-	getCurrentScene()->changeMousePosition(pos_mouse);
 }
 
 
@@ -188,17 +187,25 @@ bool Window::handleSfEvents(const sf::Event& event) {
 
 
 bool Window::handleGameEvents(const GameEvent game_event) {
+	bool send_interface_info = false;
+
 	switch (game_event) {
 		case GameEvent::QuitGame:
 		{
+			send_interface_info = true;
+
 			break;
 		}
 		case GameEvent::QuitToMenu:
 		{
+			send_interface_info = true;
+
 			break;
 		}
 		case GameEvent::NewGame:
 		{
+			send_interface_info = true;
+
 			auto scene = std::dynamic_pointer_cast<DifficultiesScene>(getCurrentScene());
 
 			current_interface_info.new_row = std::min(scene->getCurrentRow(), scene->getCurrentCol());
@@ -211,16 +218,22 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 		}
 		case GameEvent::LoadGame:
 		{
+			send_interface_info = true;
+
 			break;
 		}
 		case GameEvent::ShowLeaderboard:
 		{
+			send_interface_info = true;
+
 			break;
 		}
 		case GameEvent::OpenCell:
 		case GameEvent::FlagCell:
 		case GameEvent::AutoOpenCell:
 		{
+			send_interface_info = true;
+
 			auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
 
 			current_interface_info.cell_pos = scene->getLastPressedCell();
@@ -242,23 +255,31 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 	if (game_event != GameEvent::Unknown) {
 		auto scene = getCurrentScene();
 
-		scene->changeMousePosition(pos_mouse);
+		if (game_event == GameEvent::ChangesInScene) {
+			scene->changeMousePosition(pos_mouse);
+		}
 
-		if (game_event != GameEvent::ChangesInScene) {
-			// Postpones changing current_scene_type to the next scene
-			// Postpones changing last_game_event
-			// to wait for response from GAME.
-			auto scene_type = current_scene_type;
-
+		else {
+			auto nxt_scene_type = current_scene_type;
 			if (scene->getNextScene(game_event) != SceneType::Unkown) {
-				scene_type = scene->getNextScene(game_event);
+				nxt_scene_type = scene->getNextScene(game_event);
 			}
 
-			current_interface_info.game_event = game_event;
-			current_interface_info.current_scene = scene_type;
+			if (send_interface_info) {
+				// Postpones changing current_scene_type to the next scene
+				// Postpones changing last_game_event
+				// to wait for response from GAME.
+				current_interface_info.game_event = game_event;
+				current_interface_info.current_scene = nxt_scene_type;
 
-			// Sends to GAME.
-			Comms::interfaceInfoSending(current_interface_info);
+				// Sends to GAME.
+				Comms::interfaceInfoSending(current_interface_info);
+			}
+
+			last_game_event = game_event;
+			current_scene_type = nxt_scene_type;
+
+			getCurrentScene()->changeMousePosition(pos_mouse);
 		}
 	}
 
