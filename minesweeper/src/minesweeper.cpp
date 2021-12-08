@@ -1,6 +1,8 @@
 ﻿// Run with configuration: release, x64
 
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -123,5 +125,8 @@ int main() {
         }
 
         change = false;
+
+        // Limits frame per sec to 60.
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 60));
     }
 }
