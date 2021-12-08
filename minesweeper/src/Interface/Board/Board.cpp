@@ -98,6 +98,11 @@ int Board::getCols() const {
 }
 
 
+Position Board::getLastPressedCell() const {
+	return last_pressed_cell;
+}
+
+
 bool Board::isValidPos(const Position& pos) const {
 	return pos.r >= 0 && pos.r < number_of_rows&& pos.c >= 0 && pos.c < number_of_cols;
 }

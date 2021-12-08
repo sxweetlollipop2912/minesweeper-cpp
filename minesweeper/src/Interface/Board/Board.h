@@ -27,6 +27,8 @@ private:
 	std::vector <std::vector <Cell> > board;
 	int number_of_rows;
 	int number_of_cols;
+
+	Position last_pressed_cell;
 	Position hovered_cell;
 
 	// Assigns all elements in board to default value.
@@ -61,6 +63,7 @@ public:
 		number_of_rows = rows;
 		number_of_cols = cols;
 
+		last_pressed_cell = Position(-1, -1);
 		hovered_cell = Position(-1, -1);
 
 		board.resize(number_of_rows);
@@ -74,6 +77,7 @@ public:
 
 	int getRows() const;
 	int getCols() const;
+	Position getLastPressedCell() const;
 
 	// Checks if a coordinate is valid on this board.
 	bool isValidPos(const Position& pos) const;

@@ -101,6 +101,8 @@ public:
 
 	int getBoardRows() const;
 	int getBoardCols() const;
+	Position getLastPressedCell() const;
+
 	// Checks if number of rows and cols of a board is valid for the window size.
 	static bool checkBoardSize(const sf::VideoMode& window_size, const int board_rows, const int board_cols);
 
