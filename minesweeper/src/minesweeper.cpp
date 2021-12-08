@@ -1,6 +1,8 @@
 ﻿// Run with configuration: release, x64
 
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -106,6 +108,8 @@ int main() {
             change |= (*window)->handleSfEvents(event);
         }
 
+        change |= (*window)->updatePerFrame();
+
         if (change) {
             (*window)->render_window.clear();
             (*window)->drawCurrentScene();
@@ -123,5 +127,8 @@ int main() {
         }
 
         change = false;
+
+        // Limits frame per sec to about 100.
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 100));
     }
 }

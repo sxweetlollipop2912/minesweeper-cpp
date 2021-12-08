@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <set>
 
 #include <SFML/Window.hpp>
 #include <SFML/Window.hpp>
@@ -23,7 +24,8 @@ class Window {
 	friend Result Comms::gameInfoSending(const GameInfo info);
 
 private:
-	std::map <SceneType, std::shared_ptr<Scene>> map_scene;
+	std::map <SceneType, std::shared_ptr<Scene>> scenes;
+	std::set <SceneType> constantly_changing_scenes;
 
 	Comms::GameInfo current_game_info;
 	Comms::InterfaceInfo current_interface_info;
@@ -46,8 +48,8 @@ private:
 		auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
 		auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, 0, 0));
 
-		map_scene[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
-		map_scene[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
+		scenes[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
+		scenes[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
 
 		current_scene_type = SceneType::Menu;
 		last_game_event = GameEvent::Unknown;
@@ -68,12 +70,12 @@ private:
 	// Draws a button on the window.
 	void draw(Button& button, const bool isHovered = false);
 
-	Result updateGameInfo(const Comms::GameInfo info);
-	// Returns true if there are changes in the scene.
+	void updateGameInfo(const Comms::GameInfo info);
+	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool handleGameEvents(const GameEvent game_event);
 	// Changes window graphics base on new mouse position.
-	// Returns true if there are changes in the scene.
+	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool changeMousePosition(const sf::Vector2i& pos);
 	// Sets current scene type.
@@ -81,11 +83,11 @@ private:
 
 	// Call upon a mouse button PRESS event.
 	// Cannot detect a DoubleLMB at this stage.
-	// Returns true if there are changes in the scene.
+	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vector2i& position);
 	// Call upon a mouse button RELEASE event.
-	// Returns true if there are changes in the scene.
+	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position);
 
@@ -114,7 +116,7 @@ public:
 	// Closes the window.
 	void closeWindow();
 	// Makes changes in the game according to sf::Event.
-	// Returns true if there are changes in the scene.
+	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool handleSfEvents(const sf::Event& event);
 
@@ -136,6 +138,10 @@ public:
 	// Initializes/Resets playing scene for window.
 	void initializePlayingScene(const int board_rows = -1, const int board_cols = -1);
 
+	// Call to update automatic features (i.e. timer while playing) at each frame.
+	// Returns true if there are visual changes.
+	// Otherwise, returns false
+	bool updatePerFrame();
 	// Draws current scene.
 	void drawCurrentScene();
 };

@@ -35,26 +35,9 @@ std::string PlayingScene::timerStr(int h, int m, int s) {
 }
 
 
-std::string PlayingScene::recordStr(int h, int m, int s) {
-	if (h < 0 || m < 0 || s < 0) return "record -1";
-
-	std::string str = "record ";
-	std::string s_h, s_m, s_s;
-
-	for (; h != 0; h /= 10) s_h += (char)('0' + (h % 10));
-	while (s_h.size() < 1) s_h += "0";
-	for (; m != 0; m /= 10) s_m += (char)('0' + (m % 10));
-	while (s_m.size() < 2) s_m += "0";
-	for (; s != 0; s /= 10) s_s += (char)('0' + (s % 10));
-	while (s_s.size() < 2) s_s += "0";
-
-	std::reverse(s_h.begin(), s_h.end());
-	std::reverse(s_m.begin(), s_m.end());
-	std::reverse(s_s.begin(), s_s.end());
-
-	str += s_h + ":" + s_m + ":" + s_s;
-
-	return str;
+void PlayingScene::updateTimer(const Timer new_timer) {
+	Text& timer = texts[STR_TIMER];
+	timer.setText(timerStr(new_timer.hours, new_timer.minutes, new_timer.seconds));
 }
 
 
@@ -119,6 +102,10 @@ int PlayingScene::getBoardRows() const {
 
 int PlayingScene::getBoardCols() const {
 	return board.getCols();
+}
+
+Position PlayingScene::getLastPressedCell() const {
+	return board.getLastPressedCell();
 }
 
 

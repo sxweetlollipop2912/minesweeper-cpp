@@ -33,8 +33,8 @@ GameEvent Window::getLastGameEvent() const {
 
 
 std::shared_ptr<Scene> Window::getCurrentScene() {
-	if (map_scene.find(current_scene_type) != map_scene.end()) {
-		return map_scene[current_scene_type];
+	if (scenes.find(current_scene_type) != scenes.end()) {
+		return scenes[current_scene_type];
 	}
 
 	return nullptr;
@@ -43,33 +43,35 @@ std::shared_ptr<Scene> Window::getCurrentScene() {
 
 void Window::initializeMenuScene() {
 	auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
-	map_scene[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
+	scenes[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
 }
 
 
 void Window::initializeLeaderboardScene() {
 	auto leaderboard_scene = std::shared_ptr<LeaderboardScene>(new LeaderboardScene(window_size));
-	map_scene[SceneType::Leaderboard] = std::static_pointer_cast<Scene>(leaderboard_scene);
+	scenes[SceneType::Leaderboard] = std::static_pointer_cast<Scene>(leaderboard_scene);
 }
 
 
 void Window::initializeDifficultiesScene() {
 	auto difficulties_scene = std::shared_ptr<DifficultiesScene>(new DifficultiesScene(window_size));
-	map_scene[SceneType::Difficulties] = std::static_pointer_cast<Scene>(difficulties_scene);
+	scenes[SceneType::Difficulties] = std::static_pointer_cast<Scene>(difficulties_scene);
 }
 
 
 void Window::initializePlayingScene(const int board_rows, const int board_cols) {
 	int rows = std::max(board_rows, 0);
 	int cols = std::max(board_cols, 0);
-	if ((board_rows < 0 || board_cols < 0) && map_scene.find(SceneType::Playing) != map_scene.end()) {
-		auto current_playing_scene = std::dynamic_pointer_cast<PlayingScene>(map_scene.at(SceneType::Playing));
+	if ((board_rows < 0 || board_cols < 0) && scenes.find(SceneType::Playing) != scenes.end()) {
+		auto current_playing_scene = std::dynamic_pointer_cast<PlayingScene>(scenes.at(SceneType::Playing));
 		rows = current_playing_scene->getBoardRows();
 		cols = current_playing_scene->getBoardCols();
 	}
 
 	auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, rows, cols));
-	map_scene[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
+	scenes[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
+
+	constantly_changing_scenes.insert(SceneType::Playing);
 }
 
 
@@ -97,10 +99,66 @@ void Window::closeWindow() {
 }
 
 
-Result Window::updateGameInfo(const Comms::GameInfo info) {
+void Window::updateGameInfo(const Comms::GameInfo info) {
 	current_game_info = info;
 
-	return Result::success;
+	switch (current_interface_info.game_event) {
+		case GameEvent::QuitToMenu:
+		{
+			initializeMenuScene();
+
+			break;
+		}
+		case GameEvent::NewGame:
+		case GameEvent::LoadGame:
+		{
+			initializePlayingScene();
+
+			auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
+			scene->board.updateBoard(current_game_info.cell_board, current_game_info.mine_board, 
+				current_game_info.board_row, current_game_info.board_col);
+
+			break;
+		}
+		case GameEvent::ShowLeaderboard:
+		{
+			initializeLeaderboardScene();
+
+			auto scene = std::dynamic_pointer_cast<LeaderboardScene>(getCurrentScene());
+			scene->updateRecords(current_game_info.records);
+
+			break;
+		}
+		case GameEvent::OpenCell:
+		case GameEvent::FlagCell:
+		case GameEvent::AutoOpenCell:
+		{
+			auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
+			scene->board.updateBoard(current_game_info.cell_board, current_game_info.mine_board, 
+				current_game_info.board_row, current_game_info.board_col);
+
+			break;
+		}
+		case GameEvent::Unknown: 
+		{
+			// From updatePerFrame() method.
+			if (constantly_changing_scenes.find(getCurrentSceneType()) != constantly_changing_scenes.end()) {
+				switch (getCurrentSceneType()) {
+				case SceneType::Playing:
+				{
+					auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
+					scene->updateTimer(current_game_info.current_timer);
+
+					break;
+				}
+				}
+			}
+
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 
@@ -129,94 +187,57 @@ bool Window::handleSfEvents(const sf::Event& event) {
 
 
 bool Window::handleGameEvents(const GameEvent game_event) {
+	bool send_interface_info = false;
+
 	switch (game_event) {
 		case GameEvent::QuitGame:
 		{
-			// Send quit game event to back end.
-			// End game.
+			send_interface_info = true;
 
 			break;
 		}
 		case GameEvent::QuitToMenu:
 		{
-			if (current_scene_type == SceneType::Playing) {
-				// Send quit game event to back end.
-			}
+			send_interface_info = true;
 
 			break;
 		}
 		case GameEvent::NewGame:
 		{
-			if (getCurrentSceneType() == SceneType::Difficulties) {
-				auto scene = std::dynamic_pointer_cast<DifficultiesScene>(getCurrentScene());
-				
-				current_interface_info.new_row = std::min(scene->getCurrentRow(), scene->getCurrentCol());
-				current_interface_info.new_col = std::max(scene->getCurrentRow(), scene->getCurrentCol());
+			send_interface_info = true;
 
-				std::cout << "ROW " << current_interface_info.new_row << '\n';
-				std::cout << "COL " << current_interface_info.new_col << '\n';
-			}
+			auto scene = std::dynamic_pointer_cast<DifficultiesScene>(getCurrentScene());
 
-			// Comms::interfaceInfoSending(current_interface_info);
-			// Send new game event to back end.
-			// Update board.
+			current_interface_info.new_row = std::min(scene->getCurrentRow(), scene->getCurrentCol());
+			current_interface_info.new_col = std::max(scene->getCurrentRow(), scene->getCurrentCol());
+
+			std::cout << "ROW " << current_interface_info.new_row << '\n';
+			std::cout << "COL " << current_interface_info.new_col << '\n';
 
 			break;
 		}
 		case GameEvent::LoadGame:
 		{
-			// Send load game event to back end.
-			// Update board.
+			send_interface_info = true;
 
 			break;
 		}
 		case GameEvent::ShowLeaderboard:
 		{
-			// Send load leaderboard to back end.
-			// Update leaderboard.
+			send_interface_info = true;
 
 			break;
 		}
 		case GameEvent::OpenCell:
-		{
-			// Send open action with coordinate on board to back end.
-			// Update board, check if won/lost.
-			bool won = false, lost = false;
-			if (won) {
-				handleGameEvents(GameEvent::Won);
-			}
-			else if (lost) {
-				handleGameEvents(GameEvent::Lost);
-			}
-			// Else, keep current scene (Playing).
-			break;
-		}
 		case GameEvent::FlagCell:
-		{
-			// Send flag action with coordinate on board to back end.
-			// Update board, check if won/lost.
-			bool won = false, lost = false;
-			if (won) {
-				handleGameEvents(GameEvent::Won);
-			}
-			else if (lost) {
-				handleGameEvents(GameEvent::Lost);
-			}
-			// Else, keep current scene (Playing).
-			break;
-		}
 		case GameEvent::AutoOpenCell:
 		{
-			// Send auto open action with coordinate on board to back end.
-			// Update board, check if won/lost.
-			bool won = false, lost = false;
-			if (won) {
-				handleGameEvents(GameEvent::Won);
-			}
-			else if (lost) {
-				handleGameEvents(GameEvent::Lost);
-			}
-			// Else, keep current scene (Playing).
+			send_interface_info = true;
+
+			auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
+
+			current_interface_info.cell_pos = scene->getLastPressedCell();
+
 			break;
 		}
 		case GameEvent::Won:
@@ -232,17 +253,34 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 	}
 
 	if (game_event != GameEvent::Unknown) {
-		if (game_event != GameEvent::ChangesInScene) {
-			last_game_event = game_event;
-		}
-
 		auto scene = getCurrentScene();
 
-		if (scene->getNextScene(game_event) != SceneType::Unkown) {
-			current_scene_type = scene->getNextScene(game_event);
+		if (game_event == GameEvent::ChangesInScene) {
+			scene->changeMousePosition(pos_mouse);
 		}
-		
-		getCurrentScene()->changeMousePosition(pos_mouse);
+
+		else {
+			auto nxt_scene_type = current_scene_type;
+			if (scene->getNextScene(game_event) != SceneType::Unkown) {
+				nxt_scene_type = scene->getNextScene(game_event);
+			}
+
+			if (send_interface_info) {
+				// Postpones changing current_scene_type to the next scene
+				// Postpones changing last_game_event
+				// to wait for response from GAME.
+				current_interface_info.game_event = game_event;
+				current_interface_info.current_scene = nxt_scene_type;
+
+				// Sends to GAME.
+				Comms::interfaceInfoSending(current_interface_info);
+			}
+
+			last_game_event = game_event;
+			current_scene_type = nxt_scene_type;
+
+			getCurrentScene()->changeMousePosition(pos_mouse);
+		}
 	}
 
 	return game_event != GameEvent::Unknown;
@@ -269,7 +307,7 @@ bool Window::onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vec
 	// Gets the next game event, if exists
 	GameEvent nxt_event = GameEvent::Unknown;
 	{
-		nxt_event = map_scene[current_scene_type]->onMouseButtonPressed(lock_mouse_button);
+		nxt_event = scenes[current_scene_type]->onMouseButtonPressed(lock_mouse_button);
 	}
 
 	return handleGameEvents(nxt_event);
@@ -317,10 +355,24 @@ bool Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Ve
 	// Gets the next game event, if exists
 	GameEvent nxt_event = GameEvent::Unknown;
 	{
-		nxt_event = map_scene[current_scene_type]->onMouseButtonReleased(type);
+		nxt_event = scenes[current_scene_type]->onMouseButtonReleased(type);
 	}
 
 	return handleGameEvents(nxt_event);
+}
+
+
+bool Window::updatePerFrame() {
+	if (constantly_changing_scenes.find(getCurrentSceneType()) != constantly_changing_scenes.end()) {
+		current_interface_info.game_event = GameEvent::Unknown;
+		current_interface_info.current_scene = getCurrentSceneType();
+
+		Comms::interfaceInfoSending(current_interface_info);
+
+		return true;
+	}
+
+	return false;
 }
 
 
