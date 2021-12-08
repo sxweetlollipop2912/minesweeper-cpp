@@ -68,12 +68,12 @@ private:
 	// Draws a button on the window.
 	void draw(Button& button, const bool isHovered = false);
 
-	Result updateGameInfo(const Comms::GameInfo info);
-	// Returns true if there are changes in the scene.
+	void updateGameInfo(const Comms::GameInfo info);
+	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool handleGameEvents(const GameEvent game_event);
 	// Changes window graphics base on new mouse position.
-	// Returns true if there are changes in the scene.
+	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool changeMousePosition(const sf::Vector2i& pos);
 	// Sets current scene type.
@@ -81,11 +81,11 @@ private:
 
 	// Call upon a mouse button PRESS event.
 	// Cannot detect a DoubleLMB at this stage.
-	// Returns true if there are changes in the scene.
+	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vector2i& position);
 	// Call upon a mouse button RELEASE event.
-	// Returns true if there are changes in the scene.
+	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position);
 
@@ -114,7 +114,7 @@ public:
 	// Closes the window.
 	void closeWindow();
 	// Makes changes in the game according to sf::Event.
-	// Returns true if there are changes in the scene.
+	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool handleSfEvents(const sf::Event& event);
 

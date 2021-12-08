@@ -46,7 +46,7 @@ protected:
 	// Returns corresponding GameEvent.
 	virtual GameEvent onMouseButtonPressed(const MouseActionType mouse_type);
 	// Changes window graphics base on new mouse position.
-	// Returns true if there are changes in the scene.
+	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	virtual bool changeMousePosition(const sf::Vector2i& pos);
 	// Spawn a PopUp in current Scene base on current GameEvent.

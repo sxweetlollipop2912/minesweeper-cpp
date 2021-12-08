@@ -93,7 +93,7 @@ void Window::closeWindow() {
 }
 
 
-Result Window::updateGameInfo(const Comms::GameInfo info) {
+void Window::updateGameInfo(const Comms::GameInfo info) {
 	current_game_info = info;
 
 	return Result::success;

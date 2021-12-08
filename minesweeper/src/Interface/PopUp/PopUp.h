@@ -26,7 +26,7 @@ private:
 	// OVERRIDING METHODS
 
 	// Changes window graphics base on new mouse position.
-	// Returns true if there are changes in the scene.
+	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool changeMousePosition(const sf::Vector2i& pos) override;
 
