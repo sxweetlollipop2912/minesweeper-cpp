@@ -9,15 +9,14 @@
 #include "../Structs.h"
 
 
+/// > INTERFACE: handles UI, graphical stuff, receives inputs from user then sends to GAME for processing.
+/// > GAME: handles logic, game data, processes user inputs sent from INTERFACE then sends game data back to INTERFACE for printing out on screen.
+/// > Whenever INTERFACE sends an InterfaceInfo, GAME must ALWAYS return a GameInfo, regardless of whether GAME has made any change or not.
 namespace Comms {
-	/// INTERFACE: handles UI, graphical stuff, receives inputs from user then sends to GAME for processing.
-	/// GAME: handles logic, game data, processes user inputs sent from INTERFACE then sends game data back to INTERFACE for printing out on screen.
-	
-
 	struct InterfaceInfo {
-		// This is a list a GameEvent that GAME should handle:
+		// This is a list a GameEvent that GAME should ONLY handle:
 		// > QuitGame:		quitting the game. Time to wrap up everything.
-		// > QuitToMenu:		quitting to menu. Time to wrap up things base on `current_scene`.
+		// > QuitToMenu:		quitting to menu. Time to wrap up things if current_scene is Playing.
 		// > NewGame:		create a new board and delete current save.
 		// > LoadGame:		load current saved game (board, flags left, timer).
 		// > ShowLeaderboard:	load leaderboard.
