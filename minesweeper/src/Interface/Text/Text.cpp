@@ -1,12 +1,6 @@
 #include <iostream>
 
-#include <SFML/Graphics.hpp>
-
 #include "Text.h"
-#include "../../Enums.h"
-#include "../GraphicsObject/GraphicsObject.h"
-#include "../ResourceVault/ResourceVault.h"
-#include "../Window/Window.h"
 
 
 void Text::calSpaceTaken() {

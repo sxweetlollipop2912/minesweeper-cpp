@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <algorithm>
 #include <map>
 #include <vector>
@@ -11,13 +10,11 @@
 #include "../Button/Button.h"
 #include "../Text/Text.h"
 #include "../../Constants.h"
+#include "../../Enums.h"
 
 
 class Scene {
 	friend class Window;
-	friend class MenuScene;
-	friend class PlayingScene;
-	friend class PopUp;
 
 protected:
 	const std::string STR_UNKNOWN = "unknown";
@@ -55,18 +52,7 @@ protected:
 	bool spawnPopUp(const GameEvent game_event);
 
 public:
-	Scene(const SceneType scene_type = SceneType::Unkown) {
-		this->scene_type = scene_type;
-
-		pop_up = nullptr;
-		buttons.clear();
-		texts.clear();
-		next_scene.clear();
-
-		buttons_event[STR_UNKNOWN] = GameEvent::Unknown;
-		hovered_button = STR_UNKNOWN;
-		pos_mouse = sf::Vector2i(-1, -1);
-	}
+	Scene(const SceneType scene_type = SceneType::Unkown);
 
 
 	// Returns SceneType::Unknown if no next scene corresponding with game_event is found.

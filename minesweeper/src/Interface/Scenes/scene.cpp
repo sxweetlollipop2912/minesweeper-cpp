@@ -1,16 +1,21 @@
 #include <iostream>
-#include <filesystem>
-#include <thread>
-#include <mutex>
-
-#include <SFML/System.hpp>
-#include <SFML/Graphics.hpp>
 
 #include "scene.h"
-#include "../Button/Button.h"
-#include "../Text/Text.h"
-#include "../../Constants.h"
 #include "../PopUp/PopUp.h"
+
+
+Scene::Scene(const SceneType scene_type) {
+	this->scene_type = scene_type;
+
+	pop_up = nullptr;
+	buttons.clear();
+	texts.clear();
+	next_scene.clear();
+
+	buttons_event[STR_UNKNOWN] = GameEvent::Unknown;
+	hovered_button = STR_UNKNOWN;
+	pos_mouse = sf::Vector2i(-1, -1);
+}
 
 
 void Scene::setWindowSize(const sf::VideoMode window_size) {

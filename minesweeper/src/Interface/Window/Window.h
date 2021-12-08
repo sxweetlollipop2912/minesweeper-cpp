@@ -3,10 +3,9 @@
 #include <map>
 #include <set>
 
-#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-#include "../../Enums.h"
 #include "../ResourceVault/ResourceVault.h"
 #include "../Button/Button.h"
 #include "../Text/Text.h"
@@ -17,6 +16,8 @@
 #include "../Scenes/leaderboard_scene.h"
 #include "../Scenes/difficulties_scene.h"
 #include "../../Comms/Comms.h"
+#include "../../Enums.h"
+#include "../../Constants.h"
 
 
 // This is a singleton.
@@ -40,22 +41,7 @@ private:
 
 	static Window* instance;
 
-	Window(const sf::VideoMode& window_size = sf::VideoMode(1500, 1000), const std::string& title = TITLE, const int window_style = sf::Style::Close) {
-		this->window_size = window_size;
-		this->title = title;
-		this->window_style = window_style;
-
-		auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
-		auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, 0, 0));
-
-		scenes[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
-		scenes[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
-
-		current_scene_type = SceneType::Menu;
-		last_game_event = GameEvent::Unknown;
-		lock_mouse_button = MouseActionType::Unknown;
-		pos_mouse = sf::Vector2i(-1, -1);
-	}
+	Window(const sf::VideoMode& window_size = sf::VideoMode(1500, 1000), const std::string& title = TITLE, const int window_style = sf::Style::Close);
 
 	// Draws a scene on the window.
 	void draw(Scene& scene);

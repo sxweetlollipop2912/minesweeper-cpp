@@ -5,8 +5,8 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "../Cell/Cell.h"
 #include "Position.h"
+#include "../Cell/Cell.h"
 #include "../Button/Button.h"
 #include "../../Enums.h"
 #include "../../Constants.h"
@@ -21,7 +21,6 @@ struct GameCell {
 
 class Board : public Button {
 	friend class PlayingScene;
-	friend class Window;
 
 private:
 	std::vector <std::vector <Cell> > board;
@@ -58,21 +57,7 @@ private:
 	void setTopLeftPos(const sf::Vector2f& top_left_pos) override;
 
 public:
-	Board(const int rows = 0, const int cols = 0, const sf::Vector2f top_left_pos = sf::Vector2f(0, 0)) {
-		this->top_left_pos = top_left_pos;
-		number_of_rows = rows;
-		number_of_cols = cols;
-
-		last_pressed_cell = Position(-1, -1);
-		hovered_cell = Position(-1, -1);
-
-		board.resize(number_of_rows);
-		for (int i = 0; i < number_of_rows; i++) {
-			board[i].resize(number_of_cols);
-		}
-
-		Board::setTopLeftPos(this->top_left_pos);
-	}
+	Board(const int rows = 0, const int cols = 0, const sf::Vector2f top_left_pos = sf::Vector2f(0, 0));
 
 
 	int getRows() const;

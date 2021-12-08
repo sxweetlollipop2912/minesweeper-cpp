@@ -52,16 +52,7 @@ private:
 	void reset();
 
 public:
-	Cell() : Button() {
-		button_at_state.clear();
-		setDefaultImages();
-
-		top_left_pos.x = top_left_pos.y = 0;
-
-		cell_type = CellType::Unknown;
-		cell_state = CellState::Closed;
-		cell_number = 0;
-	}
+	Cell();
 
 	// Returns CellType `type` of the cell.
 	CellType getType() const;

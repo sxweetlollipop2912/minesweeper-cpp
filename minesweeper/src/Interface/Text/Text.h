@@ -2,10 +2,10 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../../Enums.h"
-#include "../../Constants.h"
 #include "../GraphicsObject/GraphicsObject.h"
 #include "../ResourceVault/ResourceVault.h"
+#include "../../Enums.h"
+#include "../../Constants.h"
 
 
 class Text {

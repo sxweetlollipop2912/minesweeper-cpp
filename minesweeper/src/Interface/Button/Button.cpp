@@ -1,11 +1,15 @@
 #include <iostream>
 
-#include <SFML/Graphics.hpp>
-
 #include "Button.h"
-#include "../../Enums.h"
-#include "../ResourceVault/ResourceVault.h"
-#include "../GraphicsObject/GraphicsObject.h"
+
+
+Button::Button() {
+    texture_type = TextureType::Unknown;
+
+    top_left_pos = sf::Vector2f(0, 0);
+    padding = DEFAULT_PADDING_SIZE;
+    scale = sf::Vector2f(1, 1);
+}
 
 
 Result Button::equalizeButtonsSize(Button& button1, Button& button2) {

@@ -1,13 +1,18 @@
 #include <iostream>
-#include <map>
-
-#include <SFML/System.hpp>
-#include <SFML/Graphics.hpp>
 
 #include "Cell.h"
-#include "../Button/Button.h"
-#include "../../Enums.h"
-#include "../../Constants.h"
+
+
+Cell::Cell() {
+	button_at_state.clear();
+	setDefaultImages();
+
+	top_left_pos.x = top_left_pos.y = 0;
+
+	cell_type = CellType::Unknown;
+	cell_state = CellState::Closed;
+	cell_number = 0;
+}
 
 
 sf::Vector2f Cell::getScale() const {

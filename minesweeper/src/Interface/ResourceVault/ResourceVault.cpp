@@ -1,11 +1,13 @@
 #include <iostream>
 
 #include "ResourceVault.h"
-#include "../../Enums.h"
 
 
 std::map <TextureType, std::shared_ptr<sf::Texture>> ResourceVault::map_texture = {};
 std::map <FontType, std::shared_ptr<sf::Font>> ResourceVault::map_font = {};
+
+
+ResourceVault::ResourceVault() {}
 
 
 bool ResourceVault::findTexture(const TextureType type) {

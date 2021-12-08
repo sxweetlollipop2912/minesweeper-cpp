@@ -4,10 +4,10 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../../Enums.h"
-#include "../../Constants.h"
 #include "../GraphicsObject/GraphicsObject.h"
 #include "../Text/Text.h"
+#include "../../Enums.h"
+#include "../../Constants.h"
 
 
 // This is a singleton.

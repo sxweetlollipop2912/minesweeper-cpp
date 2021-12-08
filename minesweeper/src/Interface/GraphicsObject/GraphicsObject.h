@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include <SFML/Graphics.hpp>
 
 #include "../../Enums.h"
@@ -8,7 +10,7 @@
 
 class Graphics {
 public:
-	Graphics() {}
+	Graphics();
 
 	// Loads texture from an external image file to `texture` variable.
 	// > Returns `Result::failure` when image cannot be loaded from `img_path`,

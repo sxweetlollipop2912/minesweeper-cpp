@@ -2,10 +2,11 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "../GraphicsObject/GraphicsObject.h"
+#include "../ResourceVault/ResourceVault.h"
+#include "../Text/Text.h"
 #include "../../Enums.h"
 #include "../../Constants.h"
-#include "../GraphicsObject/GraphicsObject.h"
-#include "../Text/Text.h"
 
 
 // A button is basically an image, but with label and interactive.
@@ -26,13 +27,7 @@ public:
 	// - Button is positioned at (0, 0).
 	// - Default padding.
 	// - Empty image, image scale = 1.
-	Button() {
-		texture_type = TextureType::Unknown;
-
-		top_left_pos = sf::Vector2f(0, 0);
-		padding = DEFAULT_PADDING_SIZE;
-		scale = sf::Vector2f(1, 1);
-	}
+	Button();
 
 	// Equalizes 2 buttons' size, padding, font_size, and centers text in button's image.
 	// > Returns Result::failure if text is wider than screen,

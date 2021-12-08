@@ -1,6 +1,21 @@
 #include "Board.h"
-#include "Position.h"
-#include "../../Enums.h"
+
+
+Board::Board(const int rows, const int cols, const sf::Vector2f top_left_pos) {
+	this->top_left_pos = top_left_pos;
+	number_of_rows = rows;
+	number_of_cols = cols;
+
+	last_pressed_cell = Position(-1, -1);
+	hovered_cell = Position(-1, -1);
+
+	board.resize(number_of_rows);
+	for (int i = 0; i < number_of_rows; i++) {
+		board[i].resize(number_of_cols);
+	}
+
+	Board::setTopLeftPos(this->top_left_pos);
+}
 
 
 Result Board::setCellType(const Position& pos, const CellType type, const int number) {

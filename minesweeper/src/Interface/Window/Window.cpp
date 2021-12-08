@@ -1,14 +1,27 @@
 #include <iostream>
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-
 #include "Window.h"
-#include "../Board/Board.h"
-#include "../Scenes/leaderboard_scene.h"
 
 
 Window* Window::instance = nullptr;
+
+
+Window::Window(const sf::VideoMode& window_size, const std::string& title, const int window_style) {
+	this->window_size = window_size;
+	this->title = title;
+	this->window_style = window_style;
+
+	auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
+	auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, 0, 0));
+
+	scenes[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
+	scenes[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
+
+	setCurrentSceneType(SceneType::Menu);
+	last_game_event = GameEvent::Unknown;
+	lock_mouse_button = MouseActionType::Unknown;
+	pos_mouse = sf::Vector2i(-1, -1);
+}
 
 
 std::shared_ptr<Window*> Window::getInstance() {
@@ -33,8 +46,8 @@ GameEvent Window::getLastGameEvent() const {
 
 
 std::shared_ptr<Scene> Window::getCurrentScene() {
-	if (scenes.find(current_scene_type) != scenes.end()) {
-		return scenes[current_scene_type];
+	if (scenes.find(getCurrentSceneType()) != scenes.end()) {
+		return scenes.at(getCurrentSceneType());
 	}
 
 	return nullptr;
@@ -70,8 +83,6 @@ void Window::initializePlayingScene(const int board_rows, const int board_cols) 
 
 	auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, rows, cols));
 	scenes[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
-
-	constantly_changing_scenes.insert(SceneType::Playing);
 }
 
 
@@ -115,7 +126,7 @@ void Window::updateGameInfo(const Comms::GameInfo info) {
 			initializePlayingScene();
 
 			auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
-			scene->board.updateBoard(current_game_info.cell_board, current_game_info.mine_board, 
+			scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board, 
 				current_game_info.board_row, current_game_info.board_col);
 
 			break;
@@ -134,7 +145,7 @@ void Window::updateGameInfo(const Comms::GameInfo info) {
 		case GameEvent::AutoOpenCell:
 		{
 			auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
-			scene->board.updateBoard(current_game_info.cell_board, current_game_info.mine_board, 
+			scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board,
 				current_game_info.board_row, current_game_info.board_col);
 
 			break;
@@ -192,13 +203,17 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 	switch (game_event) {
 		case GameEvent::QuitGame:
 		{
-			send_interface_info = true;
+			if (getCurrentSceneType() == SceneType::Playing) {
+				send_interface_info = true;
+			}
 
 			break;
 		}
 		case GameEvent::QuitToMenu:
 		{
-			send_interface_info = true;
+			if (getCurrentSceneType() == SceneType::Playing) {
+				send_interface_info = true;
+			}
 
 			break;
 		}
@@ -260,13 +275,13 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 		}
 
 		else {
-			auto nxt_scene_type = current_scene_type;
+			auto nxt_scene_type = getCurrentSceneType();
 			if (scene->getNextScene(game_event) != SceneType::Unkown) {
 				nxt_scene_type = scene->getNextScene(game_event);
 			}
 
 			if (send_interface_info) {
-				// Postpones changing current_scene_type to the next scene
+				// Postpones changing current scene type to the next scene
 				// Postpones changing last_game_event
 				// to wait for response from GAME.
 				current_interface_info.game_event = game_event;
@@ -277,7 +292,7 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 			}
 
 			last_game_event = game_event;
-			current_scene_type = nxt_scene_type;
+			setCurrentSceneType(nxt_scene_type);
 
 			getCurrentScene()->changeMousePosition(pos_mouse);
 		}
@@ -307,7 +322,7 @@ bool Window::onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vec
 	// Gets the next game event, if exists
 	GameEvent nxt_event = GameEvent::Unknown;
 	{
-		nxt_event = scenes[current_scene_type]->onMouseButtonPressed(lock_mouse_button);
+		nxt_event = scenes.at(getCurrentSceneType())->onMouseButtonPressed(lock_mouse_button);
 	}
 
 	return handleGameEvents(nxt_event);
@@ -355,7 +370,7 @@ bool Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Ve
 	// Gets the next game event, if exists
 	GameEvent nxt_event = GameEvent::Unknown;
 	{
-		nxt_event = scenes[current_scene_type]->onMouseButtonReleased(type);
+		nxt_event = scenes.at(getCurrentSceneType())->onMouseButtonReleased(type);
 	}
 
 	return handleGameEvents(nxt_event);

@@ -1,9 +1,7 @@
-#include <string>
-
-#include <SFML/Graphics.hpp>
-
 #include "GraphicsObject.h"
-#include "../../Enums.h"
+
+
+Graphics::Graphics() {}
 
 
 Result Graphics::loadTextureFromFilepath(sf::Texture& texture, const std::string& img_path) {
@@ -38,34 +36,6 @@ void Graphics::createText(sf::Text& text, const std::string& content, const sf::
 }
 
 
-//Result Graphics::positionTextInRect(sf::Text& text, const int width, const int height) {
-//    int size = text.getString().getSize();
-//
-//    for (int space_1 = -1, space_2 = 0; space_2 < size; space_2++) {
-//        if (space_2 < 1 || text.getString()[space_2] != ' ')
-//            continue;
-//        if (text.findCharacterPos(space_2 - 1).x <= width)
-//            continue;
-//        if (space_1 == -1)
-//            return Result::failure;
-//
-//        std::string s = text.getString();
-//        // Deletes whitespace at space_1
-//        s.erase(s.begin() + space_1);
-//        // Inserts newline.
-//        s.insert(s.begin() + space_1, '\n');
-//        text.setString(s);
-//
-//        if (text.findCharacterPos(space_2 - 1).x > width || text.findCharacterPos(space_2 - 1).y > height)
-//            return Result::failure;
-//
-//        space_1 = space_2;
-//    }
-//
-//    return Result::success;
-//}
-
-
 std::string Graphics::trim(std::string s) {
     int l = 0, r = s.size();
     while (l < s.size() && s[l] == ' ') ++l;
@@ -80,13 +50,3 @@ std::string Graphics::trim(std::string s) {
 
     return s;
 }
-
-
-//std::string Graphics::normalizeStr(std::string s) {
-//    for (int i = 0; i < s.size(); i++) {
-//        if (s[i] == '\n') s[i] = ' ';
-//    }
-//    Graphics::trim(s);
-//    
-//    return s;
-//}

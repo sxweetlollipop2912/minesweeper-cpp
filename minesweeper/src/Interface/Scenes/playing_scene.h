@@ -1,13 +1,19 @@
 #pragma once
 
-#include <iostream>
+#include <algorithm>
+#include <string>
 
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "../Scenes/scene.h"
+#include "scene.h"
 #include "../Board/Board.h"
+#include "../Board/Position.h"
+#include "../Button/Button.h"
+#include "../Text/Text.h"
 #include "../../Structs.h"
+#include "../../Constants.h"
+#include "../../Enums.h"
 
 
 class PlayingScene : public Scene {
@@ -24,6 +30,12 @@ private:
 	std::string timerStr(int h, int m, int s);
 
 	void updateTimer(const Timer timer);
+	// Updates the grahics side of the board.
+	// Returns Result::success / Result::failure:
+	//	> success: board is successfully updated.
+	//	> failure: board has not been changed after calling this method.
+	// Regardless of the result, the board is up-to-date at return time.
+	Result updateBoard(const GameCell cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int rows, const int cols);
 
 
 	// OVERRIDING SCENE METHODS
@@ -37,57 +49,7 @@ private:
 	bool changeMousePosition(const sf::Vector2i& pos) override;
 
 public:
-	PlayingScene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode(), const int board_rows = 0, const int board_cols = 0) : Scene(SceneType::Playing) {
-		if (!checkBoardSize(window_size, board_rows, board_cols))
-			return;
-
-		next_scene[GameEvent::AutoOpenCell] = SceneType::Playing;
-		next_scene[GameEvent::OpenCell] = SceneType::Playing;
-		next_scene[GameEvent::FlagCell] = SceneType::Playing;
-		next_scene[GameEvent::QuitToMenu] = SceneType::Menu;
-
-		buttons_event[STR_RETURN_BUTTON] = GameEvent::QuitToMenu;
-
-		this->window_size = window_size;
-
-		// Board
-		{
-			sf::Vector2f TL_board_area;
-			TL_board_area.x = window_size.width * TOP_LEFT_COEF_BOARD_AREA.x;
-			TL_board_area.y = window_size.height * TOP_LEFT_COEF_BOARD_AREA.y;
-			sf::Vector2f RD_board_area;
-			RD_board_area.x = window_size.width * RIGHT_DOWN_COEF_BOARD_AREA.x;
-			RD_board_area.y = window_size.height * RIGHT_DOWN_COEF_BOARD_AREA.y;
-
-			sf::Vector2f TL_board;
-			TL_board.x = ((RD_board_area.x - TL_board_area.x) - (DEFAULT_CELL_AREA * board_cols)) / (float)2;
-			TL_board.y = ((RD_board_area.y - TL_board_area.y) - (DEFAULT_CELL_AREA * board_rows)) / (float)2;
-
-			board = Board(board_rows, board_cols, TL_board);
-		}
-
-		// Timer
-		{
-			Text& timer = texts[STR_TIMER];
-			timer.setText(timerStr(0, 0, 0));
-			timer.setFontSize(DEFAULT_LARGE_FONT_SIZE);
-
-			sf::Vector2f TL_timer;
-			TL_timer.x = window_size.width * POS_COEF_TIMER.x;
-			TL_timer.y = window_size.height * POS_COEF_TIMER.y;
-			timer.setTopLeftPos(TL_timer);
-		}
-
-		// Buttons
-		{
-			Button& return_button = buttons[STR_RETURN_BUTTON];
-			return_button.setImage(TextureType::ButtonDefault);
-			return_button.setPadding(sf::Vector2f(DEFAULT_PADDING_SIZE.x / 2, DEFAULT_PADDING_SIZE.y / 2));
-			return_button.label.setText("Back to Menu");
-			return_button.label.setFontSize(DEFAULT_SMALL_FONT_SIZE);
-			return_button.alignImageAndText();
-		}
-	}
+	PlayingScene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode(), const int board_rows = 0, const int board_cols = 0);
 
 
 	int getBoardRows() const;

@@ -11,8 +11,6 @@
 
 // A pop-up at the center of the screen that shows a message and offers Yes/No options.
 class PopUp : public Scene {
-	friend class Scene;
-
 private:
 	const std::string STR_BOX = "box";
 	const std::string STR_YES = "yes";
