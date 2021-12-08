@@ -8,11 +8,15 @@ Result Comms::interfaceInfoSending(const InterfaceInfo info) {
     // Ông làm gì đó ở đây để chuyển info về bên ông i.
     // Cần thiết thì return success hay failure để tui xử lí.
     // K thì ông sửa hàm thành void luôn cho tiện :v
+    // NOTE: Khi tui gọi hàm này thì ông nhớ luôn gọi lại hàm gameInfoSending, cho dù k có gì để send nha.
+
+    std::cout << "InterfaceInfo sending...\n";
+
     return Result::success;
 }
 
 
-// Mỗi khi có thay đổi gì trong GameInfo thì ông cứ gọi hàm này, tui sẽ tự cập nhật lại.
+// Ông chỉ gọi hàm này khi tui gọi interfaceInfoSending th nha, tại mình k có làm multithread.
 Result Comms::gameInfoSending(const GameInfo info) {
     auto window = Window::getInstance();
     (*window)->updateGameInfo(info);
