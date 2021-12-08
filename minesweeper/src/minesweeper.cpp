@@ -128,7 +128,7 @@ int main() {
 
         change = false;
 
-        // Limits frame per sec to 60.
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 60));
+        // Limits frame per sec to about 100.
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 100));
     }
 }
