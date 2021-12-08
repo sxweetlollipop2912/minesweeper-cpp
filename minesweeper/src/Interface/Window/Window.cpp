@@ -33,8 +33,8 @@ GameEvent Window::getLastGameEvent() const {
 
 
 std::shared_ptr<Scene> Window::getCurrentScene() {
-	if (map_scene.find(current_scene_type) != map_scene.end()) {
-		return map_scene[current_scene_type];
+	if (scenes.find(current_scene_type) != scenes.end()) {
+		return scenes[current_scene_type];
 	}
 
 	return nullptr;
@@ -43,29 +43,31 @@ std::shared_ptr<Scene> Window::getCurrentScene() {
 
 void Window::initializeMenuScene() {
 	auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
-	map_scene[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
+	scenes[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
 }
 
 
 void Window::initializeLeaderboardScene() {
 	auto leaderboard_scene = std::shared_ptr<LeaderboardScene>(new LeaderboardScene(window_size));
-	map_scene[SceneType::Leaderboard] = std::static_pointer_cast<Scene>(leaderboard_scene);
+	scenes[SceneType::Leaderboard] = std::static_pointer_cast<Scene>(leaderboard_scene);
 }
 
 
 void Window::initializeDifficultiesScene() {
 	auto difficulties_scene = std::shared_ptr<DifficultiesScene>(new DifficultiesScene(window_size));
-	map_scene[SceneType::Difficulties] = std::static_pointer_cast<Scene>(difficulties_scene);
+	scenes[SceneType::Difficulties] = std::static_pointer_cast<Scene>(difficulties_scene);
 }
 
 
 void Window::initializePlayingScene(const int board_rows = -1, const int board_cols = -1) {
-	auto current_playing_scene = std::static_pointer_cast<PlayingScene>(map_scene[SceneType::Playing]);
+	auto current_playing_scene = std::static_pointer_cast<PlayingScene>(scenes[SceneType::Playing]);
 	int rows = board_rows < 0 ? current_playing_scene->getBoardRows() : board_rows;
 	int cols = board_cols < 0 ? current_playing_scene->getBoardCols() : board_cols;
 
 	auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, rows, cols));
-	map_scene[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
+	scenes[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
+
+	constantly_changing_scenes.insert(SceneType::Playing);
 }
 
 
@@ -265,7 +267,7 @@ bool Window::onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vec
 	// Gets the next game event, if exists
 	GameEvent nxt_event = GameEvent::Unknown;
 	{
-		nxt_event = map_scene[current_scene_type]->onMouseButtonPressed(lock_mouse_button);
+		nxt_event = scenes[current_scene_type]->onMouseButtonPressed(lock_mouse_button);
 	}
 
 	return handleGameEvents(nxt_event);
@@ -313,7 +315,7 @@ bool Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Ve
 	// Gets the next game event, if exists
 	GameEvent nxt_event = GameEvent::Unknown;
 	{
-		nxt_event = map_scene[current_scene_type]->onMouseButtonReleased(type);
+		nxt_event = scenes[current_scene_type]->onMouseButtonReleased(type);
 	}
 
 	return handleGameEvents(nxt_event);

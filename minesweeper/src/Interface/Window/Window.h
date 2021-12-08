@@ -23,7 +23,8 @@ class Window {
 	friend Result Comms::gameInfoSending(const GameInfo info);
 
 private:
-	std::map <SceneType, std::shared_ptr<Scene>> map_scene;
+	std::map <SceneType, std::shared_ptr<Scene>> scenes;
+	std::set <SceneType> constantly_changing_scenes;
 
 	Comms::GameInfo current_game_info;
 	Comms::InterfaceInfo current_interface_info;
@@ -46,8 +47,8 @@ private:
 		auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
 		auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, 0, 0));
 
-		map_scene[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
-		map_scene[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
+		scenes[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
+		scenes[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
 
 		current_scene_type = SceneType::Menu;
 		last_game_event = GameEvent::Unknown;
