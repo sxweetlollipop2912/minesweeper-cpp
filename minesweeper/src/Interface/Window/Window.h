@@ -138,6 +138,10 @@ public:
 	// Initializes/Resets playing scene for window.
 	void initializePlayingScene(const int board_rows = -1, const int board_cols = -1);
 
+	// Call to update automatic features (i.e. timer while playing) at each frame.
+	// Returns true if there are visual changes.
+	// Otherwise, returns false
+	bool updatePerFrame();
 	// Draws current scene.
 	void drawCurrentScene();
 };
