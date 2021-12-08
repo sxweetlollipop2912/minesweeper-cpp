@@ -108,6 +108,8 @@ int main() {
             change |= (*window)->handleSfEvents(event);
         }
 
+        change |= (*window)->updatePerFrame();
+
         if (change) {
             (*window)->render_window.clear();
             (*window)->drawCurrentScene();

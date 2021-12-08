@@ -341,6 +341,20 @@ bool Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Ve
 }
 
 
+bool Window::updatePerFrame() {
+	if (constantly_changing_scenes.find(getCurrentSceneType()) != constantly_changing_scenes.end()) {
+		current_interface_info.game_event = GameEvent::Unknown;
+		current_interface_info.current_scene = getCurrentSceneType();
+
+		Comms::interfaceInfoSending(current_interface_info);
+
+		return true;
+	}
+
+	return false;
+}
+
+
 void Window::drawCurrentScene() {
 	draw(*getCurrentScene());
 }
