@@ -4,9 +4,6 @@
 
 
 PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_rows, const int board_cols) : Scene(SceneType::Playing) {
-	if (!checkBoardSize(window_size, board_rows, board_cols))
-		return;
-
 	next_scene[GameEvent::AutoOpenCell] = SceneType::Playing;
 	next_scene[GameEvent::OpenCell] = SceneType::Playing;
 	next_scene[GameEvent::FlagCell] = SceneType::Playing;
@@ -18,30 +15,74 @@ PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_row
 
 	// Board
 	{
-		sf::Vector2f TL_board_area;
-		TL_board_area.x = window_size.width * TOP_LEFT_COEF_BOARD_AREA.x;
-		TL_board_area.y = window_size.height * TOP_LEFT_COEF_BOARD_AREA.y;
-		sf::Vector2f RD_board_area;
-		RD_board_area.x = window_size.width * RIGHT_DOWN_COEF_BOARD_AREA.x;
-		RD_board_area.y = window_size.height * RIGHT_DOWN_COEF_BOARD_AREA.y;
-
-		sf::Vector2f TL_board;
-		TL_board.x = ((RD_board_area.x - TL_board_area.x) - (DEFAULT_CELL_AREA * board_cols)) / (float)2;
-		TL_board.y = ((RD_board_area.y - TL_board_area.y) - (DEFAULT_CELL_AREA * board_rows)) / (float)2;
-
-		board = Board(board_rows, board_cols, TL_board);
+		board = Board(board_rows, board_cols);
 	}
 
-	// Timer
+	// Scoreboard
 	{
-		Text& timer = texts[STR_TIMER];
-		timer.setText(timerStr(0, 0, 0));
-		timer.setFontSize(DEFAULT_LARGE_FONT_SIZE);
+		{
+			Text& timer_label = texts[STR_TIMER_LABEL];
+			timer_label.setText("Timer");
+			timer_label.setFontSize(DEFAULT_LARGE_FONT_SIZE);
+		}
 
-		sf::Vector2f TL_timer;
-		TL_timer.x = window_size.width * POS_COEF_TIMER.x;
-		TL_timer.y = window_size.height * POS_COEF_TIMER.y;
-		timer.setTopLeftPos(TL_timer);
+		{
+			Text& flag_label = texts[STR_FLAG_REMAINING_LABEL];
+			flag_label.setText("Flags");
+			flag_label.setFontSize(DEFAULT_LARGE_FONT_SIZE);
+		}
+
+		{
+			Text& timer = texts[STR_TIMER];
+			timer.setText(timerStr(0, 0, 0));
+			timer.setFontSize(DEFAULT_LARGE_FONT_SIZE);
+		}
+		
+		{
+			Text& flag = texts[STR_FLAG_REMAINING];
+			flag.setText(std::to_string(0));
+			flag.setFontSize(DEFAULT_LARGE_FONT_SIZE);
+		}
+
+		{
+			Button& scoreboard = buttons[STR_SCOREBOARD];
+			scoreboard.setImage(TextureType::Scoreboard);
+
+			sf::Vector2f scale_scoreboard;
+			scale_scoreboard.x = scale_scoreboard.y = (window_size.height * SCOREBOARD_SIZE_Y_COEF) / scoreboard.getImageSize().y;
+			scoreboard.setScale(scale_scoreboard);
+		}
+	}
+
+	// Positioning board & scoreboard
+	{
+		Button& scoreboard = buttons[STR_SCOREBOARD];
+
+		sf::Vector2f TL_area;
+		TL_area.x = window_size.width * TOP_LEFT_COEF_BOARD_AREA.x;
+		TL_area.y = window_size.height * TOP_LEFT_COEF_BOARD_AREA.y;
+		sf::Vector2f RD_area;
+		RD_area.x = window_size.width * RIGHT_DOWN_COEF_BOARD_AREA.x;
+		RD_area.y = window_size.height * RIGHT_DOWN_COEF_BOARD_AREA.y;
+
+		float space_x = window_size.width * SPAPCE_BETWEEN_BOARD_SCOREBOARD_X_COEF;
+
+		float cell_size = (RD_area.x - TL_area.x - scoreboard.getSize().x - space_x) / board.number_of_cols;
+		cell_size = std::min(cell_size, (RD_area.y - TL_area.y) / board.number_of_rows);
+		cell_size = std::min(cell_size, MAX_CELL_SIZE);
+		cell_size = std::max(cell_size, MIN_CELL_SIZE);
+		board.setCellSize(cell_size);
+
+		sf::Vector2f TL_board;
+		TL_board.x = TL_area.x + ((RD_area.x - TL_area.x) - (cell_size * board.number_of_cols + space_x + scoreboard.getSize().x)) / (float)2;
+		TL_board.y = TL_area.y + ((RD_area.y - TL_area.y) - (cell_size * board.number_of_rows)) / (float)2;
+		board.setTopLeftPos(TL_board);
+
+
+		sf::Vector2f TL_scoreboard;
+		TL_scoreboard.y = board.getPosTopLeft().y;
+		TL_scoreboard.x = board.getPosRightDown().x + space_x;
+		setTopLeftPosScoreboard(TL_scoreboard);
 	}
 
 	// Buttons
@@ -57,9 +98,9 @@ PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_row
 
 
 std::string PlayingScene::timerStr(int h, int m, int s) {
-	if (h < 0 || m < 0 || s < 0) return "timer -1";
+	if (h < 0 || m < 0 || s < 0) return "-1";
 
-	std::string str = "timer ";
+	std::string str = "";
 	std::string s_h, s_m, s_s;
 
 	for (; h != 0; h /= 10) s_h += (char)('0' + (h % 10));
@@ -85,8 +126,53 @@ void PlayingScene::updateTimer(const Timer new_timer) {
 }
 
 
-Result PlayingScene::updateBoard(const GameCell cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int rows, const int cols) {
-	return board.updateBoard(cell_board, mine_board, rows, cols);
+Result PlayingScene::updateBoard(const GameCell cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int flag_remaining) {
+	Text& flag = texts[STR_FLAG_REMAINING];
+	flag.setText(std::to_string(flag_remaining));
+
+	return board.updateBoard(cell_board, mine_board);
+}
+
+
+void PlayingScene::setTopLeftPosScoreboard(const sf::Vector2f top_left_pos) {
+	Button& scoreboard = buttons[STR_SCOREBOARD];
+	scoreboard.setTopLeftPos(top_left_pos);
+
+	{
+		Text& timer_label = texts[STR_TIMER_LABEL];
+
+		sf::Vector2f TL_timer_label;
+		TL_timer_label.x = scoreboard.getPosTopLeft().x + scoreboard.getSize().x * POS_COEF_SCOREBOARD_TIMER_LABEL_LD.x;
+		TL_timer_label.y = scoreboard.getPosTopLeft().y + scoreboard.getSize().y * POS_COEF_SCOREBOARD_TIMER_LABEL_LD.y - timer_label.getHeight();
+		timer_label.setTopLeftPos(TL_timer_label);
+	}
+
+	{
+		Text& flag_label = texts[STR_FLAG_REMAINING_LABEL];
+
+		sf::Vector2f TL_flag_label;
+		TL_flag_label.x = scoreboard.getPosTopLeft().x + scoreboard.getSize().x * POS_COEF_SCOREBOARD_FLAG_LABEL_LD.x;
+		TL_flag_label.y = scoreboard.getPosTopLeft().y + scoreboard.getSize().y * POS_COEF_SCOREBOARD_FLAG_LABEL_LD.y - flag_label.getHeight();
+		flag_label.setTopLeftPos(TL_flag_label);
+	}
+
+	{
+		Text& timer = texts[STR_TIMER];
+
+		sf::Vector2f TL_timer;
+		TL_timer.x = scoreboard.getPosTopLeft().x + scoreboard.getSize().x * POS_COEF_SCOREBOARD_TIMER.x;
+		TL_timer.y = scoreboard.getPosTopLeft().y + scoreboard.getSize().y * POS_COEF_SCOREBOARD_TIMER.y;
+		timer.setTopLeftPos(TL_timer);
+	}
+
+	{
+		Text& flag = texts[STR_FLAG_REMAINING];
+
+		sf::Vector2f TL_flag;
+		TL_flag.x = scoreboard.getPosTopLeft().x + scoreboard.getSize().x * POS_COEF_SCOREBOARD_FLAG.x;
+		TL_flag.y = scoreboard.getPosTopLeft().y + scoreboard.getSize().y * POS_COEF_SCOREBOARD_FLAG.y;
+		flag.setTopLeftPos(TL_flag);
+	}
 }
 
 
@@ -166,9 +252,11 @@ bool PlayingScene::checkBoardSize(const sf::VideoMode& window_size, const int bo
 	right_down_board_area.x = window_size.width * RIGHT_DOWN_COEF_BOARD_AREA.x;
 	right_down_board_area.y = window_size.height * RIGHT_DOWN_COEF_BOARD_AREA.y;
 
-	if (right_down_board_area.x - top_left_board_area.x < board_cols * DEFAULT_CELL_SIZE)
+	float space_x = window_size.width * SPAPCE_BETWEEN_BOARD_SCOREBOARD_X_COEF;
+
+	if (right_down_board_area.x - top_left_board_area.x < board_cols * MIN_CELL_SIZE)
 		return false;
-	if (right_down_board_area.y - top_left_board_area.y < board_rows * DEFAULT_CELL_SIZE)
+	if (right_down_board_area.y - top_left_board_area.y < board_rows * MIN_CELL_SIZE)
 		return false;
 
 	return true;

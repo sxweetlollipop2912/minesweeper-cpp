@@ -16,8 +16,8 @@ class Button {
 protected:
 	TextureType texture_type;
 	sf::Vector2f scale;
-
 	sf::Vector2f top_left_pos, padding;
+	bool transparent;
 
 public:
 	Text label;
@@ -69,6 +69,8 @@ public:
 	virtual void setScale(const sf::Vector2f& scale);
 	// Sets size of button's image (this will calculate appropriate scale of the image).
 	virtual void setSize(const sf::Vector2f& size);
+	// Sets button's image to be transparent (true) or not (false).
+	void setTransparent(const bool set = true);
 
 	// Rescales image & positions text so that CURRENT text is within image's padding.
 	virtual void alignImageAndText();

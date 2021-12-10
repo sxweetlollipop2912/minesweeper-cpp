@@ -15,7 +15,7 @@ void Text::calSpaceTaken() {
     }
 
     height += text.getCharacterSize();
-    width += text.getCharacterSize();
+    width += text.getCharacterSize() * 2 / 3;
 }
 
 

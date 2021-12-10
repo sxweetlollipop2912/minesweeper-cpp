@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+const float EPS = 1e-7;
+
 // GAME
 const std::string TITLE = "minesweeper";
 const int MIN_COLUMN = 9;
@@ -30,20 +32,19 @@ const std::string DEFAULT_FONT_PATH = ".\\assets\\fonts\\MochiyPopOne.ttf";
 
 
 // COLOR
-const sf::Color MAIN_COLOR = sf::Color::Blue;
-const sf::Color SECONDARY_COLOR = sf::Color::Cyan;
-const sf::Color DEFAULT_TEXT_COLOR = sf::Color::White;
+const sf::Color BACKGROUMD_COLOR = sf::Color(245, 245, 245);
+const sf::Color DEFAULT_TEXT_COLOR = sf::Color(12, 33, 40);
 
 
 // BUTTON
-const sf::Vector2f DEFAULT_PADDING_SIZE = sf::Vector2f(15, 15);
+const sf::Vector2f DEFAULT_PADDING_SIZE = sf::Vector2f(50, 25);
 
 
 // POSITION
 // START SCENE
 const float POS_Y_COEF_TITLE = 1 / (float)7;
-const float SPACE_BETWEEN_BUTTONS_Y_COEF = 1 / (float)8;
-const float POS_Y_COEF_LOAD_GAME_BUTTON = 3 / (float)7;
+const float SPACE_BETWEEN_BUTTONS_Y_COEF = 2 / (float)17;
+const float POS_Y_COEF_LOAD_GAME_BUTTON = 55 / (float)140;
 const float POS_Y_COEF_NEW_GAME_BUTTON = POS_Y_COEF_LOAD_GAME_BUTTON + SPACE_BETWEEN_BUTTONS_Y_COEF;
 const float POS_Y_COEF_LEADERBOARD_BUTTON = POS_Y_COEF_NEW_GAME_BUTTON + SPACE_BETWEEN_BUTTONS_Y_COEF;
 const float POS_Y_COEF_QUIT_BUTTON = POS_Y_COEF_LEADERBOARD_BUTTON + SPACE_BETWEEN_BUTTONS_Y_COEF;
@@ -52,13 +53,19 @@ const float POS_Y_COEF_DIFF_BUTTON = 3 / (float)12;
 const float POS_Y_COEF_CONTINUE_BUTTON = 4 / (float)6;
 const float POS_Y_COEF_SLIDER_ROW = 3 / (float)7;
 const float POS_Y_COEF_SLODER_COL = 4 / (float)7;
-// BOARD
-const int DEFAULT_CELL_SIZE = 30;
-const float DEFAULT_CELL_AREA = DEFAULT_CELL_SIZE;// + (DEFAULT_CELL_SIZE / (float)7);
-const sf::Vector2f TOP_LEFT_COEF_BOARD_AREA = sf::Vector2f(0, 0);
-const sf::Vector2f RIGHT_DOWN_COEF_BOARD_AREA = sf::Vector2f(4 / (float)5, 1);
-const sf::Vector2f POS_COEF_TIMER = sf::Vector2f(4 / (float)5, 1 / (float)3);
-const sf::Vector2f POS_COEF_RECORD = sf::Vector2f(4 / (float)5, 2 / (float)5);
+// PLAYING SCENE
+const float MIN_CELL_SIZE = 30;
+const float MAX_CELL_SIZE = 55;
+const sf::Vector2f TOP_LEFT_COEF_BOARD_AREA = sf::Vector2f(1 / (float)30, 1 / (float)20);
+const sf::Vector2f RIGHT_DOWN_COEF_BOARD_AREA = sf::Vector2f(29 / (float)30, 19 / (float)20);
+const float SPAPCE_BETWEEN_BOARD_SCOREBOARD_X_COEF = 1 / (float)40;
+// SCOREBOARD
+const float SCOREBOARD_SIZE_Y_COEF = 2 / (float)5;
+const sf::Vector2f POS_COEF_SCOREBOARD_DIFFICULTY = sf::Vector2f(55 / (float)447, 70 / (float)600);
+const sf::Vector2f POS_COEF_SCOREBOARD_TIMER_LABEL_LD = sf::Vector2f(55 / (float)447, (170 - 25) / (float)600);
+const sf::Vector2f POS_COEF_SCOREBOARD_FLAG_LABEL_LD = sf::Vector2f(55 / (float)447, (401 - 25) / (float)600);
+const sf::Vector2f POS_COEF_SCOREBOARD_TIMER = sf::Vector2f(70 / (float)447, (170 + 30) / (float)600);
+const sf::Vector2f POS_COEF_SCOREBOARD_FLAG = sf::Vector2f(70 / (float)447, (401 + 30) / (float)600);
 // LEADERBOARD
 const float POS_Y_COEF_LEADERBOARD_TITLE = 1 / (float)8;
 const float POS_Y_COEF_COL = 1 / (float)3;
@@ -67,10 +74,11 @@ const float POS_Y_COEF_COL = 1 / (float)3;
 // IMAGE PATHS
 const std::string BOARD_IMG_DIR = 
 ".\\assets\\images\\board\\";
+const std::string SCOREBOARD_IMG_PATH = BOARD_IMG_DIR + (const std::string)"scoreboard.png";
 const std::string CLOSED_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"closed.png";
 const std::string BLANK_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"blank.png";
 const std::string FLAGGED_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"flagged.png";
-const std::string MINE_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"bomb_redbg.png";
+const std::string MINE_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"bomb.png";
 const std::string NUM_1_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"num_1.png";
 const std::string NUM_2_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"num_2.png";
 const std::string NUM_3_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"num_3.png";

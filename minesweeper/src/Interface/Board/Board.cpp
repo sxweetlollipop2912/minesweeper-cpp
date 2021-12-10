@@ -1,10 +1,11 @@
 #include "Board.h"
 
 
-Board::Board(const int rows, const int cols, const sf::Vector2f top_left_pos) {
-	this->top_left_pos = top_left_pos;
+Board::Board(const int rows, const int cols) {
+	top_left_pos = sf::Vector2f(0, 0);
 	number_of_rows = rows;
 	number_of_cols = cols;
+	cell_size = MIN_CELL_SIZE;
 
 	last_pressed_cell = Position(-1, -1);
 	hovered_cell = Position(-1, -1);
@@ -26,19 +27,18 @@ Result Board::setCellType(const Position& pos, const CellType type, const int nu
 }
 
 
-Result Board::updateBoard(const GameCell cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int rows, const int cols) {
+void Board::setCellSize(const int cell_size) {
+	this->cell_size = cell_size;
+
+	for (int i = 0; i < number_of_rows; i++)
+		for (int j = 0; j < number_of_cols; j++) {
+			board[i][j].setSize(sf::Vector2f(cell_size, cell_size));
+		}
+}
+
+
+Result Board::updateBoard(const GameCell cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN]) {
 	bool change = false;
-	
-	if (number_of_rows != rows || number_of_cols != cols) {
-		change = true;
-
-		number_of_rows = rows;
-		number_of_cols = cols;
-
-		board.resize(rows);
-		for (int i = 0; i < rows; i++)
-			board[i].resize(cols);
-	}
 
 	for (int i = 0; i < number_of_rows; i++) {
 		for (int j = 0; j < number_of_cols; j++) {
@@ -85,8 +85,8 @@ bool Board::determineHoveredCell(const sf::Vector2i mouse_pos) {
 	hovered_cell = Position(-1, -1);
 
 	if (isMouseHovering(mouse_pos)) {
-		hovered_cell.r = ((float)mouse_pos.y - top_left_pos.y) / (float)DEFAULT_CELL_AREA;
-		hovered_cell.c = ((float)mouse_pos.x - top_left_pos.x) / (float)DEFAULT_CELL_AREA;
+		hovered_cell.r = ((float)mouse_pos.y - top_left_pos.y) / cell_size;
+		hovered_cell.c = ((float)mouse_pos.x - top_left_pos.x) / cell_size;
 	}
 
 	
@@ -127,12 +127,12 @@ bool Board::isValidPos(const Position& pos) const {
 // OVERRIDING METHODS
 
 sf::Vector2f Board::getSize() const {
-	return sf::Vector2f(DEFAULT_CELL_AREA * number_of_cols, DEFAULT_CELL_AREA * number_of_rows);
+	return sf::Vector2f(cell_size * number_of_cols, cell_size * number_of_rows);
 }
 
 
 sf::Vector2u Board::getImageSize() const {
-	return sf::Vector2u(DEFAULT_CELL_AREA * number_of_cols, DEFAULT_CELL_AREA * number_of_rows);
+	return sf::Vector2u(cell_size * number_of_cols, cell_size * number_of_rows);
 }
 
 
@@ -152,8 +152,8 @@ void Board::setTopLeftPos(const sf::Vector2f& top_left_pos) {
 	for (int i = 0; i < number_of_rows; i++) {
 		for (int j = 0; j < number_of_cols; j++) {
 			sf::Vector2f rel_pos;
-			rel_pos.x = (DEFAULT_CELL_AREA) * (float)j;
-			rel_pos.y = (DEFAULT_CELL_AREA) * (float)i;
+			rel_pos.x = (cell_size) * (float)j;
+			rel_pos.y = (cell_size) * (float)i;
 
 			board[i][j].setTopLeftPos(this->top_left_pos + rel_pos);
 		}
