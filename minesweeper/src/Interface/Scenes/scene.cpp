@@ -72,6 +72,7 @@ bool Scene::changeMousePosition(const sf::Vector2i& mouse_position) {
 	hovered_button = STR_UNKNOWN;
 	
 	for (auto i = buttons.begin(); i != buttons.end(); i++) {
+		if (buttons_event.find(i->first) == buttons_event.end()) continue;
 		if (!(i->second.isMouseHovering(mouse_position))) continue;
 		hovered_button = i->first;
 		break;
