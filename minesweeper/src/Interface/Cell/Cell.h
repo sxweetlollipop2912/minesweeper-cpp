@@ -20,8 +20,10 @@ private:
 	CellState cell_state;
 	int cell_number;
 
+	float cell_size;
+
 	
-	// Gets scale for the cell base on current image's size and DEFAULT_CELL_SIZE.
+	// Gets scale for the cell base on image's size at current state and current cell_size.
 	sf::Vector2f getScale() const;
 
 	// Sets default images for `closed` and `flagged` states.
@@ -77,6 +79,8 @@ public:
 
 	// Sets top-left position of the cell in respect of window size.
 	void setTopLeftPos(const sf::Vector2f& top_left_pos) override;
+	// Sets size of cell.
+	void setSize(const sf::Vector2f& size) override;
 
 	Result setImage(const TextureType texture_type, const sf::Vector2f& top_left_pos = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1)) override;
 	void setPadding(const sf::Vector2f& padding) override;

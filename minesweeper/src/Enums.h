@@ -70,6 +70,7 @@ enum class CellType {
 
 enum class TextureType {
 	ButtonDefault,
+	Scoreboard,
 	CellMine,
 	CellClosed,
 	CellFlagged,

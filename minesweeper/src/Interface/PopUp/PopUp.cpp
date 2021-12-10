@@ -1,6 +1,30 @@
 #include "PopUp.h"
 
 
+PopUp::PopUp(const GameEvent game_event, const sf::VideoMode& window_size, const std::string& msg, const std::string& yes_msg, const std::string& no_msg) : Scene(SceneType::PopUp) {
+	buttons_event[STR_YES] = game_event;
+	buttons_event[STR_NO] = GameEvent::ClosePopUp;
+
+	Button& box = buttons[STR_BOX];
+	box.setImage(TextureType::ButtonDefault);
+	box.label.setText(msg);
+	box.setTransparent();
+
+	Button& yes_button = buttons[STR_YES];
+	yes_button.setImage(TextureType::ButtonDefault);
+	yes_button.label.setText(yes_msg);
+	yes_button.alignImageAndText();
+
+	Button& no_button = buttons[STR_NO];
+	no_button.setImage(TextureType::ButtonDefault);
+	no_button.label.setText(no_msg);
+	no_button.alignImageAndText();
+
+	Button::equalizeButtonsSize(yes_button, no_button);
+	PositionPopUp(window_size);
+}
+
+
 void PopUp::PositionPopUp(const sf::VideoMode& window_size) {
 	Button& box = buttons[STR_BOX];
 	Button& yes_button = buttons[STR_YES];
@@ -35,23 +59,6 @@ void PopUp::PositionPopUp(const sf::VideoMode& window_size) {
 
 	yes_button.centerTextInButton();
 	no_button.centerTextInButton();
-}
-
-
-bool PopUp::changeMousePosition(const sf::Vector2i& pos) {
-	pos_mouse = pos;
-
-	auto last_hovered = hovered_button;
-	hovered_button = STR_UNKNOWN;
-
-	for (auto i = buttons.begin(); i != buttons.end(); i++) {
-		if (i->first != STR_BOX && i->second.isMouseHovering(pos)) {
-			hovered_button = i->first;
-			break;
-		}
-	}
-
-	return hovered_button != last_hovered;
 }
 
 

@@ -26,16 +26,16 @@ namespace Comms {
 		// Upon receiving a GameEvent, INTERFACE would send an InterfaceInfo back to GAME first before doing anything else.
 		GameEvent game_event = GameEvent::Unknown;
 
-		// Only assigned on GameEvent::NewGame.
-		// This can be a custom board size, or a generic board size (depends on difficulty).
-		int new_row = -1;
-		int new_col = -1;
-
 		// SceneType `current_scene` is one of the following:
 		// > Menu,
 		// > Playing,
 		// > Leaderboard,
 		SceneType current_scene = SceneType::Unkown;
+
+		// Only assigned on GameEvent::NewGame.
+		// This can be a custom board size, or a generic board size (depends on difficulty).
+		int new_row = -1;
+		int new_col = -1;
 
 		// Only assigned when GameEvent `game_event` is one the following: OpenCell, FlagCell, AutoOpenCell.
 		// `current_scene` should be SceneType::Playing.
@@ -53,6 +53,7 @@ namespace Comms {
 		GameCell cell_board[MAX_ROW][MAX_COLUMN];
 		char mine_board[MAX_ROW][MAX_COLUMN];
 		Timer current_timer = { 0,0,0,false };
+		int flag_remaining = -1;
 
 		// Only needed in SceneType::Leaderboard or in GameEvent::ShowLeaderboard.
 		// Xài std::make_shared<Records>(records_var) để tạo shared pointer.

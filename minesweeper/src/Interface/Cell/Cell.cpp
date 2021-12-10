@@ -16,11 +16,10 @@ Cell::Cell() {
 
 
 sf::Vector2f Cell::getScale() const {
+	auto img_size = button_at_state.at(getState()).getImageSize();
 	sf::Vector2f scale;
-
-	scale.x = DEFAULT_CELL_SIZE / (float)button_at_state.at(cell_state).getImageSize().x;
-	scale.y = DEFAULT_CELL_SIZE / (float)button_at_state.at(cell_state).getImageSize().y;
-
+	scale.x = cell_size / img_size.x;
+	scale.y = cell_size / img_size.y;
 	return scale;
 }
 
@@ -35,15 +34,6 @@ Result Cell::setDefaultImages() {
 	if (flagged.setImage(TextureType::CellFlagged) == Result::failure)
 		return Result::failure;
 
-	sf::Vector2f scale;
-	scale.x = DEFAULT_CELL_SIZE / (float)closed.getImageSize().x;
-	scale.y = DEFAULT_CELL_SIZE / (float)closed.getImageSize().y;
-	closed.setScale(scale);
-
-	scale.x = DEFAULT_CELL_SIZE / (float)flagged.getImageSize().x;
-	scale.y = DEFAULT_CELL_SIZE / (float)flagged.getImageSize().y;
-	closed.setScale(scale);
-
 	return Result::success;
 }
 
@@ -54,12 +44,7 @@ Result Cell::setImageForMineType() {
 	if (opened.setImage(TextureType::CellMine) == Result::failure)
 		return Result::failure;
 
-	sf::Vector2f scale;
-	scale.x = DEFAULT_CELL_SIZE / (float)opened.getImageSize().x;
-	scale.y = DEFAULT_CELL_SIZE / (float)opened.getImageSize().y;
-	opened.setScale(scale);
-
-	return Result();
+	return Result::success;
 }
 
 
@@ -69,12 +54,7 @@ Result Cell::setImageForBlankType() {
 	if (opened.setImage(TextureType::CellBlank) == Result::failure)
 		return Result::failure;
 
-	sf::Vector2f scale;
-	scale.x = DEFAULT_CELL_SIZE / (float)opened.getImageSize().x;
-	scale.y = DEFAULT_CELL_SIZE / (float)opened.getImageSize().y;
-	opened.setScale(scale);
-
-	return Result();
+	return Result::success;
 }
 
 
@@ -114,12 +94,7 @@ Result Cell::setImageForNumberType() {
 	if (opened.setImage(texture_type) == Result::failure)
 		return Result::failure;
 
-	sf::Vector2f scale;
-	scale.x = DEFAULT_CELL_SIZE / (float)opened.getImageSize().x;
-	scale.y = DEFAULT_CELL_SIZE / (float)opened.getImageSize().y;
-	opened.setScale(scale);
-
-	return Result();
+	return Result::success;
 }
 
 
@@ -210,12 +185,12 @@ int Cell::getNumber() const {
 // OVERRIDING METHODS
 
 sf::Vector2f Cell::getSize() const {
-	return sf::Vector2f(DEFAULT_CELL_SIZE, DEFAULT_CELL_SIZE);
+	return sf::Vector2f(cell_size, cell_size);
 }
 
 
 sf::Vector2u Cell::getImageSize() const {
-	return sf::Vector2u(DEFAULT_CELL_SIZE, DEFAULT_CELL_SIZE);
+	return button_at_state.at(getState()).getImageSize();
 }
 
 
@@ -241,6 +216,12 @@ void Cell::setTopLeftPos(const sf::Vector2f& top_left_pos) {
 	for (auto i = button_at_state.begin(); i != button_at_state.end(); i++) {
 		i->second.setTopLeftPos(this->top_left_pos);
 	}
+}
+
+
+void Cell::setSize(const sf::Vector2f& size) {
+	if (std::abs(size.x - size.y) > EPS) return;
+	cell_size = size.x;
 }
 
 

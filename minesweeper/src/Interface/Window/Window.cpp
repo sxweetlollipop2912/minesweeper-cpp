@@ -75,6 +75,7 @@ void Window::initializeDifficultiesScene() {
 void Window::initializePlayingScene(const int board_rows, const int board_cols) {
 	int rows = std::max(board_rows, 0);
 	int cols = std::max(board_cols, 0);
+
 	if ((board_rows < 0 || board_cols < 0) && scenes.find(SceneType::Playing) != scenes.end()) {
 		auto current_playing_scene = std::dynamic_pointer_cast<PlayingScene>(scenes.at(SceneType::Playing));
 		rows = current_playing_scene->getBoardRows();
@@ -123,11 +124,11 @@ void Window::updateGameInfo(const Comms::GameInfo info) {
 		case GameEvent::NewGame:
 		case GameEvent::LoadGame:
 		{
-			initializePlayingScene();
+			initializePlayingScene(current_game_info.board_row, current_game_info.board_col);
 
 			auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
 			scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board, 
-				current_game_info.board_row, current_game_info.board_col);
+				current_game_info.flag_remaining);
 
 			break;
 		}
@@ -146,7 +147,7 @@ void Window::updateGameInfo(const Comms::GameInfo info) {
 		{
 			auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
 			scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board,
-				current_game_info.board_row, current_game_info.board_col);
+				current_game_info.flag_remaining);
 
 			break;
 		}

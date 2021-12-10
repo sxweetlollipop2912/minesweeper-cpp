@@ -20,36 +20,8 @@ private:
 	// Aligns all buttons and texts, including the pop-up, in their appropriate positions.
 	void PositionPopUp(const sf::VideoMode& window_size);
 
-
-	// OVERRIDING METHODS
-
-	// Changes window graphics base on new mouse position.
-	// Returns true if there are visual changes.
-	// Otherwise, returns false
-	bool changeMousePosition(const sf::Vector2i& pos) override;
-
 public:
-	PopUp(const GameEvent game_event = GameEvent::Unknown, const sf::VideoMode& window_size = sf::VideoMode(0, 0), const std::string& msg = "", const std::string& yes_msg = "YES", const std::string& no_msg = "NO") : Scene(SceneType::PopUp) {
-		buttons_event[STR_YES] = game_event;
-		buttons_event[STR_NO] = GameEvent::ClosePopUp;
-
-		Button& box = buttons[STR_BOX];
-		box.setImage(TextureType::ButtonDefault);
-		box.label.setText(msg);
-
-		Button& yes_button = buttons[STR_YES];
-		yes_button.setImage(TextureType::ButtonDefault);
-		yes_button.label.setText(yes_msg);
-		yes_button.alignImageAndText();
-
-		Button& no_button = buttons[STR_NO];
-		no_button.setImage(TextureType::ButtonDefault);
-		no_button.label.setText(no_msg);
-		no_button.alignImageAndText();
-
-		Button::equalizeButtonsSize(yes_button, no_button);
-		PositionPopUp(window_size);
-	}
+	PopUp(const GameEvent game_event = GameEvent::Unknown, const sf::VideoMode& window_size = sf::VideoMode(0, 0), const std::string& msg = "", const std::string& yes_msg = "YES", const std::string& no_msg = "NO");
 
 	DrawableList getDrawableList(const bool is_focusing = false, const int rank = 0) override;
 };

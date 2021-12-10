@@ -20,7 +20,11 @@ class PlayingScene : public Scene {
 	friend class Window;
 
 private:
+	const std::string STR_SCOREBOARD = "scoreboard";
+	const std::string STR_TIMER_LABEL = "timer_label";
+	const std::string STR_FLAG_REMAINING_LABEL = "flag_label";
 	const std::string STR_TIMER = "timer";
+	const std::string STR_FLAG_REMAINING = "flag";
 
 	const std::string STR_RETURN_BUTTON = "return";
 
@@ -35,7 +39,8 @@ private:
 	//	> success: board is successfully updated.
 	//	> failure: board has not been changed after calling this method.
 	// Regardless of the result, the board is up-to-date at return time.
-	Result updateBoard(const GameCell cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int rows, const int cols);
+	Result updateBoard(const GameCell cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int flag_remaining);
+	void setTopLeftPosScoreboard(const sf::Vector2f top_left_pos);
 
 
 	// OVERRIDING SCENE METHODS

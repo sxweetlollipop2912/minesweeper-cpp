@@ -9,6 +9,9 @@ DifficultiesScene::DifficultiesScene(const sf::VideoMode& window_size) : Scene(S
 
 	buttons_event[STR_CONTINUE_BUTTON] = GameEvent::NewGame;
 	buttons_event[STR_RETURN_BUTTON] = GameEvent::QuitToMenu;
+	buttons_event[STR_BEGINNER_BUTTON] = GameEvent::ChangesInScene;
+	buttons_event[STR_INTER_BUTTON] = GameEvent::ChangesInScene;
+	buttons_event[STR_EXPERT_BUTTON] = GameEvent::ChangesInScene;
 
 	this->window_size = window_size;
 
@@ -91,7 +94,7 @@ GameEvent DifficultiesScene::onMouseButtonReleased(const MouseActionType mouse_t
 
 	auto game_event = this->Scene::onMouseButtonReleased(mouse_type);
 
-	if (game_event == GameEvent::Unknown && !pop_up) {
+	if (game_event == GameEvent::ChangesInScene && !pop_up) {
 		if (mouse_type != MouseActionType::LMB && mouse_type != MouseActionType::DoubleLMB) {
 			return GameEvent::Unknown;
 		}
@@ -99,17 +102,14 @@ GameEvent DifficultiesScene::onMouseButtonReleased(const MouseActionType mouse_t
 		if (hovered_button == STR_BEGINNER_BUTTON) {
 			slider_row.setSliderValue(BEGINNER_ROW);
 			slider_col.setSliderValue(BEGINNER_COL);
-			game_event = GameEvent::ChangesInScene;
 		}
 		if (hovered_button == STR_INTER_BUTTON) {
 			slider_row.setSliderValue(INTERMEDIATE_ROW);
 			slider_col.setSliderValue(INTERMEDIATE_COL);
-			game_event = GameEvent::ChangesInScene;
 		}
 		if (hovered_button == STR_EXPERT_BUTTON) {
 			slider_row.setSliderValue(EXPERT_ROW);
 			slider_col.setSliderValue(EXPERT_COL);
-			game_event = GameEvent::ChangesInScene;
 		}
 	}
 

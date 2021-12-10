@@ -18,50 +18,54 @@
 
 
 void registerResources() {
-    // TEXTURES
+    if (ResourceVault::setTexture(TextureType::ButtonDefault, DEFAULT_BUTTON_PATH) == Result::failure) {
+        std::cout << "Loading ButtonDefault texture failed!";
+    }
+
+    // PLAYING SCENE TEXTURES
     {
-        if (ResourceVault::setTexture(TextureType::ButtonDefault, DEFAULT_BUTTON_PATH) == Result::failure) {
-            std::cout << "Load ButtonDefault texture failed!";
+        if (ResourceVault::setTexture(TextureType::Scoreboard, SCOREBOARD_IMG_PATH) == Result::failure) {
+            std::cout << "Loading Scoreboard texture failed!";
         }
         if (ResourceVault::setTexture(TextureType::CellClosed, CLOSED_CELL_IMG_PATH) == Result::failure) {
-            std::cout << "Load CellClosed texture failed!";
+            std::cout << "Loading CellClosed texture failed!";
         }
         if (ResourceVault::setTexture(TextureType::CellFlagged, FLAGGED_CELL_IMG_PATH) == Result::failure) {
-            std::cout << "Load CellFlagged texture failed!";
+            std::cout << "Loading CellFlagged texture failed!";
         }
         if (ResourceVault::setTexture(TextureType::CellBlank, BLANK_CELL_IMG_PATH) == Result::failure) {
-            std::cout << "Load CellBlank texture failed!";
+            std::cout << "Loading CellBlank texture failed!";
         }
         if (ResourceVault::setTexture(TextureType::CellNum1, NUM_1_CELL_IMG_PATH) == Result::failure) {
-            std::cout << "Load CellNum1 texture failed!";
+            std::cout << "Loading CellNum1 texture failed!";
         }
         if (ResourceVault::setTexture(TextureType::CellNum2, NUM_2_CELL_IMG_PATH) == Result::failure) {
-            std::cout << "Load CellNum2 texture failed!";
+            std::cout << "Loading CellNum2 texture failed!";
         }
         if (ResourceVault::setTexture(TextureType::CellNum3, NUM_3_CELL_IMG_PATH) == Result::failure) {
-            std::cout << "Load CellNum3 texture failed!";
+            std::cout << "Loading CellNum3 texture failed!";
         }
         if (ResourceVault::setTexture(TextureType::CellNum4, NUM_4_CELL_IMG_PATH) == Result::failure) {
-            std::cout << "Load CellNum4 texture failed!";
+            std::cout << "Loading CellNum4 texture failed!";
         }
         if (ResourceVault::setTexture(TextureType::CellNum5, NUM_5_CELL_IMG_PATH) == Result::failure) {
-            std::cout << "Load CellNum5 texture failed!";
+            std::cout << "Loading CellNum5 texture failed!";
         }
         if (ResourceVault::setTexture(TextureType::CellNum6, NUM_6_CELL_IMG_PATH) == Result::failure) {
-            std::cout << "Load CellNum6 texture failed!";
+            std::cout << "Loading CellNum6 texture failed!";
         }
         if (ResourceVault::setTexture(TextureType::CellNum7, NUM_7_CELL_IMG_PATH) == Result::failure) {
-            std::cout << "Load CellNum7 texture failed!";
+            std::cout << "Loading CellNum7 texture failed!";
         }
         if (ResourceVault::setTexture(TextureType::CellNum8, NUM_8_CELL_IMG_PATH) == Result::failure) {
-            std::cout << "Load CellNum8 texture failed!";
+            std::cout << "Loading CellNum8 texture failed!";
         }
     }
 
     // FONTS
     {
         if (ResourceVault::setFont(FontType::FontDefault, DEFAULT_FONT_PATH) == Result::failure) {
-            std::cout << "Load FontDefault font failed!";
+            std::cout << "Loading FontDefault font failed!";
         }
     }
 }
@@ -96,7 +100,7 @@ int main() {
     (*window)->initializeMenuScene();
     (*window)->initializeLeaderboardScene();
     (*window)->initializeDifficultiesScene();
-    (*window)->initializePlayingScene(30, 30);
+    (*window)->initializePlayingScene(9, 9);
 
     (*window)->createWindow();
     bool change = true;
@@ -111,7 +115,7 @@ int main() {
         change |= (*window)->updatePerFrame();
 
         if (change) {
-            (*window)->render_window.clear();
+            (*window)->render_window.clear(BACKGROUMD_COLOR);
             (*window)->drawCurrentScene();
             (*window)->render_window.display();
         }
@@ -128,7 +132,7 @@ int main() {
 
         change = false;
 
-        // Limits frame per sec to about 100.
+        // Limits receiving event and responding rate to about 100 times per sec.
         std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 100));
     }
 }

@@ -9,6 +9,7 @@ Button::Button() {
     top_left_pos = sf::Vector2f(0, 0);
     padding = DEFAULT_PADDING_SIZE;
     scale = sf::Vector2f(1, 1);
+    transparent = false;
 }
 
 
@@ -74,6 +75,9 @@ sf::Sprite Button::getDefaultSprite() const {
     Graphics::loadSpriteFromTexture(sprite, *texture, top_left_pos);
     sprite.setScale(scale);
 
+    if (transparent)
+        sprite.setColor(sf::Color(255, 255, 255, 220));
+
     return sprite;
 }
 
@@ -86,8 +90,10 @@ sf::Sprite Button::getHoveredSprite() const {
     sprite.setScale(scale);
 
     // Darken the hovered sprite a bit.
-    sf::Color grey(100, 100, 100);
-    sprite.setColor(grey);
+    if (transparent)
+        sprite.setColor(sf::Color(200, 200, 200, 220));
+    else
+        sprite.setColor(sf::Color(200, 200, 200));
 
     return sprite;
 }
@@ -152,6 +158,11 @@ void Button::setSize(const sf::Vector2f& size) {
 
     scale.x = size.x / (float)img_size.x;
     scale.y = size.y / (float)img_size.y;
+}
+
+
+void Button::setTransparent(const bool set) {
+    transparent = set;
 }
 
 

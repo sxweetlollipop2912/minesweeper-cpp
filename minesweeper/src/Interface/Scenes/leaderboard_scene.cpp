@@ -40,7 +40,7 @@ LeaderboardScene::LeaderboardScene(const sf::VideoMode& window_size) : Scene(Sce
 		expert_col.setTopLeftPos(sf::Vector2f(this->window_size.width - padding_x - expert_col.getWidth(), pos_y_col));
 
 
-		/*PLAYER player;
+		PLAYER player;
 		player.timePlay.hours = 1;
 		player.timePlay.minutes = 23;
 		player.timePlay.seconds = 46;
@@ -52,8 +52,8 @@ LeaderboardScene::LeaderboardScene(const sf::VideoMode& window_size) : Scene(Sce
 			records.expert.push_back(player);
 		}
 
-		updateRecords(std::make_shared<Records>(records));*/
-		updateRecords(std::make_shared<Records>());
+		updateRecords(std::make_shared<Records>(records));
+		//updateRecords(std::make_shared<Records>());
 	}
 
 	// Buttons
