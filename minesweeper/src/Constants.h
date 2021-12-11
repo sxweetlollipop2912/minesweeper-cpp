@@ -18,6 +18,12 @@ const int EXPERT_ROW = 16;
 const int EXPERT_COL = 30;
 const int MAX_RECORDS_PER_DIFF = 3;
 
+// PATH
+const std::string DATA_PATH = ".\\data\\";
+const std::string ASSET_PATH = ".\\assets\\";
+const std::string IMG_PATH = ASSET_PATH + (const std::string)"images\\";
+const std::string FONT_PATH = ASSET_PATH + (const std::string)"fonts\\";
+
 
 // WINDOW
 const sf::VideoMode DEFAULT_WINDOW_SIZE = sf::VideoMode(1500, 1000);
@@ -28,7 +34,7 @@ const int DEFAULT_LARGE_FONT_SIZE = 23;
 const int DEFAULT_NORMAL_FONT_SIZE = DEFAULT_LARGE_FONT_SIZE / 1.2;
 const int DEFAULT_SMALL_FONT_SIZE = DEFAULT_LARGE_FONT_SIZE / 1.5;
 const int DEFAULT_TITLE_FONT_SIZE = DEFAULT_LARGE_FONT_SIZE * 4.5;
-const std::string DEFAULT_FONT_PATH = ".\\assets\\fonts\\MochiyPopOne.ttf";
+const std::string DEFAULT_FONT_PATH = FONT_PATH + (const std::string)"MochiyPopOne.ttf";
 
 
 // COLOR
@@ -72,8 +78,7 @@ const float POS_Y_COEF_COL = 1 / (float)3;
 
 
 // IMAGE PATHS
-const std::string BOARD_IMG_DIR = 
-".\\assets\\images\\board\\";
+const std::string BOARD_IMG_DIR = IMG_PATH + (const std::string)"board\\";
 const std::string SCOREBOARD_IMG_PATH = BOARD_IMG_DIR + (const std::string)"scoreboard.png";
 const std::string CLOSED_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"closed.png";
 const std::string BLANK_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"blank.png";

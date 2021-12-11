@@ -72,7 +72,7 @@ void registerResources() {
 
 
 int main() {
-    /*int choice;
+    int choice;
 
     PLAYER newPlayer, oldPlayer;
 
@@ -85,7 +85,7 @@ int main() {
         welcomePlayer(choice);
         implementChoice(choice, mine_Board, old_mine_Board, game_Feature, old_game_Feature,
             newPlayer, oldPlayer, game_Board, old_game_Board);
-    } while (true);*/
+    } while (true);
 
     // Phần này bị warning gì á tui k rõ nữa, ông xem làm gì đc k
     // C6262: Function uses '16396' bytes of stack: exceeds /analyze:stacksize '16384'. Consider moving some data to heap.

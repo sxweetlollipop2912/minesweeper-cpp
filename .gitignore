@@ -1,3 +1,10 @@
+# Project-specific files
+/minesweeper/data/*
+!/minesweeper/data/beginner_records.txt
+!/minesweeper/data/intermediate_records.txt
+!/minesweeper/data/expert_records.txt
+
+
 /.idea/
 
 ## Ignore Visual Studio temporary files, build results, and

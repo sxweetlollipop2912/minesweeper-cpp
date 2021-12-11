@@ -2,6 +2,7 @@
 
 #include "GameTools.h"
 #include "../Structs.h"
+#include "../Constants.h"
 
 Records records;
 Timer new_Timers = { 0,0,0,0 }, old_Timers;
@@ -216,7 +217,7 @@ void mine_Level(int level, GAMEPREDICATE& game_Feature, GAMEPREDICATE& old_game_
 		break;
 	}
 	}
-	ofstream outFile("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Information\\last_Gamefeature.txt");
+	ofstream outFile(DATA_PATH + "last_Gamefeature.txt");
 	if (outFile.fail()) {
 		cout << " Cannot open Game_Feature";
 		exit(1);
@@ -275,7 +276,7 @@ int mine_Count(int theRow, int theColumn, const GAMEPREDICATE& game_Feature, cha
 
 void mine_Create(const GAMEPREDICATE& game_Feature, char mine_Board[][MAX_COLUMN], char old_mine_Board[][MAX_COLUMN], int theMines) {
 	int hasPlaced = 0; // The number of mines has been placed
-	ofstream outFile("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Information\\last_mineBoard.txt");
+	ofstream outFile(DATA_PATH + "last_mineBoard.txt");
 	if (outFile.fail()) {
 		cout << " Cannot open old_mineBoard";
 		exit(1);
@@ -391,7 +392,7 @@ void inputInfo(PLAYER& new_Player, PLAYER& old_Player) {
 		<< " ENTER YOUR CHOICE HERE: ";
 	cin >> new_Player.level;
 	old_Player = new_Player;
-	ofstream outFile("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Information\\last_Player.txt");
+	ofstream outFile(DATA_PATH + "last_Player.txt");
 	if (outFile.fail()) {
 		cout << " ERROR: Cannot open Information.";
 	}
@@ -439,7 +440,7 @@ void auto_play(int& theRow, int& theColumn, GAMECELL game_Board[][MAX_COLUMN], c
 }
 
 void mine_reserveData(GAMECELL game_Board[][MAX_COLUMN], GAMECELL old_game_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature, Timer& old_Timers, const Timer& new_Timers) {
-	ofstream outFile("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Information\\last_Gameboard.txt");
+	ofstream outFile(DATA_PATH + "last_Gameboard.txt");
 	if (outFile.fail()) {
 		cout << " Cannot open last_Gameboard";
 		exit(1);
@@ -452,7 +453,7 @@ void mine_reserveData(GAMECELL game_Board[][MAX_COLUMN], GAMECELL old_game_Board
 	}
 	outFile.close();
 
-	outFile.open("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Information\\last_Clock.txt");
+	outFile.open(DATA_PATH + "last_Clock.txt");
 	if (outFile.fail()) {
 		cout << " Cannot open last_Clock";
 		exit(1);
@@ -464,7 +465,7 @@ void mine_reserveData(GAMECELL game_Board[][MAX_COLUMN], GAMECELL old_game_Board
 
 void mine_updateData(char mine_Board[][MAX_COLUMN], char old_mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_COLUMN], GAMECELL old_game_Board[][MAX_COLUMN],
 	GAMEPREDICATE& game_Feature, GAMEPREDICATE& old_game_Feature, Timer& new_Timers, Timer& old_Timers, PLAYER& new_Player, PLAYER& old_Player) {
-	ifstream inFile("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Information\\last_Gamefeature.txt");
+	ifstream inFile(DATA_PATH + "last_Gamefeature.txt");
 	if (inFile.fail()) {
 		cout << " Cannot open last_Gamefeature";
 		exit(1);
@@ -472,7 +473,7 @@ void mine_updateData(char mine_Board[][MAX_COLUMN], char old_mine_Board[][MAX_CO
 	inFile >> old_game_Feature;
 	inFile.close();
 	game_Feature = old_game_Feature;
-	inFile.open("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Information\\last_Gameboard.txt");
+	inFile.open(DATA_PATH + "last_Gameboard.txt");
 	if (inFile.fail()) {
 		cout << " Cannot open last_Gameboard";
 		exit(1);
@@ -485,7 +486,7 @@ void mine_updateData(char mine_Board[][MAX_COLUMN], char old_mine_Board[][MAX_CO
 		}
 	}
 	inFile.close();
-	inFile.open("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Information\\last_Mineboard.txt");
+	inFile.open(DATA_PATH + "last_Mineboard.txt");
 	if (inFile.fail()) {
 		cout << " Cannot open last_Mineboard";
 		exit(1);
@@ -501,7 +502,7 @@ void mine_updateData(char mine_Board[][MAX_COLUMN], char old_mine_Board[][MAX_CO
 			mine_Board[i][j] = old_mine_Board[i][j];
 		}
 	}
-	inFile.open("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Information\\last_Clock.txt");
+	inFile.open(DATA_PATH + "last_Clock.txt");
 	if (inFile.fail()) {
 		cout << " Cannot open last_Clock";
 		exit(1);
@@ -509,7 +510,7 @@ void mine_updateData(char mine_Board[][MAX_COLUMN], char old_mine_Board[][MAX_CO
 	inFile >> old_Timers;
 	inFile.close();
 	new_Timers = old_Timers;
-	inFile.open("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Information\\last_Player.txt");
+	inFile.open(DATA_PATH + "last_Player.txt");
 	if (inFile.fail()) {
 		cout << " Cannot open last_Player";
 		exit(1);
@@ -583,7 +584,7 @@ void addtoRecord(int theLevel, const PLAYER& newPlayer) {
 	switch (theLevel) {
 	case 1: {
 		records.beginner.push_back(newPlayer);
-		outFile.open("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Records\\records.beginner_Records.txt", ios::app);
+		outFile.open(DATA_PATH + "beginner_records.txt", ios::app);
 		if (outFile.fail()) {
 			cout << " ERROR: outFile cannot be opened.";
 			exit(1);
@@ -594,7 +595,7 @@ void addtoRecord(int theLevel, const PLAYER& newPlayer) {
 	}
 	case 2: {
 		records.intermediate.push_back(newPlayer);
-		outFile.open("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Records\\records.intermediate._Records.txt", ios::app);
+		outFile.open(DATA_PATH + " ", ios::app);
 		if (outFile.fail()) {
 			cout << " ERROR: outFile cannot be opened.";
 			exit(1);
@@ -605,7 +606,7 @@ void addtoRecord(int theLevel, const PLAYER& newPlayer) {
 	}
 	case 3: {
 		records.expert.push_back(newPlayer);
-		outFile.open("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Records\\records.expert_Records.txt", ios::app);
+		outFile.open(DATA_PATH + "expert_records.txt", ios::app);
 		if (outFile.fail()) {
 			cout << " ERROR: outFile cannot be opened.";
 			exit(1);
@@ -619,9 +620,9 @@ void addtoRecord(int theLevel, const PLAYER& newPlayer) {
 }
 
 void update_ScoreBoard(Records& record) {
-	ifstream file1("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Records\\records.beginner_Records.txt"),
-		file2("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Records\\records.intermediate._Records.txt"),
-		file3("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Records\\records.expert_Records.txt");
+	ifstream file1(DATA_PATH + "beginner_records.txt"),
+		file2(DATA_PATH + "intermediate_records.txt"),
+		file3(DATA_PATH + "expert_records.txt");
 	if (file1.fail() || file2.fail() || file3.fail()) {
 		cout << " ERROR: cannot open inFile.";
 		exit(1);
