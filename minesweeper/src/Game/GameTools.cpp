@@ -550,6 +550,10 @@ void mine_Onscreen(char& theChoice, bool& isWin, bool Full, GAMECELL game_Board[
 			cout << " The cell has been opened.";
 			Sleep(1000);
 		}
+		else if (game_Board[a][b].isFlag){
+			cout<<" The cell has been flags.";
+			Sleep(1000);
+		}
 		else {
 			if (theChoice == 'C') {
 				splash_Feature(a, b, game_Board, mine_Board, game_Feature);
