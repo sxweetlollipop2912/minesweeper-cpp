@@ -5,6 +5,7 @@
 !/minesweeper/data/expert_records.txt
 
 
+/.vscode/
 /.idea/
 
 ## Ignore Visual Studio temporary files, build results, and
