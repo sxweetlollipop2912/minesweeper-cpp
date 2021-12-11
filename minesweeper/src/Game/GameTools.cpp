@@ -161,6 +161,7 @@ ifstream& operator >> (ifstream& inFile, vector <PLAYER>& score_Board) {
 	auto v = score_Board.begin();
 	for (v; v != score_Board.end(); v++) {
 		inFile >> v->timePlay >> v->level >> v->name;
+		std::cout << "inputiing records " << v->timePlay << ' ' << v->level << ' ' << v->name << '\n';
 		inFile.ignore(1, '\n');
 	}
 	return inFile;
@@ -595,7 +596,7 @@ void addtoRecord(int theLevel, const PLAYER& newPlayer) {
 	}
 	case 2: {
 		records.intermediate.push_back(newPlayer);
-		outFile.open(DATA_PATH + " ", ios::app);
+		outFile.open(DATA_PATH + "intermediate_records.txt", ios::app);
 		if (outFile.fail()) {
 			cout << " ERROR: outFile cannot be opened.";
 			exit(1);
