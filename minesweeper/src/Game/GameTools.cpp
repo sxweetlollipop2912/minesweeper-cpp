@@ -169,60 +169,55 @@ ifstream& operator >> (ifstream& inFile, vector <PLAYER>& score_Board) {
 	return inFile;
 }
 
+void set_up_game(GAMEPREDICATE& game_Feature, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], int theRow, int theColumn, int max_Mine, int theFlags) {
+	game_Feature.MAX_ROW = theRow;
+	game_Feature.MAX_COLUMN = theColumn;
+	game_Feature.maxMine = max_Mine;
+	game_Feature.flags = theFlags;
+	for (int i = 0; i < game_Feature.MAX_ROW; i++) {
+		for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
+			(game_Board[i][j]).isOpened = (game_Board[i][j]).isFlag = (game_Board[i][j]).mine_Count = 0;
+			mine_Board[i][j] = '.';
+		}
+	}
+}
+
 void mine_Level(int level, GAMEPREDICATE& game_Feature, GAMEPREDICATE& old_game_Feature, char mine_Board[][MAX_COLUMN],
 	GAMECELL game_Board[][MAX_COLUMN]) {
 
 	switch (level) {
-	case 1: {
-		game_Feature.MAX_ROW = 9;
-		game_Feature.MAX_COLUMN = 9;
-		game_Feature.maxMine = 10;
-		game_Feature.flags = 10;
-		for (int i = 0; i < game_Feature.MAX_ROW; i++) {
-			for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
-				(game_Board[i][j]).isOpened = (game_Board[i][j]).isFlag = (game_Board[i][j]).mine_Count = 0;
-				mine_Board[i][j] = '.';
-			}
+		case 1: {
+			set_up_game(game_Feature, game_Board, mine_Board, 9, 9, 10, 10);
+			old_game_Feature = game_Feature;
+			break;
 		}
-		old_game_Feature = game_Feature;
-		break;
-	}
-	case 2: {
-		game_Feature.MAX_ROW = 16;
-		game_Feature.MAX_COLUMN = 16;
-		game_Feature.maxMine = 40;
-		game_Feature.flags = 40;
-		for (int i = 0; i < game_Feature.MAX_ROW; i++) {
-			for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
-				(game_Board[i][j]).isOpened = (game_Board[i][j]).isFlag = (game_Board[i][j]).mine_Count = 0;
-				mine_Board[i][j] = '.';
-			}
+		case 2: {
+			set_up_game(game_Feature, game_Board, mine_Board, 16, 16, 40, 40);
+			old_game_Feature = game_Feature;
+			break;
 		}
-		old_game_Feature = game_Feature;
-		break;
-	}
-	case 3: {
-		game_Feature.MAX_ROW = 16;
-		game_Feature.MAX_COLUMN = 30;
-		game_Feature.maxMine = 99;
-		game_Feature.flags = 99;
-		for (int i = 0; i < game_Feature.MAX_ROW; i++) {
-			for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
-				(game_Board[i][j]).isOpened = (game_Board[i][j]).isFlag = (game_Board[i][j]).mine_Count = 0;
-				mine_Board[i][j] = '.';
-			}
+		case 3: {
+			set_up_game(game_Feature, game_Board, mine_Board, 16, 30, 99, 99);
+			old_game_Feature = game_Feature;
+			break;
 		}
-		old_game_Feature = game_Feature;
-		break;
+		case 4: {
+			int a, b;
+			cout << " Please enter Rows - Column (Both greater than 10 and less or equal to 30): ";
+			cin >> a >> b;
+			int mines = a * b * 20 / 100;
+			set_up_game(game_Feature, game_Board, mine_Board, a, b, mines, mines);
+			old_game_Feature = game_Feature;
+			break;
+		}
+		default: {
+			cout << " ERROR: Illegal value input!";
+			break;
+		}
 	}
-	default: {
-		cout << " ERROR: Illegal value input!";
-		break;
-	}
-	}
-	ofstream outFile(DATA_PATH + "last_Gamefeature.txt");
+	ofstream outFile("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Information\\last_Gamefeature.txt");
 	if (outFile.fail()) {
-		cout << " Cannot open Game_Feature";
+		//cout << " Cannot open Game_Feature";
 		exit(1);
 	}
 	outFile << old_game_Feature;
@@ -388,10 +383,11 @@ void inputInfo(PLAYER& new_Player, PLAYER& old_Player) {
 	cout << " Please enter your name: ";
 	cin.ignore(1, '\n');
 	getline(cin, new_Player.name);
-	cout << " " << new_Player.name << " , please choose the game level : \n\n"
+	cout << " Please choose the game level : \n"
 		<< " A. Press 1 for records.beginner ( 9 x 9 cells and 10 mines )\n"
 		<< " B. Press 2 for INTERMEDIATE ( 16 x 16 cells and 40 mines )\n"
 		<< " C. Press 3 for EXPERT ( 16 x 30 cells and 99 mines )\n"
+		<< " D. Press 4 for USER_CHOICE (Mines will account for 20% of the board)\n"
 		<< " ENTER YOUR CHOICE HERE: ";
 	cin >> new_Player.level;
 	old_Player = new_Player;
