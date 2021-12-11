@@ -158,12 +158,14 @@ ifstream& operator >> (ifstream& inFile, GAMECELL& anObject) {
 }
 
 ifstream& operator >> (ifstream& inFile, vector <PLAYER>& score_Board) {
-	auto v = score_Board.begin();
-	for (v; v != score_Board.end(); v++) {
-		inFile >> v->timePlay >> v->level >> v->name;
-		std::cout << "inputiing records " << v->timePlay << ' ' << v->level << ' ' << v->name << '\n';
+	score_Board.clear();
+
+	PLAYER player;
+	while (inFile >> player.timePlay >> player.level >> player.name) {
+		score_Board.push_back(player);
 		inFile.ignore(1, '\n');
 	}
+
 	return inFile;
 }
 
@@ -628,6 +630,7 @@ void update_ScoreBoard(Records& record) {
 		cout << " ERROR: cannot open inFile.";
 		exit(1);
 	}
+
 	file1 >> records.beginner;
 	file2 >> records.intermediate;
 	file3 >> records.expert;
@@ -717,6 +720,7 @@ void implementChoice(int choice, char mine_Board[][MAX_COLUMN], char old_mine_Bo
 	}
 	case 3: {
 		system("cls");
+		update_ScoreBoard(records);
 		cout << " Which level do you want to see? (B-I-E): ";
 		char ans;
 		cin >> ans;
