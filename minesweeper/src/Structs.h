@@ -71,6 +71,17 @@ struct DrawableList {
 			this->rank = rank;
 		}
 	};
+	struct DrawableCircle {
+		std::shared_ptr<sf::CircleShape> circle;
+
+		// higher rank drawables overwrite lower ones.
+		int rank;
+
+		DrawableCircle(const std::shared_ptr<sf::CircleShape> circle = nullptr, const int rank = 0) {
+			this->circle = circle;
+			this->rank = rank;
+		}
+	};
 	struct DrawableText {
 		std::shared_ptr<sf::Text> text;
 
@@ -86,11 +97,13 @@ struct DrawableList {
 	std::vector <DrawableSprite> sprites;
 	std::vector <DrawableText> texts;
 	std::vector <DrawableRect> rects;
+	std::vector <DrawableCircle> circles;
 
 	DrawableList() {
 		sprites.clear();
 		texts.clear();
 		rects.clear();
+		circles.clear();
 	}
 
 	void append(const DrawableList& list) {
@@ -102,6 +115,9 @@ struct DrawableList {
 		}
 		for (auto e : list.rects) {
 			rects.push_back(e);
+		}
+		for (auto e : list.circles) {
+			circles.push_back(e);
 		}
 	}
 };

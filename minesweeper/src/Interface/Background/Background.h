@@ -9,6 +9,8 @@
 #include "../../Constants.h"
 #include "../../Structs.h"
 
+constexpr auto PI = 3.1415926535897932384626;
+
 
 struct Circle {
 	sf::CircleShape shape;
@@ -40,11 +42,13 @@ private:
 	void calCurrentCirclesPos();
 
 public:
-	Background(const sf::VideoMode window_size = sf::VideoMode::getDesktopMode(), const sf::Color primary_color = BACKGROUMD_COLOR, const sf::Color secondary_color = BACKGROUMD_COLOR, const float color_changing_rate = 0, const float circle_speed = 50, const int number_of_circles = 10, const float circle_radius = 30);
+	Background(const sf::VideoMode window_size = sf::VideoMode::getDesktopMode(), const sf::Color primary_color = BACKGROUMD_COLOR, const sf::Color secondary_color = BACKGROUMD_COLOR, const float color_changing_rate = 0, const float circle_speed = 100, const int number_of_circles = 13, const float circle_radius = 150);
 
 	sf::Color getCurrentPrimaryColor() const;
 	sf::Color getCurrentSecondaryColor() const;
 	int getNumberOfCircles() const;
+
+	void update();
 
 	void setNextColor(const sf::Color next_prim_color, const sf::Color next_second_color, const sf::Time transition_time);
 	void setCircleSpeed(const float speed);

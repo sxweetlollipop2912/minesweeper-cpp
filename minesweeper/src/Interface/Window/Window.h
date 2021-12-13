@@ -7,6 +7,7 @@
 #include <SFML/Window.hpp>
 
 #include "../ResourceVault/ResourceVault.h"
+#include "../Background/Background.h"
 #include "../Button/Button.h"
 #include "../Text/Text.h"
 #include "../Board/Board.h"
@@ -26,6 +27,8 @@ class Window {
 	friend Result Comms::gameInfoSending(const GameInfo info);
 
 private:
+	Background background;
+
 	std::map <SceneType, std::shared_ptr<Scene>> scenes;
 	std::set <SceneType> constantly_changing_scenes;
 
@@ -44,14 +47,16 @@ private:
 
 	Window(const sf::VideoMode& window_size = sf::VideoMode(1500, 1000), const std::string& title = TITLE, const int window_style = sf::Style::Close);
 
-	// Draws a scene on the window.
-	void draw(Scene& scene);
+	// Draws a list of drawable objects on the window.
+	void draw(const DrawableList& list);
 	// Draws a sf::Sprite on the window.
 	void draw(const sf::Sprite& sprite);
 	// Draws a sf::Text on the window.
 	void draw(const sf::Text& text);
 	// Draws a RectangleShape on window.
 	void draw(const sf::RectangleShape& rect);
+	// Draws a CircleShape on window.
+	void draw(const sf::CircleShape& circle);
 	// Draws a text on the window.
 	void draw(Text& text);
 	// Draws a button on the window.

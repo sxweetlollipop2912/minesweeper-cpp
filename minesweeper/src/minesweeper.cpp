@@ -72,6 +72,8 @@ void registerResources() {
 
 
 int main() {
+    srand(time(NULL));
+
     /*int choice;
 
     PLAYER newPlayer, oldPlayer;
@@ -115,7 +117,7 @@ int main() {
         change |= (*window)->updatePerFrame();
 
         if (change) {
-            (*window)->render_window.clear(BACKGROUMD_COLOR);
+            (*window)->render_window.clear();
             (*window)->drawCurrentScene();
             (*window)->render_window.display();
         }
