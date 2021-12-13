@@ -12,6 +12,7 @@
 #include "../Text/Text.h"
 #include "../../Constants.h"
 #include "../../Enums.h"
+#include "../../Structs.h"
 
 
 class DifficultiesScene : public Scene {

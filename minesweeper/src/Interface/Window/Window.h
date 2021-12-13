@@ -18,6 +18,7 @@
 #include "../../Comms/Comms.h"
 #include "../../Enums.h"
 #include "../../Constants.h"
+#include "../../Structs.h"
 
 
 // This is a singleton.

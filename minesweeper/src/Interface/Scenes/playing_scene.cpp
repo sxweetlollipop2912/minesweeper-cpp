@@ -263,7 +263,7 @@ bool PlayingScene::checkBoardSize(const sf::VideoMode& window_size, const int bo
 }
 
 
-Scene::DrawableList PlayingScene::getDrawableList(const bool is_focusing, const int rank) {
+DrawableList PlayingScene::getDrawableList(const bool is_focusing, const int rank) {
 	DrawableList list;
 
 	for (int i = 0; i < board.number_of_rows; i++) {

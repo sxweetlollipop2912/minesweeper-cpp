@@ -3,10 +3,11 @@
 #include <SFML/Graphics.hpp>
 
 #include "../Scenes/scene.h"
-#include "../../Enums.h"
-#include "../../Constants.h"
 #include "../Button/Button.h"
 #include "../Text/Text.h"
+#include "../../Enums.h"
+#include "../../Constants.h"
+#include "../../Structs.h"
 
 
 // A pop-up at the center of the screen that shows a message and offers Yes/No options.

@@ -428,7 +428,7 @@ void Window::draw(Button& button, const bool isHovered) {
 
 
 void Window::draw(Scene& scene) {
-	Scene::DrawableList list = scene.getDrawableList();
+	DrawableList list = scene.getDrawableList();
 
 	for (int rank = 0, sprite_idx = 0, text_idx = 0, rect_idx = 0; sprite_idx < list.sprites.size() || text_idx < list.texts.size(); rank++) {
 		for (; sprite_idx < list.sprites.size() && list.sprites[sprite_idx].rank == rank; sprite_idx++) {

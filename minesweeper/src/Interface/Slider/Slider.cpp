@@ -11,7 +11,7 @@ Slider::Slider(const int min, const int max, sf::Vector2f top_left_pos, const sf
 	min_value = min;
 	slider_value = min;
 
-	text.setTextColor(sf::Color::White);
+	text.setTextColor(DEFAULT_TEXT_COLOR);
 
 	int axis_height = 10;
 	int axis_width = 200;
@@ -128,22 +128,22 @@ void Slider::setSliderPercentValue(const float new_percent_value) {
 }
 
 
-Scene::DrawableList Slider::getDrawableList(const bool is_focusing, const int rank) {
-	Scene::DrawableList list;
+DrawableList Slider::getDrawableList(const bool is_focusing, const int rank) {
+	DrawableList list;
 
-	auto text1 = Scene::DrawableList::DrawableText(std::make_shared<sf::Text>(
+	auto text1 = DrawableList::DrawableText(std::make_shared<sf::Text>(
 		returnText(top_left_pos.x - 10, top_left_pos.y + 5, std::to_string(min_value), 20)));
-	auto text2 = Scene::DrawableList::DrawableText(std::make_shared<sf::Text>(
+	auto text2 = DrawableList::DrawableText(std::make_shared<sf::Text>(
 		returnText(top_left_pos.x + axis.getSize().x - 10, top_left_pos.y + 5, std::to_string(max_value), 20)));
-	auto text3 = Scene::DrawableList::DrawableText(std::make_shared<sf::Text>(
+	auto text3 = DrawableList::DrawableText(std::make_shared<sf::Text>(
 		returnText(slider.getPosition().x - slider.getSize().x, slider.getPosition().y - slider.getSize().y, std::to_string((int)slider_value), 15)));
 
 	list.texts.push_back(text1);
 	list.texts.push_back(text2);
 	list.texts.push_back(text3);
 
-	list.rects.push_back(Scene::DrawableList::DrawableRect(std::make_shared<sf::RectangleShape>(axis)));
-	list.rects.push_back(Scene::DrawableList::DrawableRect(std::make_shared<sf::RectangleShape>(slider)));
+	list.rects.push_back(DrawableList::DrawableRect(std::make_shared<sf::RectangleShape>(axis)));
+	list.rects.push_back(DrawableList::DrawableRect(std::make_shared<sf::RectangleShape>(slider)));
 
 	return list;
 }
