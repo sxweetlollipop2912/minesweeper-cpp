@@ -215,9 +215,9 @@ void mine_Level(int level, GAMEPREDICATE& game_Feature, GAMEPREDICATE& old_game_
 			break;
 		}
 	}
-	ofstream outFile("C:\\Users\\Phat K.Tran\\Downloads\\Mine_Sweeper\\Information\\last_Gamefeature.txt");
+	ofstream outFile(DATA_PATH + "last_Gamefeature.txt");
 	if (outFile.fail()) {
-		//cout << " Cannot open Game_Feature";
+		cout << " Cannot open Game_Feature";
 		exit(1);
 	}
 	outFile << old_game_Feature;
