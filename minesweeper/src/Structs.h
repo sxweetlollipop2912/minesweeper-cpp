@@ -121,3 +121,34 @@ struct DrawableList {
 		}
 	}
 };
+
+
+struct AudioVisualCfg {
+	struct Cfg {
+		sf::Color primary_color;
+		sf::Color secondary_color;
+		sf::Time time;
+		sf::Time transition_duration;
+		float bubble_speed;
+
+		Cfg(const sf::Color primary_color = sf::Color(0, 0, 0),
+			const sf::Color secondary_color = sf::Color(0, 0, 0),
+			const sf::Time transition_duration = sf::seconds(-1),
+			const float bubble_speed = -1,
+			const sf::Time time = sf::seconds(-1)) {
+			this->primary_color = primary_color;
+			this->secondary_color = secondary_color;
+			this->time = time;
+			this->transition_duration = transition_duration;
+			this->bubble_speed = bubble_speed;
+		}
+	};
+	std::vector <Cfg> v;
+
+	// Sorts config vector base on time.
+	void sort() {
+		std::sort(v.begin(), v.end(), [](const Cfg& e1, const Cfg& e2) {
+			return e1.time < e2.time;
+			});
+	}
+};

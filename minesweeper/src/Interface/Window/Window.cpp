@@ -12,6 +12,8 @@ Window::Window(const sf::VideoMode& window_size, const std::string& title, const
 	this->window_style = window_style;
 
 	background = Background(window_size, sf::Color(16, 20, 20), sf::Color(92, 204, 230));
+	AudioVisualCfg::Cfg cfg(sf::Color(33, 14, 21), sf::Color(230, 83, 151), sf::seconds(5), 150);
+	background.setNextConfig(cfg);
 
 	auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
 	auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, 0, 0));
