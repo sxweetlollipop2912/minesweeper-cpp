@@ -147,7 +147,7 @@ struct AudioVisualCfg {
 
 	// Sorts config vector base on time.
 	void sort() {
-		std::sort(v.begin(), v.end(), [](const Cfg& e1, const Cfg& e2) {
+		std::sort(v.begin(), v.end(), [&](const Cfg& e1, const Cfg& e2) {
 			return e1.time < e2.time;
 			});
 	}
