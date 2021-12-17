@@ -16,6 +16,7 @@ Background::Background(const sf::VideoMode window_size, const sf::Color primary_
 
 	cur_prim_color = des_prim_color = primary_color;
 	cur_second_color = des_second_color = secondary_color;
+	cur_second_color.a = des_second_color.a = TRANSPARENT_ALPHA;
 	this->circle_speed = circle_speed;
 	transition_duration = sf::microseconds(0);
 
@@ -36,7 +37,6 @@ Background::Background(const sf::VideoMode window_size, const sf::Color primary_
 			shape.setOrigin(sf::Vector2f(circle_radius, circle_radius));
 
 			sf::Color color = secondary_color;
-			color.a = 150;
 			shape.setFillColor(color);
 
 			{
@@ -91,7 +91,6 @@ void Background::calCurrentColor() {
 		color.r = (des_second_color.r - color.r) * rate + color.r;
 		color.g = (des_second_color.g - color.g) * rate + color.g;
 		color.b = (des_second_color.b - color.b) * rate + color.b;
-		color.a = 150;
 
 		if ((des_second_color.r - color.r) * (des_second_color.r - cur_second_color.r) > 0 &&
 			(des_second_color.g - color.g) * (des_second_color.g - cur_second_color.g) > 0 &&
@@ -166,6 +165,7 @@ void Background::setNextColor(const sf::Color next_prim_color, const sf::Color n
 	this->des_prim_color = next_prim_color;
 	
 	this->des_second_color = next_second_color;
+	this->des_second_color.a = TRANSPARENT_ALPHA;
 
 	if (transition_duration.asSeconds() > 0) {
 		this->transition_duration = transition_duration;

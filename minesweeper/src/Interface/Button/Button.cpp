@@ -91,9 +91,9 @@ sf::Sprite Button::getHoveredSprite() const {
 
     // Darken the hovered sprite a bit.
     if (transparent)
-        sprite.setColor(sf::Color(200, 200, 200, 220));
+        sprite.setColor(sf::Color(150, 150, 150, 220));
     else
-        sprite.setColor(sf::Color(200, 200, 200));
+        sprite.setColor(sf::Color(150, 150, 150));
 
     return sprite;
 }

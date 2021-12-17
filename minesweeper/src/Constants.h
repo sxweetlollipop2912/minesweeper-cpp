@@ -39,7 +39,7 @@ const std::string DEFAULT_FONT_PATH = FONT_PATH + (const std::string)"MochiyPopO
 
 // COLOR
 const sf::Color BACKGROUMD_COLOR = sf::Color(245, 245, 245);
-const sf::Color DEFAULT_TEXT_COLOR = sf::Color(12, 33, 40);
+const sf::Color DEFAULT_TEXT_COLOR = sf::Color::White;
 
 
 // BUTTON

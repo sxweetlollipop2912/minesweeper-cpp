@@ -11,6 +11,7 @@
 #include "../../Structs.h"
 
 constexpr auto PI = 3.1415926535897932384626;
+constexpr auto TRANSPARENT_ALPHA = 150;
 
 
 struct Circle {
