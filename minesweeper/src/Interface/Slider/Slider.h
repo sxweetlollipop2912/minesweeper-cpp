@@ -2,9 +2,10 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../../Enums.h"
 #include "../Text/Text.h"
 #include "../Scenes/scene.h"
+#include "../../Enums.h"
+#include "../../Structs.h"
 
 
 class Slider
@@ -45,6 +46,6 @@ public:
 	bool onMousePressed(const MouseActionType mouse_type);
 	void onMouseReleased(const MouseActionType mouse_type);
 
-	Scene::DrawableList getDrawableList(const bool is_focusing = true, const int rank = 0);
+	DrawableList getDrawableList(const bool is_focusing = true, const int rank = 0);
 };
 

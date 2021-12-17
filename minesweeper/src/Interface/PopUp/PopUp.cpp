@@ -62,7 +62,7 @@ void PopUp::PositionPopUp(const sf::VideoMode& window_size) {
 }
 
 
-Scene::DrawableList PopUp::getDrawableList(const bool is_focusing, const int rank) {
+DrawableList PopUp::getDrawableList(const bool is_focusing, const int rank) {
 	DrawableList list;
 
 	for (auto e : buttons) {

@@ -135,7 +135,7 @@ SceneType Scene::getNextScene(const GameEvent game_event) const {
 }
 
 
-Scene::DrawableList Scene::getDrawableList(const bool is_focusing, const int rank) {
+DrawableList Scene::getDrawableList(const bool is_focusing, const int rank) {
 	DrawableList list;
 
 	bool is_focusing_on_current = is_focusing;

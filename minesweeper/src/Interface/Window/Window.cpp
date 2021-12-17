@@ -11,6 +11,10 @@ Window::Window(const sf::VideoMode& window_size, const std::string& title, const
 	this->title = title;
 	this->window_style = window_style;
 
+	background = Background(window_size, sf::Color(16, 20, 20), sf::Color(92, 204, 230));
+	AudioVisualCfg::Cfg cfg(sf::Color(33, 14, 21), sf::Color(230, 83, 151), sf::seconds(5), 150);
+	background.setNextConfig(cfg);
+
 	auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
 	auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, 0, 0));
 
@@ -388,12 +392,15 @@ bool Window::updatePerFrame() {
 		return true;
 	}
 
-	return false;
+	background.update();
+
+	return true;
 }
 
 
 void Window::drawCurrentScene() {
-	draw(*getCurrentScene());
+	draw(background.getDrawableList());
+	draw(getCurrentScene()->getDrawableList());
 }
 
 
@@ -412,6 +419,11 @@ void Window::draw(const sf::RectangleShape& rect) {
 }
 
 
+void Window::draw(const sf::CircleShape& circle) {
+	render_window.draw(circle);
+}
+
+
 void Window::draw(Text& text) {
 	draw(text.getSfText());
 }
@@ -427,18 +439,24 @@ void Window::draw(Button& button, const bool isHovered) {
 }
 
 
-void Window::draw(Scene& scene) {
-	Scene::DrawableList list = scene.getDrawableList();
+void Window::draw(const DrawableList& list) {
+	for (int rank = 0, sprite_idx = 0, text_idx = 0, rect_idx = 0, circle_idx = 0; 
+		sprite_idx < list.sprites.size() || 
+		text_idx < list.texts.size() || 
+		rect_idx < list.rects.size() || 
+		circle_idx < list.circles.size(); rank++) {
 
-	for (int rank = 0, sprite_idx = 0, text_idx = 0, rect_idx = 0; sprite_idx < list.sprites.size() || text_idx < list.texts.size(); rank++) {
+		for (; rect_idx < list.rects.size() && list.rects[rect_idx].rank == rank; rect_idx++) {
+			draw(*list.rects[rect_idx].rect);
+		}
+		for (; circle_idx < list.circles.size() && list.circles[circle_idx].rank == rank; circle_idx++) {
+			draw(*list.circles[circle_idx].circle);
+		}
 		for (; sprite_idx < list.sprites.size() && list.sprites[sprite_idx].rank == rank; sprite_idx++) {
 			draw(*list.sprites[sprite_idx].sprite);
 		}
 		for (; text_idx < list.texts.size() && list.texts[text_idx].rank == rank; text_idx++) {
 			draw(*list.texts[text_idx].text);
-		}
-		for (; rect_idx < list.rects.size() && list.rects[rect_idx].rank == rank; rect_idx++) {
-			draw(*list.rects[rect_idx].rect);
 		}
 	}
 }

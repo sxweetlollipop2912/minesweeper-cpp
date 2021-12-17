@@ -148,8 +148,8 @@ int DifficultiesScene::getCurrentCol() const {
 }
 
 
-Scene::DrawableList DifficultiesScene::getDrawableList(const bool is_focusing, const int rank) {
-	Scene::DrawableList list;
+DrawableList DifficultiesScene::getDrawableList(const bool is_focusing, const int rank) {
+	DrawableList list;
 
 	list.append(slider_row.getDrawableList(is_focusing, rank));
 	list.append(slider_col.getDrawableList(is_focusing, rank));

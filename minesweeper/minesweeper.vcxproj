@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\Comms\Comms.cpp" />
     <ClCompile Include="src\Game\GameTools.cpp" />
+    <ClCompile Include="src\Interface\Background\Background.cpp" />
     <ClCompile Include="src\Interface\Board\Board.cpp" />
     <ClCompile Include="src\Interface\Board\Position.cpp" />
     <ClCompile Include="src\Interface\Button\Button.cpp" />
@@ -43,6 +44,7 @@
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Enums.h" />
     <ClInclude Include="src\Game\GameTools.h" />
+    <ClInclude Include="src\Interface\Background\Background.h" />
     <ClInclude Include="src\Interface\Board\Board.h" />
     <ClInclude Include="src\Interface\Board\Position.h" />
     <ClInclude Include="src\Interface\Button\Button.h" />
