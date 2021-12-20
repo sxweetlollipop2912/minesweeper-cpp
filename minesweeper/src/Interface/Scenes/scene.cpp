@@ -29,7 +29,6 @@ Scene::Scene(const sf::VideoMode& window_size, const SceneType scene_type) {
 		TL_next_song.x = RIGHT_DOWN_COEF_NEXT_SONG.x * window_size.width - next_song_button.getSize().x;
 		TL_next_song.y = RIGHT_DOWN_COEF_NEXT_SONG.y * window_size.height - next_song_button.getSize().y;
 		next_song_button.setTopLeftPos(TL_next_song);
-		std::cout << "pos " << next_song_button.getPosTopLeft().x << ' ' << next_song_button.getPosTopLeft().y << '\n';
 	}
 }
 
@@ -147,7 +146,7 @@ SceneType Scene::getNextScene(const GameEvent game_event) const {
 	if (next_scene.find(game_event) != next_scene.end()) {
 		return next_scene.at(game_event);
 	}
-	return SceneType::Unkown;
+	return SceneType::Unknown;
 }
 
 

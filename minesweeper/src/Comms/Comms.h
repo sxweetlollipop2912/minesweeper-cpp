@@ -30,7 +30,7 @@ namespace Comms {
 		// > Menu,
 		// > Playing,
 		// > Leaderboard,
-		SceneType current_scene = SceneType::Unkown;
+		SceneType current_scene = SceneType::Unknown;
 
 		// Only assigned on GameEvent::NewGame.
 		// This can be a custom board size, or a generic board size (depends on difficulty).

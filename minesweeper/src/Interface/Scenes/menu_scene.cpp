@@ -64,6 +64,9 @@ MenuScene::MenuScene(const sf::VideoMode& window_size) : Scene(window_size, Scen
 		}
 	}
 	for (auto i = buttons.begin(); i != buttons.end(); i++) {
+		if (i->first != STR_LOAD_GAME && i->first != STR_NEW_GAME && i->first != STR_LEADERBOARD && i->first != STR_QUIT_GAME)
+			continue;
+
 		i->second.centerButtonHorizontally(this->window_size.width);
 	}
 }

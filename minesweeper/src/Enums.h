@@ -40,7 +40,7 @@ enum class SceneType {
 	Playing,
 	Leaderboard,
 	PopUp,
-	Unkown
+	Unknown
 };
 
  enum class Difficulty {

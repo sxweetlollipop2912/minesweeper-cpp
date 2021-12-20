@@ -54,7 +54,7 @@ protected:
 	bool spawnPopUp(const GameEvent game_event);
 
 public:
-	Scene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode(), const SceneType scene_type = SceneType::Unkown);
+	Scene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode(), const SceneType scene_type = SceneType::Unknown);
 
 
 	// Returns SceneType::Unknown if no next scene corresponding with game_event is found.
