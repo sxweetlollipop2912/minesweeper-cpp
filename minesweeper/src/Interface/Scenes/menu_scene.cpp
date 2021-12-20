@@ -3,7 +3,7 @@
 #include "menu_scene.h"
 
 
-MenuScene::MenuScene(const sf::VideoMode& window_size) : Scene(SceneType::Menu) {
+MenuScene::MenuScene(const sf::VideoMode& window_size) : Scene(window_size, SceneType::Menu) {
 	next_scene[GameEvent::LoadGame] = SceneType::Playing;
 	next_scene[GameEvent::ShowDifficulties] = SceneType::Difficulties;
 	next_scene[GameEvent::ShowLeaderboard] = SceneType::Leaderboard;
@@ -12,8 +12,6 @@ MenuScene::MenuScene(const sf::VideoMode& window_size) : Scene(SceneType::Menu) 
 	buttons_event[STR_NEW_GAME] = GameEvent::ShowDifficulties;
 	buttons_event[STR_LEADERBOARD] = GameEvent::ShowLeaderboard;
 	buttons_event[STR_QUIT_GAME] = GameEvent::QuitGame;
-
-	this->window_size = window_size;
 
 
 	float pos_y_title = this->window_size.height * POS_Y_COEF_TITLE;
@@ -54,8 +52,14 @@ MenuScene::MenuScene(const sf::VideoMode& window_size) : Scene(SceneType::Menu) 
 
 
 	for (auto i = buttons.begin(); i != buttons.end(); i++) {
+		if (i->first != STR_LOAD_GAME && i->first != STR_NEW_GAME && i->first != STR_LEADERBOARD && i->first != STR_QUIT_GAME)
+			continue;
+
 		auto j = i; j++;
 		for (; j != buttons.end(); j++) {
+			if (j->first != STR_LOAD_GAME && j->first != STR_NEW_GAME && j->first != STR_LEADERBOARD && j->first != STR_QUIT_GAME)
+				continue;
+
 			Button::equalizeButtonsSize(i->second, j->second);
 		}
 	}

@@ -4,8 +4,9 @@
 #include "../PopUp/PopUp.h"
 
 
-Scene::Scene(const SceneType scene_type) {
+Scene::Scene(const sf::VideoMode& window_size, const SceneType scene_type) {
 	this->scene_type = scene_type;
+	this->window_size = window_size;
 
 	pop_up = nullptr;
 	buttons.clear();
