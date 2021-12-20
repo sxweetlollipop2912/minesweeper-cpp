@@ -1,5 +1,7 @@
 #pragma once
 
+#include <set>
+
 #include <SFML/Graphics.hpp>
 
 const float EPS = 1e-7;
@@ -42,6 +44,18 @@ const std::string DEFAULT_FONT_PATH = FONT_PATH + (const std::string)"MochiyPopO
 // COLOR
 const sf::Color BACKGROUMD_COLOR = sf::Color(245, 245, 245);
 const sf::Color DEFAULT_TEXT_COLOR = sf::Color::White;
+
+
+// AudioConfig
+const std::set <std::string> AUDIO_EXTENSIONS = { ".ogg",".wav",".flac" };
+const std::string CFG_EXTENSION = ".cfg";
+const std::string OPTION_VALUE_SEPARATOR = ":";
+const std::string PRIMARY_COLOR_OPTION = "PrimaryColor";
+const std::string SECONDARY_COLOR_OPTION = "SecondaryColor";
+const std::string TRANSITION_DURATION_OPTION = "TransitionDuration";
+const std::string BUBBLE_SPEED_OPTION = "BubbleSpeed";
+const int MAX_CHAR_PER_LINE = 100;
+const int MAX_LINE = 1000;
 
 
 // BUTTON

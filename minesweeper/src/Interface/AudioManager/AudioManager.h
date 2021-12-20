@@ -1,6 +1,8 @@
 #include <filesystem>
+#include <fstream>
 #include <set>
 #include <string>
+#include <sstream>
 
 #include <SFML/Audio.hpp>
 
@@ -10,18 +12,21 @@
 
 namespace fs = std::filesystem;
 
-const std::set <std::string> EXTENSIONS = { ".ogg",".wav",".flac" };
-
 
 class AudioManager {
 private:
 	sf::Music music;
-	std::vector <std::string> queue;
+	std::vector <fs::path> queue;
+	std::map <fs::path, AudioVisualCfg> cfgs;
+
 	int current_song_idx;
+	int current_cfg_idx;
 	sf::Music::SoundSource::Status current_status;
 
 	sf::Clock clock;
 
+
+	AudioVisualCfg parseFromCfgFile(const std::string& file_path);
 
 	Result startPlayingEntry(const int song_idx);
 
@@ -38,5 +43,5 @@ public:
 	void startMusic();
 
 	// This should be called on every frame.
-	Result update();
+	AudioVisualCfg::Cfg update();
 };

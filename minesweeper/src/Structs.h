@@ -123,16 +123,35 @@ struct DrawableList {
 };
 
 
+struct Color {
+	float r;
+	float g;
+	float b;
+	float a;
+	Color(const float red = 0, const float green = 0, const float blue = 0, const float alpha = 255) {
+		r = red, g = green, b = blue, a = alpha;
+	}
+	Color(const sf::Color& color) {
+		r = color.r, g = color.g, b = color.b, a = color.a;
+	}
+	operator sf::Color() const { return sf::Color(r, g, b, a); }
+
+	bool isValid() const {
+		return r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255 && a >= 0 && a <= 255;
+	}
+};
+
+
 struct AudioVisualCfg {
 	struct Cfg {
-		sf::Color primary_color;
-		sf::Color secondary_color;
+		Color primary_color;
+		Color secondary_color;
 		sf::Time time;
 		sf::Time transition_duration;
 		float bubble_speed;
 
-		Cfg(const sf::Color primary_color = sf::Color(0, 0, 0),
-			const sf::Color secondary_color = sf::Color(0, 0, 0),
+		Cfg(const Color primary_color = Color(-1, -1, -1),
+			const Color secondary_color = Color(-1, -1, -1),
 			const sf::Time transition_duration = sf::seconds(-1),
 			const float bubble_speed = -1,
 			const sf::Time time = sf::seconds(-1)) {
