@@ -7,6 +7,7 @@
 #include <SFML/Window.hpp>
 
 #include "../ResourceVault/ResourceVault.h"
+#include "../AudioManager/AudioManager.h"
 #include "../Background/Background.h"
 #include "../Button/Button.h"
 #include "../Text/Text.h"
@@ -30,6 +31,7 @@ private:
 	static Window* instance;
 
 	Background background;
+	AudioManager audio_manager;
 
 	std::map <SceneType, std::shared_ptr<Scene>> scenes;
 	std::set <SceneType> constantly_changing_scenes;

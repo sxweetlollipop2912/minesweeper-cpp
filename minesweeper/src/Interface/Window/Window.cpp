@@ -15,6 +15,9 @@ Window::Window(const sf::VideoMode& window_size, const std::string& title, const
 	AudioVisualCfg::Cfg cfg(sf::Color(33, 14, 21), sf::Color(230, 83, 151), sf::seconds(5), 150);
 	background.setNextConfig(cfg);
 
+	audio_manager.setRandomMusiclist(MAX_SONGS);
+	audio_manager.startMusic();
+
 	auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
 	auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, 0, 0));
 
@@ -270,9 +273,16 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 			// Load whole board, splash screen etc.
 			break;
 		}
+		case GameEvent::NextSong:
+		{
+			std::cout << "next!\n";
+			audio_manager.onNextMusicEvent();
+
+			break;
+		}
 	}
 
-	if (game_event != GameEvent::Unknown) {
+	if (game_event != GameEvent::Unknown && game_event != GameEvent::NextSong) {
 		auto scene = getCurrentScene();
 
 		if (game_event == GameEvent::ChangesInScene) {
@@ -383,6 +393,8 @@ bool Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Ve
 
 
 bool Window::updatePerFrame() {
+	audio_manager.update();
+
 	if (constantly_changing_scenes.find(getCurrentSceneType()) != constantly_changing_scenes.end()) {
 		current_interface_info.game_event = GameEvent::Unknown;
 		current_interface_info.current_scene = getCurrentSceneType();

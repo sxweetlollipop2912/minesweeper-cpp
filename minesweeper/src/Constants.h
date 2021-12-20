@@ -17,12 +17,14 @@ const int INTERMEDIATE_COL = 16;
 const int EXPERT_ROW = 16;
 const int EXPERT_COL = 30;
 const int MAX_RECORDS_PER_DIFF = 3;
+const int MAX_SONGS = 2;
 
 // PATH
 const std::string DATA_PATH = ".\\data\\";
 const std::string ASSET_PATH = ".\\assets\\";
 const std::string IMG_PATH = ASSET_PATH + (const std::string)"images\\";
 const std::string FONT_PATH = ASSET_PATH + (const std::string)"fonts\\";
+const std::string MUSIC_PATH = ASSET_PATH + (const std::string)"music\\";
 
 
 // WINDOW
@@ -75,6 +77,9 @@ const sf::Vector2f POS_COEF_SCOREBOARD_FLAG = sf::Vector2f(70 / (float)447, (401
 // LEADERBOARD
 const float POS_Y_COEF_LEADERBOARD_TITLE = 1 / (float)8;
 const float POS_Y_COEF_COL = 1 / (float)3;
+// AUDIO
+const sf::Vector2f RIGHT_DOWN_COEF_NEXT_SONG = RIGHT_DOWN_COEF_BOARD_AREA;
+const sf::Vector2f NEXT_SONG_SIZE = sf::Vector2f(40, 40);
 
 
 // IMAGE PATHS

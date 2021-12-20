@@ -29,6 +29,7 @@ enum class GameEvent {
 	Won,
 	Lost,
 	ChangesInScene,
+	NextSong,
 	Unknown
 };
 
@@ -77,6 +78,7 @@ enum class CellType {
 
 enum class TextureType {
 	ButtonDefault,
+	NextSong,
 	Scoreboard,
 	CellMine,
 	CellClosed,
