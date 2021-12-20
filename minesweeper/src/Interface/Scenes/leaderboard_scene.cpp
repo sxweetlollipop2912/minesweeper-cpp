@@ -3,12 +3,11 @@
 #include "leaderboard_scene.h"
 
 
-LeaderboardScene::LeaderboardScene(const sf::VideoMode& window_size) : Scene(SceneType::Leaderboard) {
+LeaderboardScene::LeaderboardScene(const sf::VideoMode& window_size) : Scene(window_size, SceneType::Leaderboard) {
 	next_scene[GameEvent::QuitToMenu] = SceneType::Menu;
 
 	buttons_event[STR_RETURN_BUTTON] = GameEvent::QuitToMenu;
 
-	this->window_size = window_size;
 
 	// Texts
 	{

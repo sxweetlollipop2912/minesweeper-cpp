@@ -3,7 +3,8 @@
 #include "playing_scene.h"
 
 
-PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_rows, const int board_cols) : Scene(SceneType::Playing) {
+PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_rows, const int board_cols) 
+	: Scene(window_size, SceneType::Playing) {
 	next_scene[GameEvent::AutoOpenCell] = SceneType::Playing;
 	next_scene[GameEvent::OpenCell] = SceneType::Playing;
 	next_scene[GameEvent::FlagCell] = SceneType::Playing;
@@ -11,7 +12,6 @@ PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_row
 
 	buttons_event[STR_RETURN_BUTTON] = GameEvent::QuitToMenu;
 
-	this->window_size = window_size;
 
 	// Board
 	{

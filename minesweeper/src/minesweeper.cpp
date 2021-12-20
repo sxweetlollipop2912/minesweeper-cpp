@@ -21,6 +21,9 @@ void registerResources() {
     if (ResourceVault::setTexture(TextureType::ButtonDefault, DEFAULT_BUTTON_PATH) == Result::failure) {
         std::cout << "Loading ButtonDefault texture failed!";
     }
+    if (ResourceVault::setTexture(TextureType::NextSong, DEFAULT_BUTTON_PATH) == Result::failure) {
+        std::cout << "Loading NextSong texture failed!";
+    }
 
     // PLAYING SCENE TEXTURES
     {
@@ -102,7 +105,7 @@ int main() {
     (*window)->initializeMenuScene();
     (*window)->initializeLeaderboardScene();
     (*window)->initializeDifficultiesScene();
-    (*window)->initializePlayingScene(9, 9);
+    (*window)->initializePlayingScene(30, 30);
 
     (*window)->createWindow();
     bool change = true;

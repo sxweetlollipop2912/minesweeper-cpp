@@ -161,11 +161,14 @@ void Background::update() {
 }
 
 
-void Background::setNextColor(const sf::Color next_prim_color, const sf::Color next_second_color, const sf::Time transition_duration) {
-	this->des_prim_color = next_prim_color;
+void Background::setNextColor(const Color next_prim_color, const Color next_second_color, const sf::Time transition_duration) {
+	if (next_prim_color.isValid())
+		this->des_prim_color = next_prim_color;
 	
-	this->des_second_color = next_second_color;
-	this->des_second_color.a = TRANSPARENT_ALPHA;
+	if (next_second_color.isValid()) {
+		this->des_second_color = next_second_color;
+		this->des_second_color.a = TRANSPARENT_ALPHA;
+	}
 
 	if (transition_duration.asSeconds() > 0) {
 		this->transition_duration = transition_duration;

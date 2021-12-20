@@ -29,6 +29,7 @@ enum class GameEvent {
 	Won,
 	Lost,
 	ChangesInScene,
+	NextSong,
 	Unknown
 };
 
@@ -39,7 +40,7 @@ enum class SceneType {
 	Playing,
 	Leaderboard,
 	PopUp,
-	Unkown
+	Unknown
 };
 
  enum class Difficulty {
@@ -77,6 +78,7 @@ enum class CellType {
 
 enum class TextureType {
 	ButtonDefault,
+	NextSong,
 	Scoreboard,
 	CellMine,
 	CellClosed,

@@ -3,7 +3,7 @@
 #include "difficulties_scene.h"
 
 
-DifficultiesScene::DifficultiesScene(const sf::VideoMode& window_size) : Scene(SceneType::Difficulties) {
+DifficultiesScene::DifficultiesScene(const sf::VideoMode& window_size) : Scene(window_size, SceneType::Difficulties) {
 	next_scene[GameEvent::NewGame] = SceneType::Playing;
 	next_scene[GameEvent::QuitToMenu] = SceneType::Menu;
 
@@ -12,8 +12,6 @@ DifficultiesScene::DifficultiesScene(const sf::VideoMode& window_size) : Scene(S
 	buttons_event[STR_BEGINNER_BUTTON] = GameEvent::ChangesInScene;
 	buttons_event[STR_INTER_BUTTON] = GameEvent::ChangesInScene;
 	buttons_event[STR_EXPERT_BUTTON] = GameEvent::ChangesInScene;
-
-	this->window_size = window_size;
 
 	// Buttons
 	{
@@ -44,8 +42,14 @@ DifficultiesScene::DifficultiesScene(const sf::VideoMode& window_size) : Scene(S
 			expert_button.alignImageAndText();
 
 			for (auto i = buttons.begin(); i != buttons.end(); i++) {
+				if (i->first != STR_BEGINNER_BUTTON && i->first != STR_INTER_BUTTON && i->first != STR_EXPERT_BUTTON)
+					continue;
+
 				auto j = i; j++;
 				for (; j != buttons.end(); j++) {
+					if (j->first != STR_BEGINNER_BUTTON && j->first != STR_INTER_BUTTON && j->first != STR_EXPERT_BUTTON)
+						continue;
+
 					Button::equalizeButtonsSize(i->second, j->second);
 				}
 			}

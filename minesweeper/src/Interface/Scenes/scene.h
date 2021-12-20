@@ -19,6 +19,7 @@ class Scene {
 
 protected:
 	const std::string STR_UNKNOWN = "unknown";
+	const std::string STR_NEXT_SONG = "next_song";
 
 	SceneType scene_type;
 	sf::VideoMode window_size;
@@ -53,7 +54,7 @@ protected:
 	bool spawnPopUp(const GameEvent game_event);
 
 public:
-	Scene(const SceneType scene_type = SceneType::Unkown);
+	Scene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode(), const SceneType scene_type = SceneType::Unknown);
 
 
 	// Returns SceneType::Unknown if no next scene corresponding with game_event is found.

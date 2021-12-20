@@ -7,6 +7,7 @@
 #include <SFML/Window.hpp>
 
 #include "../ResourceVault/ResourceVault.h"
+#include "../AudioManager/AudioManager.h"
 #include "../Background/Background.h"
 #include "../Button/Button.h"
 #include "../Text/Text.h"
@@ -27,7 +28,10 @@ class Window {
 	friend Result Comms::gameInfoSending(const GameInfo info);
 
 private:
+	static Window* instance;
+
 	Background background;
+	AudioManager audio_manager;
 
 	std::map <SceneType, std::shared_ptr<Scene>> scenes;
 	std::set <SceneType> constantly_changing_scenes;
@@ -41,9 +45,6 @@ private:
 	sf::Vector2i pos_mouse;
 	// Locks mouse button when it is in use, i.e, a RMB won't be detected while a LMB is pressed and hasn't been released.
 	MouseActionType lock_mouse_button;
-
-
-	static Window* instance;
 
 	Window(const sf::VideoMode& window_size = sf::VideoMode(1500, 1000), const std::string& title = TITLE, const int window_style = sf::Style::Close);
 

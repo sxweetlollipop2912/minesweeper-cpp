@@ -90,6 +90,9 @@
     <ClCompile Include="src\Interface\Background\Background.cpp">
       <Filter>Interface\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Interface\AudioManager\AudioManager.cpp">
+      <Filter>Interface\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Interface\Scenes\playing_scene.h">
@@ -153,6 +156,9 @@
       <Filter>Interface\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Interface\Background\Background.h">
+      <Filter>Interface\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Interface\AudioManager\AudioManager.h">
       <Filter>Interface\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

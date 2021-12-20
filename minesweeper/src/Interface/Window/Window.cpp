@@ -12,8 +12,11 @@ Window::Window(const sf::VideoMode& window_size, const std::string& title, const
 	this->window_style = window_style;
 
 	background = Background(window_size, sf::Color(16, 20, 20), sf::Color(92, 204, 230));
-	AudioVisualCfg::Cfg cfg(sf::Color(33, 14, 21), sf::Color(230, 83, 151), sf::seconds(5), 150);
-	background.setNextConfig(cfg);
+	/*AudioVisualCfg::Cfg cfg(sf::Color(33, 14, 21), sf::Color(230, 83, 151), sf::seconds(5), 150);
+	background.setNextConfig(cfg);*/
+
+	audio_manager.setRandomMusiclist(MAX_SONGS);
+	audio_manager.startMusic();
 
 	auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
 	auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, 0, 0));
@@ -132,7 +135,7 @@ void Window::updateGameInfo(const Comms::GameInfo info) {
 
 			auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
 			scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board, 
-				current_game_info.flag_remaining);
+				current_game_info.game_Feature.flags);
 
 			break;
 		}
@@ -151,7 +154,7 @@ void Window::updateGameInfo(const Comms::GameInfo info) {
 		{
 			auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
 			scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board,
-				current_game_info.flag_remaining);
+				current_game_info.game_Feature.flags);
 
 			break;
 		}
@@ -270,9 +273,15 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 			// Load whole board, splash screen etc.
 			break;
 		}
+		case GameEvent::NextSong:
+		{
+			audio_manager.onNextMusicEvent();
+
+			break;
+		}
 	}
 
-	if (game_event != GameEvent::Unknown) {
+	if (game_event != GameEvent::Unknown && game_event != GameEvent::NextSong) {
 		auto scene = getCurrentScene();
 
 		if (game_event == GameEvent::ChangesInScene) {
@@ -281,7 +290,7 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 
 		else {
 			auto nxt_scene_type = getCurrentSceneType();
-			if (scene->getNextScene(game_event) != SceneType::Unkown) {
+			if (scene->getNextScene(game_event) != SceneType::Unknown) {
 				nxt_scene_type = scene->getNextScene(game_event);
 			}
 
@@ -383,6 +392,10 @@ bool Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Ve
 
 
 bool Window::updatePerFrame() {
+	auto audio_cfg = audio_manager.update();
+	background.setNextConfig(audio_cfg);
+	background.update();
+
 	if (constantly_changing_scenes.find(getCurrentSceneType()) != constantly_changing_scenes.end()) {
 		current_interface_info.game_event = GameEvent::Unknown;
 		current_interface_info.current_scene = getCurrentSceneType();
@@ -391,8 +404,6 @@ bool Window::updatePerFrame() {
 
 		return true;
 	}
-
-	background.update();
 
 	return true;
 }
