@@ -7,7 +7,7 @@ AudioManager::AudioManager() {
 	queue.clear();
 	cfgs.clear();
 	current_song_idx = -1;
-	current_status = sf::Music::SoundSource::Status::Stopped;
+	current_status = MusicStatus::Stopped;
 }
 
 
@@ -89,7 +89,7 @@ AudioVisualCfg AudioManager::parseFromCfgFile(const std::string& file_path) {
 
 void AudioManager::setRandomMusiclist(const int max_songs) {
 	music.stop();
-	current_status = sf::Music::SoundSource::Status::Stopped;
+	current_status = MusicStatus::Stopped;
 
 	std::set <fs::path> set;
 
@@ -115,6 +115,10 @@ void AudioManager::setRandomMusiclist(const int max_songs) {
 			--ran;
 		}
 		set.erase(queue.back());
+
+		if (cfgs.find(queue.back().stem()) == cfgs.end()) {
+			cfgs[queue.back().stem()].v.push_back(DEFAULT_VISUAL_CONFIG);
+		}
 	}
 
 	current_song_idx = -1;
@@ -123,6 +127,7 @@ void AudioManager::setRandomMusiclist(const int max_songs) {
 
 Result AudioManager::startPlayingEntry(const int song_idx) {
 	if (!queue.empty() && music.openFromFile(MUSIC_PATH + queue[song_idx].string())) {
+		music.setVolume(100);
 		music.play();
 		clock.restart();
 		current_cfg_idx = 0;
@@ -136,26 +141,39 @@ Result AudioManager::startPlayingEntry(const int song_idx) {
 
 
 void AudioManager::onNextMusicEvent() {
-	music.stop();
-	current_status = sf::Music::SoundSource::Status::Playing;
+	down_volume_clock.restart();
+	current_status = MusicStatus::Stopping;
 }
 
 
 void AudioManager::startMusic() {
-	current_status = sf::Music::SoundSource::Status::Playing;
+	current_status = MusicStatus::Playing;
 }
 
 
 AudioVisualCfg::Cfg AudioManager::update() {
 	AudioVisualCfg::Cfg cfg;
 
-	if (current_status != sf::Music::SoundSource::Status::Stopped) {
+	if (current_status != MusicStatus::Stopped) {
 		if (!queue.empty() && music.getStatus() == sf::Music::SoundSource::Status::Stopped) {
 			int cnt = 0;
 			do {
 				current_song_idx = (current_song_idx + 1) % (int)queue.size();
 				++cnt;
 			} while (startPlayingEntry(current_song_idx) == Result::failure && cnt < queue.size());
+		}
+
+		if (current_status == MusicStatus::Stopping) {
+			auto time_elapsed = down_volume_clock.getElapsedTime();
+			auto volume_down = time_elapsed.asMilliseconds() / (float)VOLUME_DOWN_TIME.asMilliseconds();
+
+			if (volume_down > 1) {
+				music.stop();
+				current_status = MusicStatus::Playing;
+			}
+			else {
+				music.setVolume(100 - (volume_down * (float)100));
+			}
 		}
 
 		if (music.getStatus() == sf::Music::SoundSource::Status::Playing &&

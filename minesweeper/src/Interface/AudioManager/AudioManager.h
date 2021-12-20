@@ -13,6 +13,13 @@
 namespace fs = std::filesystem;
 
 
+enum class MusicStatus {
+	Playing,
+	Stopped,
+	Stopping,
+};
+
+
 class AudioManager {
 private:
 	sf::Music music;
@@ -21,9 +28,10 @@ private:
 
 	int current_song_idx;
 	int current_cfg_idx;
-	sf::Music::SoundSource::Status current_status;
+	MusicStatus current_status;
 
 	sf::Clock clock;
+	sf::Clock down_volume_clock;
 
 
 	AudioVisualCfg parseFromCfgFile(const std::string& file_path);
@@ -36,7 +44,7 @@ public:
 	// Initializes a music list of random songs from music directory.
 	// With `max_songs` as number of max songs on the list.
 	// If music is currently played, this will stop the music.
-	// NOTE: manually call `playMusic` to start music after calling this.
+	// NOTE: manually call `startMusic` to start music after calling this.
 	void setRandomMusiclist(const int max_songs);
 
 	void onNextMusicEvent();

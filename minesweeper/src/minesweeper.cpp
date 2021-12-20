@@ -9,12 +9,8 @@
 
 #include "Game/GameTools.h"
 #include "Constants.h"
-
 #include "Interface/Window/Window.h"
 #include "Interface/ResourceVault/ResourceVault.h"
-#include "Interface/Scenes/menu_scene.h"
-#include "Interface/Scenes/playing_scene.h"
-#include "Interface/Button/Button.h"
 
 
 void registerResources() {

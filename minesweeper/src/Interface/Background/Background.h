@@ -44,7 +44,12 @@ private:
 	void calCurrentCirclesPos();
 
 public:
-	Background(const sf::VideoMode window_size = sf::VideoMode::getDesktopMode(), const sf::Color primary_color = BACKGROUMD_COLOR, const sf::Color secondary_color = BACKGROUMD_COLOR, const float circle_speed = 100, const int number_of_circles = 13, const float circle_radius = 150);
+	Background(const sf::VideoMode window_size = sf::VideoMode::getDesktopMode(), 
+		const sf::Color primary_color = DEFAULT_VISUAL_CONFIG.primary_color, 
+		const sf::Color secondary_color = DEFAULT_VISUAL_CONFIG.secondary_color, 
+		const float circle_speed = DEFAULT_VISUAL_CONFIG.bubble_speed, 
+		const int number_of_circles = NUMBER_OF_BUBBLES, 
+		const float circle_radius = BUBBLE_RADIUS);
 
 	sf::Color getCurrentPrimaryColor() const;
 	sf::Color getCurrentSecondaryColor() const;

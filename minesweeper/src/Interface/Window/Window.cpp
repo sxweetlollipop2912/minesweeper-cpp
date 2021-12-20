@@ -11,9 +11,7 @@ Window::Window(const sf::VideoMode& window_size, const std::string& title, const
 	this->title = title;
 	this->window_style = window_style;
 
-	background = Background(window_size, sf::Color(16, 20, 20), sf::Color(92, 204, 230));
-	/*AudioVisualCfg::Cfg cfg(sf::Color(33, 14, 21), sf::Color(230, 83, 151), sf::seconds(5), 150);
-	background.setNextConfig(cfg);*/
+	background = Background(window_size);
 
 	audio_manager.setRandomMusiclist(MAX_SONGS);
 	audio_manager.startMusic();

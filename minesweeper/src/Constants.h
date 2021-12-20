@@ -4,6 +4,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Structs.h"
+
 const float EPS = 1e-7;
 
 // GAME
@@ -41,12 +43,15 @@ const int DEFAULT_TITLE_FONT_SIZE = DEFAULT_LARGE_FONT_SIZE * 4.5;
 const std::string DEFAULT_FONT_PATH = FONT_PATH + (const std::string)"MochiyPopOne.ttf";
 
 
-// COLOR
-const sf::Color BACKGROUMD_COLOR = sf::Color(245, 245, 245);
+// VISUAL
+const sf::Color BACKGROUMD_COLOR = sf::Color(0, 0, 0);
 const sf::Color DEFAULT_TEXT_COLOR = sf::Color::White;
+const AudioVisualCfg::Cfg DEFAULT_VISUAL_CONFIG(sf::Color(16, 20, 20), sf::Color(92, 204, 230), sf::seconds(5), 225, sf::milliseconds(0));
+const float BUBBLE_RADIUS = 150;
+const int NUMBER_OF_BUBBLES = 13;
 
 
-// AudioConfig
+// AUDIO_STUFF
 const std::set <std::string> AUDIO_EXTENSIONS = { ".ogg",".wav",".flac" };
 const std::string CFG_EXTENSION = ".cfg";
 const std::string OPTION_VALUE_SEPARATOR = ":";
@@ -56,6 +61,7 @@ const std::string TRANSITION_DURATION_OPTION = "TransitionDuration";
 const std::string BUBBLE_SPEED_OPTION = "BubbleSpeed";
 const int MAX_CHAR_PER_LINE = 100;
 const int MAX_LINE = 1000;
+const sf::Time VOLUME_DOWN_TIME = sf::milliseconds(400);
 
 
 // BUTTON
