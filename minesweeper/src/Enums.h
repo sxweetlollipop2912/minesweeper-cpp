@@ -42,6 +42,13 @@ enum class SceneType {
 	Unkown
 };
 
+ enum class Difficulty {
+	Beginner,
+	Intermediate,
+	Expert,
+	Custom,
+	Unknown
+};
 
 enum class MouseActionType {
 	Move,
