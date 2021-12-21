@@ -7,6 +7,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+#include "../Scenes/scene.h"
+#include "../../Enums.h"
 #include "../../Constants.h"
 #include "../../Structs.h"
 
@@ -24,9 +26,13 @@ struct Circle {
 };
 
 
-class Background {
+class Background : public Scene {
+	friend class Window;
+
 private:
-	sf::VideoMode window_size;
+	const std::string STR_NEXT_SONG = "next_song";
+
+	std::shared_ptr<Slider> volume;
 
 	Color cur_prim_color;
 	Color cur_second_color;
@@ -47,6 +53,17 @@ private:
 	void calCurrentColor();
 	void calCurrentCirclesPos();
 
+	// Call on a mouse button released event.
+	// Returns corresponding GameEvent.
+	GameEvent onMouseButtonReleased(const MouseActionType mouse_type) override;
+	// Call on a mouse button pressed event.
+	// Returns corresponding GameEvent.
+	GameEvent onMouseButtonPressed(const MouseActionType mouse_type) override;
+	// Changes window graphics base on new mouse position.
+	// Returns true if there are visual changes.
+	// Otherwise, returns false
+	bool changeMousePosition(const sf::Vector2i& pos) override;
+
 public:
 	Background(const sf::VideoMode window_size = sf::VideoMode::getDesktopMode(), 
 		const sf::Color primary_color = DEFAULT_VISUAL_CONFIG.primary_color, 
@@ -66,5 +83,5 @@ public:
 	void setNextConfig(const AudioVisualCfg::Cfg& config);
 
 	// Draws all textures and texts in background on an sf::RenderTarget object
-	virtual void draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing = true);
+	void draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing = true) override;
 };

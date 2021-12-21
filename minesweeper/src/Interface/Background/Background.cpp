@@ -10,9 +10,7 @@ float calDist(const sf::Vector2f p1, const sf::Vector2f p2 = sf::Vector2f(0, 0))
 }
 
 
-Background::Background(const sf::VideoMode window_size, const sf::Color primary_color, const sf::Color secondary_color, const float circle_speed, const int number_of_circles, const float circle_radius) {
-	this->window_size = window_size;
-
+Background::Background(const sf::VideoMode window_size, const sf::Color primary_color, const sf::Color secondary_color, const float circle_speed, const int number_of_circles, const float circle_radius) : Scene(window_size, SceneType::Background) {
 	cur_prim_color = des_prim_color = primary_color;
 	cur_second_color = des_second_color = secondary_color;
 	cur_second_color.a = des_second_color.a = TRANSPARENT_ALPHA;
@@ -53,6 +51,58 @@ Background::Background(const sf::VideoMode window_size, const sf::Color primary_
 			veloc.y *= ((rand() % 2 == 0) ? -1 : 1);
 		}
 	}
+
+	// Interactive objects
+	{
+		buttons_event[STR_NEXT_SONG] = GameEvent::NextSong;
+
+		Button& next_song_button = buttons[STR_NEXT_SONG];
+		next_song_button.setImage(TextureType::NextSong);
+		next_song_button.setSize(NEXT_SONG_SIZE);
+
+		sf::Vector2f TL_next_song;
+		TL_next_song.x = RIGHT_DOWN_COEF_NEXT_SONG.x * window_size.width - next_song_button.getSize().x;
+		TL_next_song.y = RIGHT_DOWN_COEF_NEXT_SONG.y * window_size.height - next_song_button.getSize().y;
+		next_song_button.setTopLeftPos(TL_next_song);
+
+		sf::Vector2f volume_pos;
+		volume_pos.x = (RIGHT_DOWN_COEF_VOLUME.x - VOLUME_WIDTH) * window_size.width;
+		volume_pos.y = (RIGHT_DOWN_COEF_VOLUME.y - VOLUME_HEIGHT) * window_size.height;
+		volume = std::make_shared<Slider>(Slider(0, 100, 100, volume_pos, VOLUME_WIDTH * window_size.width, VOLUME_HEIGHT * window_size.width, false));
+	}
+}
+
+
+GameEvent Background::onMouseButtonReleased(const MouseActionType mouse_type) {
+	auto game_event = this->Scene::onMouseButtonReleased(mouse_type);
+
+	volume->onMouseReleased(mouse_type);
+
+	return game_event;
+}
+
+
+GameEvent Background::onMouseButtonPressed(const MouseActionType mouse_type) {
+	auto game_event = Scene::onMouseButtonPressed(mouse_type);
+
+	if (game_event == GameEvent::Unknown) {
+		bool change = false;
+		change |= volume->onMousePressed(mouse_type);
+
+		game_event = change ? GameEvent::ChangesInScene : GameEvent::Unknown;
+	}
+
+	return game_event;
+}
+
+
+bool Background::changeMousePosition(const sf::Vector2i& pos) {
+	bool change = false;
+
+	change |= this->Scene::changeMousePosition(pos);
+	change |= volume->changeMousePosition(pos);
+
+	return change;
 }
 
 
@@ -188,4 +238,7 @@ void Background::draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_
 		
 		renderer->draw(circle_shape);
 	}
+
+	Scene::draw(renderer, is_focusing);
+	volume->draw(renderer, is_focusing);
 }
