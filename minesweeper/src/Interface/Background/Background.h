@@ -36,6 +36,7 @@ private:
 	float circle_speed;
 
 	sf::RectangleShape background;
+	sf::CircleShape circle_shape;
 	std::vector <Circle> circles;
 
 	sf::Clock clock;

@@ -129,17 +129,14 @@ void Slider::setSliderPercentValue(const float new_percent_value) {
 
 
 void Slider::draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing) {
-	sf::Sprite sprite;
-	sf::Text text;
+	loadText(sfText, top_left_pos.x - 10, top_left_pos.y + 5, std::to_string(min_value), 20);
+	renderer->draw(sfText);
 
-	loadText(text, top_left_pos.x - 10, top_left_pos.y + 5, std::to_string(min_value), 20);
-	renderer->draw(text);
+	loadText(sfText, top_left_pos.x + axis.getSize().x - 10, top_left_pos.y + 5, std::to_string(max_value), 20);
+	renderer->draw(sfText);
 
-	loadText(text, top_left_pos.x + axis.getSize().x - 10, top_left_pos.y + 5, std::to_string(max_value), 20);
-	renderer->draw(text);
-
-	loadText(text, slider.getPosition().x - slider.getSize().x, slider.getPosition().y - slider.getSize().y, std::to_string((int)slider_value), 15);
-	renderer->draw(text);
+	loadText(sfText, slider.getPosition().x - slider.getSize().x, slider.getPosition().y - slider.getSize().y, std::to_string((int)slider_value), 15);
+	renderer->draw(sfText);
 
 	renderer->draw(axis);
 	renderer->draw(slider);
