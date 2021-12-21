@@ -126,7 +126,7 @@ void PlayingScene::updateTimer(const Timer new_timer) {
 }
 
 
-Result PlayingScene::updateBoard(const GameCell cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int flag_remaining) {
+Result PlayingScene::updateBoard(const GAMECELL cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int flag_remaining) {
 	Text& flag = texts[STR_FLAG_REMAINING];
 	flag.setText(std::to_string(flag_remaining));
 

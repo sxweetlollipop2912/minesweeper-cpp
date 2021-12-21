@@ -37,7 +37,7 @@ void Board::setCellSize(const int cell_size) {
 }
 
 
-Result Board::updateBoard(const GameCell cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN]) {
+Result Board::updateBoard(const GAMECELL cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN]) {
 	bool change = false;
 
 	for (int i = 0; i < number_of_rows; i++) {
@@ -49,8 +49,8 @@ Result Board::updateBoard(const GameCell cell_board[][MAX_COLUMN], const char mi
 			}
 
 			else {
-				if (cell_board[i][j].mineCount != 0) {
-					if (board[i][j].setType(CellType::Number, cell_board[i][j].mineCount) == Result::success)
+				if (cell_board[i][j].mine_Count != 0) {
+					if (board[i][j].setType(CellType::Number, cell_board[i][j].mine_Count) == Result::success)
 						change = true;
 				}
 				else {

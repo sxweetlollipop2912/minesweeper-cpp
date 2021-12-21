@@ -10,13 +10,7 @@
 #include "../Button/Button.h"
 #include "../../Enums.h"
 #include "../../Constants.h"
-
-
-struct GameCell {
-	bool isOpened;
-	bool isFlag;
-	int mineCount;
-};
+#include "../../Structs.h"
 
 
 class Board : public Button {
@@ -38,7 +32,7 @@ private:
 	//	> success: board is successfully updated.
 	//	> failure: board has not been changed after calling this method.
 	// Regardless of the result, the board is up-to-date at return time.
-	Result updateBoard(const GameCell cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN]);
+	Result updateBoard(const GAMECELL cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN]);
 	// Determines the hovered cell given current mouse position.
 	// Returns true if the hovered cell is changed.
 	// Otherwise, returns false.

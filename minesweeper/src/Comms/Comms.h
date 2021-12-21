@@ -50,7 +50,7 @@ namespace Comms {
 		GameState game_state = GameState::Ongoing;
 		int board_row = -1;
 		int board_col = -1;
-		GameCell cell_board[MAX_ROW][MAX_COLUMN];
+		GAMECELL cell_board[MAX_ROW][MAX_COLUMN];
 		char mine_board[MAX_ROW][MAX_COLUMN];
 		Timer current_timer = { 0,0,0,false };
 		int flag_remaining = -1;
@@ -66,7 +66,7 @@ namespace Comms {
 		GameState game_state = GameState::Ongoing;
 		int board_row = -1;
 		int board_col = -1;
-		GameCell cell_board[MAX_ROW][MAX_COLUMN], old_cell_board[MAX_ROW][MAX_COLUMN];
+		GAMECELL cell_board[MAX_ROW][MAX_COLUMN], old_cell_board[MAX_ROW][MAX_COLUMN];
 		char mine_board[MAX_ROW][MAX_COLUMN], old_mine_board[MAX_ROW][MAX_COLUMN];
 		Timer current_timer = { 0,0,0,false }, old_timer = { 0,0,0,false };
 		GAMEPREDICATE game_Feature, old_game_Feature;
