@@ -9,6 +9,7 @@
 
 #include "../Button/Button.h"
 #include "../Text/Text.h"
+#include "../Slider/Slider.h"
 #include "../../Constants.h"
 #include "../../Enums.h"
 #include "../../Structs.h"
@@ -19,7 +20,7 @@ class Scene {
 
 protected:
 	const std::string STR_UNKNOWN = "unknown";
-	const std::string STR_NEXT_SONG = "next_song";
+
 	sf::Sprite sprite;
 	sf::Text text;
 
