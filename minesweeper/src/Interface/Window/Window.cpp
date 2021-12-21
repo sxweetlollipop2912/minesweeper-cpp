@@ -97,7 +97,9 @@ void Window::initializePlayingScene(const int board_rows, const int board_cols) 
 bool Window::changeMousePosition(const sf::Vector2i& mouse_position) {
 	pos_mouse = mouse_position;
 
-	bool change = getCurrentScene()->changeMousePosition(pos_mouse);
+	bool change = false;
+	change |= getCurrentScene()->changeMousePosition(pos_mouse);
+	change |= background->changeMousePosition(pos_mouse);
 
 	return change;
 }
@@ -337,6 +339,8 @@ bool Window::onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vec
 	GameEvent nxt_event = GameEvent::Unknown;
 	{
 		nxt_event = scenes.at(getCurrentSceneType())->onMouseButtonPressed(lock_mouse_button);
+		if (nxt_event == GameEvent::Unknown)
+			nxt_event = background->onMouseButtonPressed(lock_mouse_button);
 	}
 
 	return handleGameEvents(nxt_event);
@@ -379,12 +383,14 @@ bool Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Ve
 		}
 	}
 
-
 	// Runs scene-specific mouse released event handling methods.
 	// Gets the next game event, if exists
 	GameEvent nxt_event = GameEvent::Unknown;
 	{
+		auto bg_event = background->onMouseButtonReleased(type);
 		nxt_event = scenes.at(getCurrentSceneType())->onMouseButtonReleased(type);
+		if (nxt_event == GameEvent::Unknown)
+			nxt_event = bg_event;
 	}
 
 	return handleGameEvents(nxt_event);
@@ -392,6 +398,7 @@ bool Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Ve
 
 
 void Window::updatePerFrame() {
+	audio_manager.turnVolume(background->volume->getSliderValue());
 	auto audio_cfg = audio_manager.update();
 	background->setNextConfig(audio_cfg);
 	background->update();
