@@ -68,24 +68,22 @@ sf::Vector2f Button::getPadding() const {
 }
 
 
-sf::Sprite Button::getDefaultSprite() const {
+void Button::getDefaultSprite(sf::Sprite& sprite) const {
     auto texture = ResourceVault::getTexture(texture_type);
 
-    sf::Sprite sprite;
     Graphics::loadSpriteFromTexture(sprite, *texture, top_left_pos);
     sprite.setScale(scale);
 
     if (transparent)
         sprite.setColor(sf::Color(255, 255, 255, 220));
-
-    return sprite;
+    else
+        sprite.setColor(sf::Color(255, 255, 255, 255));
 }
 
 
-sf::Sprite Button::getHoveredSprite() const {
+void Button::getHoveredSprite(sf::Sprite& sprite) const {
     auto texture = ResourceVault::getTexture(texture_type);
 
-    sf::Sprite sprite;
     Graphics::loadSpriteFromTexture(sprite, *texture, top_left_pos);
     sprite.setScale(scale);
 
@@ -93,9 +91,7 @@ sf::Sprite Button::getHoveredSprite() const {
     if (transparent)
         sprite.setColor(sf::Color(150, 150, 150, 220));
     else
-        sprite.setColor(sf::Color(150, 150, 150));
-
-    return sprite;
+        sprite.setColor(sf::Color(150, 150, 150, 255));
 }
 
 
@@ -216,46 +212,6 @@ Result Button::centerButtonVertically(const float window_height) {
 
     return Result::success;
 }
-
-
-//Result Button::fitTextInsideButton() {
-//    int width = getSize().x - getPadding().x * 2;
-//    int height = getSize().y - getPadding().y * 2;
-//
-//    sf::Text text = label.getSfText();
-//
-//    {
-//        std::string s = text.getString();
-//        Graphics::normalizeStr(s);
-//        text.setString(s);
-//    }
-//
-//    int size = text.getString().getSize();
-//
-//    for (int space_1 = -1, space_2 = 0; space_2 < size; space_2++) {
-//        if (space_2 < 1 || text.getString()[space_2] != ' ')
-//            continue;
-//        if (text.findCharacterPos(space_2 - 1).x <= width)
-//            continue;
-//        if (space_1 == -1)
-//            return Result::failure;
-//
-//        std::string s = text.getString();
-//        // Deletes whitespace at space_1
-//        s.erase(s.begin() + space_1);
-//        // Inserts newline.
-//        s.insert(s.begin() + space_1, '\n');
-//        text.setString(s);
-//
-//        if (text.findCharacterPos(space_2 - 1).x > width || text.findCharacterPos(space_2 - 1).y > height)
-//            return Result::failure;
-//
-//        space_1 = space_2;
-//    }
-//
-//    label.setText(text.getString());
-//
-//}
 
 
 Result Button::centerTextInButton() {

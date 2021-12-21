@@ -239,45 +239,27 @@ int PlayingScene::getBoardCols() const {
 	return board.getCols();
 }
 
+
 Position PlayingScene::getLastPressedCell() const {
 	return board.getLastPressedCell();
 }
 
 
-bool PlayingScene::checkBoardSize(const sf::VideoMode& window_size, const int board_rows, const int board_cols) {
-	sf::Vector2f top_left_board_area;
-	top_left_board_area.x = window_size.width * TOP_LEFT_COEF_BOARD_AREA.x;
-	top_left_board_area.y = window_size.height * TOP_LEFT_COEF_BOARD_AREA.y;
-	sf::Vector2f right_down_board_area;
-	right_down_board_area.x = window_size.width * RIGHT_DOWN_COEF_BOARD_AREA.x;
-	right_down_board_area.y = window_size.height * RIGHT_DOWN_COEF_BOARD_AREA.y;
-
-	float space_x = window_size.width * SPAPCE_BETWEEN_BOARD_SCOREBOARD_X_COEF;
-
-	if (right_down_board_area.x - top_left_board_area.x < board_cols * MIN_CELL_SIZE)
-		return false;
-	if (right_down_board_area.y - top_left_board_area.y < board_rows * MIN_CELL_SIZE)
-		return false;
-
-	return true;
-}
-
-
-DrawableList PlayingScene::getDrawableList(const bool is_focusing, const int rank) {
-	DrawableList list;
+void PlayingScene::draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing) {
+	sf::Sprite sprite;
 
 	for (int i = 0; i < board.number_of_rows; i++) {
 		for (int j = 0; j < board.number_of_cols; j++) {
 			if (is_focusing && Position(i, j) == board.hovered_cell) {
-				list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(board.board[i][j].getHoveredSprite()), rank));
+				board.board[i][j].getHoveredSprite(sprite);
+				renderer->draw(sprite);
 			}
 			else {
-				list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(board.board[i][j].getDefaultSprite()), rank));
+				board.board[i][j].getDefaultSprite(sprite);
+				renderer->draw(sprite);
 			}
 		}
 	}
 
-	list.append(Scene::getDrawableList(is_focusing, rank));
-
-	return list;
+	Scene::draw(renderer, is_focusing);
 }

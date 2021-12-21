@@ -150,8 +150,9 @@ SceneType Scene::getNextScene(const GameEvent game_event) const {
 }
 
 
-DrawableList Scene::getDrawableList(const bool is_focusing, const int rank) {
-	DrawableList list;
+void Scene::draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing) {
+	sf::Sprite sprite;
+	sf::Text text;
 
 	bool is_focusing_on_current = is_focusing;
 	if (pop_up)
@@ -159,22 +160,24 @@ DrawableList Scene::getDrawableList(const bool is_focusing, const int rank) {
 
 	for (auto e : buttons) {
 		if (is_focusing_on_current && e.first == hovered_button) {
-			list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(e.second.getHoveredSprite()), rank));
+			e.second.getHoveredSprite(sprite);
+			renderer->draw(sprite);
 		}
 		else {
-			list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(e.second.getDefaultSprite()), rank));
+			e.second.getDefaultSprite(sprite);
+			renderer->draw(sprite);
 		}
-		list.texts.push_back(DrawableList::DrawableText(std::make_shared<sf::Text>(e.second.label.getSfText()), rank));
+		e.second.label.getSfText(text);
+		renderer->draw(text);
 	}
 
 	for (auto e : texts) {
-		list.texts.push_back(DrawableList::DrawableText(std::make_shared<sf::Text>(e.second.getSfText()), rank));
+		e.second.getSfText(text);
+		renderer->draw(text);
 	}
 
 	// Pop-up drawable objects will overwrite those of current scene.
 	if (pop_up) {
-		list.append(pop_up->getDrawableList(is_focusing, rank + 1));
+		pop_up->draw(renderer, is_focusing);
 	}
-
-	return list;
 }

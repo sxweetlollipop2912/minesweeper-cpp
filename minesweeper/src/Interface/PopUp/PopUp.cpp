@@ -63,25 +63,3 @@ void PopUp::PositionPopUp(const sf::VideoMode& window_size) {
 	yes_button.centerTextInButton();
 	no_button.centerTextInButton();
 }
-
-
-DrawableList PopUp::getDrawableList(const bool is_focusing, const int rank) {
-	DrawableList list;
-
-	for (auto e : buttons) {
-		if (is_focusing && hovered_button != STR_BOX && e.first == hovered_button) {
-			list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(e.second.getHoveredSprite()), rank));
-		}
-		else {
-			list.sprites.push_back(DrawableList::DrawableSprite(std::make_shared<sf::Sprite>(e.second.getDefaultSprite()), rank));
-		}
-
-		list.texts.push_back(DrawableList::DrawableText(std::make_shared<sf::Text>(e.second.label.getSfText()), rank));
-	}
-
-	for (auto e : texts) {
-		list.texts.push_back(DrawableList::DrawableText(std::make_shared<sf::Text>(e.second.getSfText()), rank));
-	}
-
-	return list;
-}

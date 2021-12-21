@@ -136,14 +136,10 @@ sf::Vector2u Board::getImageSize() const {
 }
 
 
-sf::Sprite Board::getDefaultSprite() const {
-	return sf::Sprite();
-}
+void Board::getDefaultSprite(sf::Sprite& sprite) const {}
 
 
-sf::Sprite Board::getHoveredSprite() const {
-	return sf::Sprite();
-}
+void Board::getHoveredSprite(sf::Sprite& sprite) const {}
 
 
 void Board::setTopLeftPos(const sf::Vector2f& top_left_pos) {

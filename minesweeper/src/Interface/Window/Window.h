@@ -30,7 +30,7 @@ class Window {
 private:
 	static Window* instance;
 
-	Background background;
+	std::shared_ptr<Background> background;
 	AudioManager audio_manager;
 
 	std::map <SceneType, std::shared_ptr<Scene>> scenes;
@@ -47,21 +47,6 @@ private:
 	MouseActionType lock_mouse_button;
 
 	Window(const sf::VideoMode& window_size = sf::VideoMode(1500, 1000), const std::string& title = TITLE, const int window_style = sf::Style::Close);
-
-	// Draws a list of drawable objects on the window.
-	void draw(const DrawableList& list);
-	// Draws a sf::Sprite on the window.
-	void draw(const sf::Sprite& sprite);
-	// Draws a sf::Text on the window.
-	void draw(const sf::Text& text);
-	// Draws a RectangleShape on window.
-	void draw(const sf::RectangleShape& rect);
-	// Draws a CircleShape on window.
-	void draw(const sf::CircleShape& circle);
-	// Draws a text on the window.
-	void draw(Text& text);
-	// Draws a button on the window.
-	void draw(Button& button, const bool isHovered = false);
 
 	void updateGameInfo(const Comms::GameInfo info);
 	// Returns true if there are visual changes.
@@ -85,7 +70,7 @@ private:
 	bool onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position);
 
 public:
-	sf::RenderWindow render_window;
+	std::shared_ptr<sf::RenderWindow> render_window;
 	sf::VideoMode window_size;
 	int window_style;
 	std::string title;
@@ -132,9 +117,7 @@ public:
 	void initializePlayingScene(const int board_rows = -1, const int board_cols = -1);
 
 	// Call to update automatic features (i.e. timer while playing) at each frame.
-	// Returns true if there are visual changes.
-	// Otherwise, returns false
-	bool updatePerFrame();
+	void updatePerFrame();
 	// Draws current scene.
 	void drawCurrentScene();
 };

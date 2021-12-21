@@ -61,8 +61,6 @@ public:
 	int getBoardCols() const;
 	Position getLastPressedCell() const;
 
-	// Checks if number of rows and cols of a board is valid for the window size.
-	static bool checkBoardSize(const sf::VideoMode& window_size, const int board_rows, const int board_cols);
-
-	DrawableList getDrawableList(const bool is_focusing = false, const int rank = 0) override;
+	// Draws all textures and texts in the scene on an sf::RenderTarget object
+	void draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing = true) override;
 };

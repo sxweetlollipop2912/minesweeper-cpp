@@ -104,22 +104,16 @@ int main() {
     (*window)->initializePlayingScene(30, 30);
 
     (*window)->createWindow();
-    bool change = true;
 
-    while ((*window)->render_window.isOpen()) {
+    while ((*window)->render_window->isOpen()) {
         sf::Event event;
 
-        while ((*window)->render_window.pollEvent(event)) {
-            change |= (*window)->handleSfEvents(event);
+        while ((*window)->render_window->pollEvent(event)) {
+            (*window)->handleSfEvents(event);
         }
 
-        change |= (*window)->updatePerFrame();
-
-        if (change) {
-            (*window)->render_window.clear();
-            (*window)->drawCurrentScene();
-            (*window)->render_window.display();
-        }
+        (*window)->updatePerFrame();
+        (*window)->drawCurrentScene();
 
         switch ((*window)->getLastGameEvent()) {
         case GameEvent::QuitGame:
@@ -131,9 +125,8 @@ int main() {
             break;
         }
 
-        change = false;
-
-        // Limits receiving event and responding rate to about 100 times per sec.
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 100));
+        // Limits receiving event and responding rate to about 120 times per sec.
+        // Last benchmark: about 75 fps on average.
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 120));
     }
 }

@@ -31,12 +31,12 @@ Slider::Slider(const int min, const int max, sf::Vector2f top_left_pos, const sf
 }
 
 
-sf::Text Slider::returnText(const int x, const int y, const std::string s, const int font_size) {
+void Slider::loadText(sf::Text& SfText, const int x, const int y, const std::string s, const int font_size) {
 	text.setFontSize(font_size);
 	text.setTopLeftPos(sf::Vector2f(x, y));
 	text.setText(s);
 
-	return text.getSfText();
+	text.getSfText(SfText);
 }
 
 
@@ -128,22 +128,19 @@ void Slider::setSliderPercentValue(const float new_percent_value) {
 }
 
 
-DrawableList Slider::getDrawableList(const bool is_focusing, const int rank) {
-	DrawableList list;
+void Slider::draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing) {
+	sf::Sprite sprite;
+	sf::Text text;
 
-	auto text1 = DrawableList::DrawableText(std::make_shared<sf::Text>(
-		returnText(top_left_pos.x - 10, top_left_pos.y + 5, std::to_string(min_value), 20)));
-	auto text2 = DrawableList::DrawableText(std::make_shared<sf::Text>(
-		returnText(top_left_pos.x + axis.getSize().x - 10, top_left_pos.y + 5, std::to_string(max_value), 20)));
-	auto text3 = DrawableList::DrawableText(std::make_shared<sf::Text>(
-		returnText(slider.getPosition().x - slider.getSize().x, slider.getPosition().y - slider.getSize().y, std::to_string((int)slider_value), 15)));
+	loadText(text, top_left_pos.x - 10, top_left_pos.y + 5, std::to_string(min_value), 20);
+	renderer->draw(text);
 
-	list.texts.push_back(text1);
-	list.texts.push_back(text2);
-	list.texts.push_back(text3);
+	loadText(text, top_left_pos.x + axis.getSize().x - 10, top_left_pos.y + 5, std::to_string(max_value), 20);
+	renderer->draw(text);
 
-	list.rects.push_back(DrawableList::DrawableRect(std::make_shared<sf::RectangleShape>(axis)));
-	list.rects.push_back(DrawableList::DrawableRect(std::make_shared<sf::RectangleShape>(slider)));
+	loadText(text, slider.getPosition().x - slider.getSize().x, slider.getPosition().y - slider.getSize().y, std::to_string((int)slider_value), 15);
+	renderer->draw(text);
 
-	return list;
+	renderer->draw(axis);
+	renderer->draw(slider);
 }

@@ -78,9 +78,9 @@ public:
 	// Gets original size of the button's image (b4 apply scaling).
 	sf::Vector2u getImageSize() const override;
 	// Gets default (not hovered) button's sprite.
-	sf::Sprite getDefaultSprite() const override;
+	void getDefaultSprite(sf::Sprite& sprite) const override;
 	// Gets hovered (not hovered) button's sprite.
-	sf::Sprite getHoveredSprite() const override;
+	void getHoveredSprite(sf::Sprite& sprite) const override;
 
 	Result setImage(const TextureType texture_type, const sf::Vector2f& top_left_pos = sf::Vector2f(-1, -1), const sf::Vector2f& scale = sf::Vector2f(1, 1)) override;
 	void setPadding(const sf::Vector2f& padding) override;

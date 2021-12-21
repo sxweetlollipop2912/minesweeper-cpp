@@ -45,9 +45,9 @@ public:
 	// Gets padding size.
 	sf::Vector2f getPadding() const;
 	// Gets default (not hovered) button's sprite.
-	virtual sf::Sprite getDefaultSprite() const;
+	virtual void getDefaultSprite(sf::Sprite& sprite) const;
 	// Gets hovered (not hovered) button's sprite.
-	virtual sf::Sprite getHoveredSprite() const;
+	virtual void getHoveredSprite(sf::Sprite& sprite) const;
 
 	// Checks a mouse position if it is hovered over the button.
 	bool isMouseHovering(const sf::Vector2i& mouse_position) const;
