@@ -8,8 +8,8 @@
 #include "../../Structs.h"
 
 
-class Slider
-{
+class Slider {
+private:
 	sf::RectangleShape slider;
 	sf::RectangleShape axis;
 	Text text;
@@ -25,7 +25,7 @@ class Slider
 	bool sliding;
 
 
-	sf::Text returnText(const int x, const int y, const std::string s, const int font_size);
+	void loadText(sf::Text& text, const int x, const int y, const std::string s, const int font_size);
 
 public:
 	Slider(const int min_value = 0, const int max_value = 0, const sf::Vector2f top_left_pos = sf::Vector2f(0, 0), const sf::Color axis_color = sf::Color(63, 63, 63), const sf::Color slider_color = sf::Color(192, 192, 192));
@@ -46,6 +46,6 @@ public:
 	bool onMousePressed(const MouseActionType mouse_type);
 	void onMouseReleased(const MouseActionType mouse_type);
 
-	DrawableList getDrawableList(const bool is_focusing = true, const int rank = 0);
+	// Draws all textures and texts in the scene on an sf::RenderTarget object
+	void draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing = true);
 };
-

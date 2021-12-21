@@ -73,9 +73,9 @@ public:
 	// Gets original size of the cell's image.
 	sf::Vector2u getImageSize() const override;
 	// Gets default (not hovered) cell's sprite.
-	sf::Sprite getDefaultSprite() const override;
+	void getDefaultSprite(sf::Sprite& sprite) const override;
 	// Gets hovered (not hovered) cell's sprite.
-	sf::Sprite getHoveredSprite() const override;
+	void getHoveredSprite(sf::Sprite& sprite) const override;
 
 	// Sets top-left position of the cell in respect of window size.
 	void setTopLeftPos(const sf::Vector2f& top_left_pos) override;

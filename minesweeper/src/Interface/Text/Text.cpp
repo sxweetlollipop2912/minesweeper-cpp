@@ -4,7 +4,8 @@
 
 
 void Text::calSpaceTaken() {
-    sf::Text text = getSfText();
+    sf::Text text;
+    getSfText(text);
 
     width = height = 0;
 
@@ -44,12 +45,9 @@ sf::Vector2f Text::getPosRightDown() const {
 }
 
 
-sf::Text Text::getSfText() const {
+void Text::getSfText(sf::Text& text) const {
     std::shared_ptr<sf::Font> font = ResourceVault::getFont(font_type);
-
-    sf::Text text;
     Graphics::createText(text, content, *font, font_size, text_color, style, top_left_pos);
-    return text;
 }
 
 

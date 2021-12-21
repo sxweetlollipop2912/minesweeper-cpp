@@ -83,18 +83,18 @@ DifficultiesScene::DifficultiesScene(const sf::VideoMode& window_size) : Scene(w
 		float pos_y_slider_row = this->window_size.height * POS_Y_COEF_SLIDER_ROW;
 		float pos_y_slider_col = this->window_size.height * POS_Y_COEF_SLODER_COL;
 
-		slider_row = Slider(MIN_ROW, MAX_ROW, sf::Vector2f(0, pos_y_slider_row));
-		slider_col = Slider(MIN_COLUMN, MAX_COLUMN, sf::Vector2f(0, pos_y_slider_col));
+		slider_row = std::make_shared<Slider>(Slider(MIN_ROW, MAX_ROW, sf::Vector2f(0, pos_y_slider_row)));
+		slider_col = std::make_shared<Slider>(Slider(MIN_COLUMN, MAX_COLUMN, sf::Vector2f(0, pos_y_slider_col)));
 
-		slider_row.centerSliderHorizontally(this->window_size.width);
-		slider_col.centerSliderHorizontally(this->window_size.width);
+		slider_row->centerSliderHorizontally(this->window_size.width);
+		slider_col->centerSliderHorizontally(this->window_size.width);
 	}
 }
 
 
 GameEvent DifficultiesScene::onMouseButtonReleased(const MouseActionType mouse_type) {
-	slider_row.onMouseReleased(mouse_type);
-	slider_col.onMouseReleased(mouse_type);
+	slider_row->onMouseReleased(mouse_type);
+	slider_col->onMouseReleased(mouse_type);
 
 	auto game_event = this->Scene::onMouseButtonReleased(mouse_type);
 
@@ -104,16 +104,16 @@ GameEvent DifficultiesScene::onMouseButtonReleased(const MouseActionType mouse_t
 		}
 
 		if (hovered_button == STR_BEGINNER_BUTTON) {
-			slider_row.setSliderValue(BEGINNER_ROW);
-			slider_col.setSliderValue(BEGINNER_COL);
+			slider_row->setSliderValue(BEGINNER_ROW);
+			slider_col->setSliderValue(BEGINNER_COL);
 		}
 		if (hovered_button == STR_INTER_BUTTON) {
-			slider_row.setSliderValue(INTERMEDIATE_ROW);
-			slider_col.setSliderValue(INTERMEDIATE_COL);
+			slider_row->setSliderValue(INTERMEDIATE_ROW);
+			slider_col->setSliderValue(INTERMEDIATE_COL);
 		}
 		if (hovered_button == STR_EXPERT_BUTTON) {
-			slider_row.setSliderValue(EXPERT_ROW);
-			slider_col.setSliderValue(EXPERT_COL);
+			slider_row->setSliderValue(EXPERT_ROW);
+			slider_col->setSliderValue(EXPERT_COL);
 		}
 	}
 
@@ -124,8 +124,8 @@ GameEvent DifficultiesScene::onMouseButtonReleased(const MouseActionType mouse_t
 GameEvent DifficultiesScene::onMouseButtonPressed(const MouseActionType mouse_type) {
 	bool change = false;
 
-	change |= slider_row.onMousePressed(mouse_type);
-	change |= slider_col.onMousePressed(mouse_type);
+	change |= slider_row->onMousePressed(mouse_type);
+	change |= slider_col->onMousePressed(mouse_type);
 
 	return change ? GameEvent::ChangesInScene : GameEvent::Unknown;
 }
@@ -135,30 +135,26 @@ bool DifficultiesScene::changeMousePosition(const sf::Vector2i& pos) {
 	bool change = false;
 	
 	change |= this->Scene::changeMousePosition(pos);
-	change |= slider_row.changeMousePosition(pos);
-	change |= slider_col.changeMousePosition(pos);
+	change |= slider_row->changeMousePosition(pos);
+	change |= slider_col->changeMousePosition(pos);
 
 	return change;
 }
 
 
 int DifficultiesScene::getCurrentRow() const {
-	return slider_row.getSliderValue();
+	return slider_row->getSliderValue();
 }
 
 
 int DifficultiesScene::getCurrentCol() const {
-	return slider_col.getSliderValue();
+	return slider_col->getSliderValue();
 }
 
 
-DrawableList DifficultiesScene::getDrawableList(const bool is_focusing, const int rank) {
-	DrawableList list;
+void DifficultiesScene::draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing) {
+	slider_row->draw(renderer, is_focusing);
+	slider_col->draw(renderer, is_focusing);
 
-	list.append(slider_row.getDrawableList(is_focusing, rank));
-	list.append(slider_col.getDrawableList(is_focusing, rank));
-
-	list.append(this->Scene::getDrawableList(is_focusing, rank));
-
-	return list;
+	Scene::draw(renderer, is_focusing);
 }

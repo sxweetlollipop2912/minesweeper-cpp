@@ -52,7 +52,7 @@ public:
 	// Gets right-down position of button.
 	sf::Vector2f getPosRightDown() const;
 	// Gets text as sf::Text.
-	sf::Text getSfText() const;
+	void getSfText(sf::Text& text) const;
 	// Gets font size.
 	int getFontSize() const;
 

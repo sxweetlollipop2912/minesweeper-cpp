@@ -60,6 +60,6 @@ public:
 	// Returns SceneType::Unknown if no next scene corresponding with game_event is found.
 	SceneType getNextScene(const GameEvent game_event) const;
 	
-	// Gets a DrawableList object that contains all sprites and texts in the scene.
-	virtual DrawableList getDrawableList(const bool is_focusing = true, const int rank = 0);
+	// Draws all textures and texts in the scene on an sf::RenderTarget object
+	virtual void draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing = true);
 };

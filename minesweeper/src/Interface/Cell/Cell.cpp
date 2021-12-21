@@ -194,19 +194,15 @@ sf::Vector2u Cell::getImageSize() const {
 }
 
 
-sf::Sprite Cell::getDefaultSprite() const {
-	sf::Sprite sprite = button_at_state.at(cell_state).getDefaultSprite();
+void Cell::getDefaultSprite(sf::Sprite& sprite) const {
+	button_at_state.at(cell_state).getDefaultSprite(sprite);
 	sprite.scale(getScale());
-
-	return sprite;
 }
 
 
-sf::Sprite Cell::getHoveredSprite() const {
-	sf::Sprite sprite = button_at_state.at(cell_state).getHoveredSprite();
+void Cell::getHoveredSprite(sf::Sprite& sprite) const {
+	button_at_state.at(cell_state).getHoveredSprite(sprite);
 	sprite.scale(getScale());
-
-	return sprite;
 }
 
 

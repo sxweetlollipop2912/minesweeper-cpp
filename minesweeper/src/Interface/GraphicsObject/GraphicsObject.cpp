@@ -13,7 +13,7 @@ Result Graphics::loadTextureFromFilepath(sf::Texture& texture, const std::string
 
 
 void Graphics::loadSpriteFromTexture(sf::Sprite& sprite, const sf::Texture& texture, const sf::Vector2f& position) {
-    sprite.setTexture(texture);
+    sprite.setTexture(texture, true);
     sprite.setPosition(position.x, position.y);
 }
 

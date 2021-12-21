@@ -7,11 +7,13 @@ Window* Window::instance = nullptr;
 
 
 Window::Window(const sf::VideoMode& window_size, const std::string& title, const int window_style) {
+	render_window = std::make_shared<sf::RenderWindow>();
+
 	this->window_size = window_size;
 	this->title = title;
 	this->window_style = window_style;
 
-	background = Background(window_size);
+	background = std::make_shared<Background>(Background(window_size));
 
 	audio_manager.setRandomMusiclist(MAX_SONGS);
 	audio_manager.startMusic();
@@ -107,12 +109,12 @@ void Window::setCurrentSceneType(const SceneType& type) {
 
 
 void Window::createWindow() {
-	render_window.create(window_size, title, window_style);
+	render_window->create(window_size, title, window_style);
 }
 
 
 void Window::closeWindow() {
-	render_window.close();
+	render_window->close();
 }
 
 
@@ -366,7 +368,7 @@ bool Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Ve
 
 		if (type == MouseActionType::LMB) {
 			while (elapse.getElapsedTime().asMilliseconds() < 50) {
-				while (render_window.pollEvent(event)) {
+				while (render_window->pollEvent(event)) {
 					if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
 						lock_mouse_button = MouseActionType::DoubleLMB;
 
@@ -389,83 +391,25 @@ bool Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Ve
 }
 
 
-bool Window::updatePerFrame() {
+void Window::updatePerFrame() {
 	auto audio_cfg = audio_manager.update();
-	background.setNextConfig(audio_cfg);
-	background.update();
+	background->setNextConfig(audio_cfg);
+	background->update();
 
 	if (constantly_changing_scenes.find(getCurrentSceneType()) != constantly_changing_scenes.end()) {
 		current_interface_info.game_event = GameEvent::Unknown;
 		current_interface_info.current_scene = getCurrentSceneType();
 
 		Comms::interfaceInfoSending(current_interface_info);
-
-		return true;
 	}
-
-	return true;
 }
 
 
 void Window::drawCurrentScene() {
-	draw(background.getDrawableList());
-	draw(getCurrentScene()->getDrawableList());
-}
+	render_window->clear();
 
+	background->draw(std::static_pointer_cast<sf::RenderTarget>(render_window));
+	getCurrentScene()->draw(std::static_pointer_cast<sf::RenderTarget>(render_window));
 
-void Window::draw(const sf::Sprite& sprite) {
-	render_window.draw(sprite);
-}
-
-
-void Window::draw(const sf::Text& text) {
-	render_window.draw(text);
-}
-
-
-void Window::draw(const sf::RectangleShape& rect) {
-	render_window.draw(rect);
-}
-
-
-void Window::draw(const sf::CircleShape& circle) {
-	render_window.draw(circle);
-}
-
-
-void Window::draw(Text& text) {
-	draw(text.getSfText());
-}
-
-
-void Window::draw(Button& button, const bool isHovered) {
-	if (isHovered == false)
-		draw(button.getDefaultSprite());
-	else
-		draw(button.getHoveredSprite());
-
-	draw(button.label);
-}
-
-
-void Window::draw(const DrawableList& list) {
-	for (int rank = 0, sprite_idx = 0, text_idx = 0, rect_idx = 0, circle_idx = 0; 
-		sprite_idx < list.sprites.size() || 
-		text_idx < list.texts.size() || 
-		rect_idx < list.rects.size() || 
-		circle_idx < list.circles.size(); rank++) {
-
-		for (; rect_idx < list.rects.size() && list.rects[rect_idx].rank == rank; rect_idx++) {
-			draw(*list.rects[rect_idx].rect);
-		}
-		for (; circle_idx < list.circles.size() && list.circles[circle_idx].rank == rank; circle_idx++) {
-			draw(*list.circles[circle_idx].circle);
-		}
-		for (; sprite_idx < list.sprites.size() && list.sprites[sprite_idx].rank == rank; sprite_idx++) {
-			draw(*list.sprites[sprite_idx].sprite);
-		}
-		for (; text_idx < list.texts.size() && list.texts[text_idx].rank == rank; text_idx++) {
-			draw(*list.texts[text_idx].text);
-		}
-	}
+	render_window->display();
 }

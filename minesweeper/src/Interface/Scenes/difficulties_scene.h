@@ -23,8 +23,8 @@ private:
 	const std::string STR_CONTINUE_BUTTON = "continue";
 	const std::string STR_RETURN_BUTTON = "return";
 
-	Slider slider_row;
-	Slider slider_col;
+	std::shared_ptr<Slider> slider_row;
+	std::shared_ptr<Slider> slider_col;
 
 
 	// Call on a mouse button released event.
@@ -44,5 +44,6 @@ public:
 	int getCurrentRow() const;
 	int getCurrentCol() const;
 
-	DrawableList getDrawableList(const bool is_focusing = false, const int rank = 0) override;
+	// Draws all textures and texts in the scene on an sf::RenderTarget object
+	void draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing = true) override;
 };

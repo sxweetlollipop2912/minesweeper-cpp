@@ -23,6 +23,4 @@ private:
 
 public:
 	PopUp(const GameEvent game_event = GameEvent::Unknown, const sf::VideoMode& window_size = sf::VideoMode(0, 0), const std::string& msg = "", const std::string& yes_msg = "YES", const std::string& no_msg = "NO");
-
-	DrawableList getDrawableList(const bool is_focusing = false, const int rank = 0) override;
 };
