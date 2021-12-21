@@ -40,15 +40,14 @@ enum class SceneType {
 	Playing,
 	Leaderboard,
 	PopUp,
-	Background,
 	Unknown
 };
 
  enum class Difficulty {
-	Beginner,
-	Intermediate,
-	Expert,
-	Custom,
+	Beginner = 1,
+	Intermediate = 2,
+	Expert= 3,
+	Custom ,
 	Unknown
 };
 
