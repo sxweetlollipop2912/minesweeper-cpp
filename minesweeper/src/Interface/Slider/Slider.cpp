@@ -3,31 +3,31 @@
 #include "Slider.h"
 
 
-Slider::Slider(const int min, const int max, sf::Vector2f top_left_pos, const sf::Color axis_color, const sf::Color slider_color) {
+Slider::Slider(const int min, const int max, const int init_value, sf::Vector2f top_left_pos, const int axis_width, const int axis_height, const bool visible_numbers, const sf::Color axis_color, const sf::Color slider_color) {
 	this->top_left_pos = top_left_pos;
 	sliding = false;
 
 	max_value = max;
 	min_value = min;
 	slider_value = min;
+	this->visible_numbers = visible_numbers;
 
 	text.setTextColor(DEFAULT_TEXT_COLOR);
 
-	int axis_height = 10;
-	int axis_width = 200;
-
-	axis.setPosition(top_left_pos);
+	axis.setPosition(sf::Vector2f(top_left_pos.x, top_left_pos.y));
 	axis.setOrigin(0, axis_height / 2);
 	axis.setSize(sf::Vector2f(axis_width, axis_height));
 	axis.setFillColor(axis_color);
 
-	int slider_width = 20;
-	int slider_height = 30;
+	float radius = axis_height * 1.5;
 
+	slider.setOrigin(radius, radius);
 	slider.setPosition(top_left_pos);
-	slider.setOrigin(slider_width / 2, slider_height / 2);
-	slider.setSize(sf::Vector2f(slider_width, slider_height));
+	slider.setRadius(radius);
 	slider.setFillColor(slider_color);
+	
+	int init = std::max(min, std::min(max, init_value));
+	setSliderValue(init);
 }
 
 
@@ -129,14 +129,16 @@ void Slider::setSliderPercentValue(const float new_percent_value) {
 
 
 void Slider::draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing) {
-	loadText(sfText, top_left_pos.x - 10, top_left_pos.y + 5, std::to_string(min_value), 20);
-	renderer->draw(sfText);
+	if (visible_numbers) {
+		loadText(sfText, top_left_pos.x - slider.getRadius() - 18, top_left_pos.y - (20 / 2), std::to_string(min_value), 20);
+		renderer->draw(sfText);
 
-	loadText(sfText, top_left_pos.x + axis.getSize().x - 10, top_left_pos.y + 5, std::to_string(max_value), 20);
-	renderer->draw(sfText);
+		loadText(sfText, top_left_pos.x + axis.getSize().x + slider.getRadius() + 5, top_left_pos.y - (20 / 2), std::to_string(max_value), 20);
+		renderer->draw(sfText);
 
-	loadText(sfText, slider.getPosition().x - slider.getSize().x, slider.getPosition().y - slider.getSize().y, std::to_string((int)slider_value), 15);
-	renderer->draw(sfText);
+		loadText(sfText, slider.getPosition().x - slider.getRadius() / (float)2, slider.getPosition().y - slider.getRadius() * 2 - (15 / (float)2), std::to_string((int)slider_value), 15);
+		renderer->draw(sfText);
+	}
 
 	renderer->draw(axis);
 	renderer->draw(slider);
