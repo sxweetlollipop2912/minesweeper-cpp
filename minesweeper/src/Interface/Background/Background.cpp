@@ -11,7 +11,6 @@ float calDist(const sf::Vector2f p1, const sf::Vector2f p2 = sf::Vector2f(0, 0))
 
 
 Background::Background(const sf::VideoMode window_size, const sf::Color primary_color, const sf::Color secondary_color, const float circle_speed, const int number_of_circles, const float circle_radius) {
-
 	this->window_size = window_size;
 
 	cur_prim_color = des_prim_color = primary_color;
@@ -31,20 +30,14 @@ Background::Background(const sf::VideoMode window_size, const sf::Color primary_
 	{
 		for (int i = 0; i < circles.size(); i++) {
 			auto& circle = circles[i];
-			auto& shape = circle.shape;
 
-			shape.setRadius(circle_radius);
-			shape.setOrigin(sf::Vector2f(circle_radius, circle_radius));
+			circle.radius = circle_radius;
 
 			sf::Color color = secondary_color;
-			shape.setFillColor(color);
 
-			{
-				sf::Vector2f pos;
-				pos.x = 1.2 * circle_radius + (rand() % (window_size.width - (int)(circle_radius * 2.2)));
-				pos.y = 1.2 * circle_radius + (rand() % (window_size.height - (int)(circle_radius * 2.2)));
-				shape.setPosition(pos);
-			}
+			auto& pos = circle.pos;
+			pos.x = 1.2 * circle_radius + (rand() % (window_size.width - (int)(circle_radius * 2.2)));
+			pos.y = 1.2 * circle_radius + (rand() % (window_size.height - (int)(circle_radius * 2.2)));
 		}
 	}
 
@@ -99,10 +92,6 @@ void Background::calCurrentColor() {
 			cur_second_color = color;
 		}
 	}
-	for (auto& circle : circles) {
-		auto& shape = circle.shape;
-		shape.setFillColor(cur_second_color);
-	}
 
 	last_color_update = clock.getElapsedTime();
 }
@@ -110,8 +99,8 @@ void Background::calCurrentColor() {
 
 void Background::calCurrentCirclesPos() {
 	for (auto& circle : circles) {
-		auto pos = circle.shape.getPosition();;
-		auto radius = circle.shape.getRadius();
+		auto pos = circle.pos;
+		auto radius = circle.radius;
 
 		auto& veloc = circle.veloc;
 		
@@ -129,11 +118,9 @@ void Background::calCurrentCirclesPos() {
 	for (auto& circle : circles) {
 		auto veloc = circle.veloc;
 
-		sf::Vector2f pos = circle.shape.getPosition();
+		auto& pos = circle.pos;
 		pos.x += veloc.x * distance;
 		pos.y += veloc.y * distance;
-
-		circle.shape.setPosition(pos);
 	}
 
 	last_pos_update = clock.getElapsedTime();
@@ -190,14 +177,17 @@ void Background::setNextConfig(const AudioVisualCfg::Cfg& cfg) {
 }
 
 
-DrawableList Background::getDrawableList(const bool is_focusing, const int rank) {
-	DrawableList list;
+void Background::draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing) {
+	renderer->draw(background);
 
-	list.rects.push_back(DrawableList::DrawableRect(std::make_shared<sf::RectangleShape>(background), rank));
-	
+	sf::CircleShape shape;
+
 	for (auto& circle : circles) {
-		list.circles.push_back(DrawableList::DrawableCircle(std::make_shared<sf::CircleShape>(circle.shape), rank + 1));
+		shape.setRadius(circle.radius);
+		shape.setOrigin(circle.radius, circle.radius);
+		shape.setFillColor(cur_second_color);
+		shape.setPosition(circle.pos);
+		
+		renderer->draw(shape);
 	}
-
-	return list;
 }

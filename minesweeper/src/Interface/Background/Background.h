@@ -15,9 +15,12 @@ constexpr auto TRANSPARENT_ALPHA = 150;
 
 
 struct Circle {
-	sf::CircleShape shape;
 	sf::Vector2f veloc;
-	Circle() {}
+	float radius;
+	sf::Vector2f pos;
+	Circle() {
+		radius = 0;
+	}
 };
 
 
@@ -61,5 +64,6 @@ public:
 	void setCircleSpeed(const float speed);
 	void setNextConfig(const AudioVisualCfg::Cfg& config);
 
-	DrawableList getDrawableList(const bool is_focusing = true, const int rank = 0);
+	// Draws all textures and texts in background on an sf::RenderTarget object
+	virtual void draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing = true);
 };
