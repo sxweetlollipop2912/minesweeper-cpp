@@ -83,8 +83,8 @@ DifficultiesScene::DifficultiesScene(const sf::VideoMode& window_size) : Scene(w
 		float pos_y_slider_row = this->window_size.height * POS_Y_COEF_SLIDER_ROW;
 		float pos_y_slider_col = this->window_size.height * POS_Y_COEF_SLODER_COL;
 
-		slider_row = std::make_shared<Slider>(Slider(MIN_ROW, MAX_ROW, sf::Vector2f(0, pos_y_slider_row)));
-		slider_col = std::make_shared<Slider>(Slider(MIN_COLUMN, MAX_COLUMN, sf::Vector2f(0, pos_y_slider_col)));
+		slider_row = std::make_shared<Slider>(Slider(MIN_ROW, MAX_ROW, MIN_ROW, sf::Vector2f(0, pos_y_slider_row)));
+		slider_col = std::make_shared<Slider>(Slider(MIN_COLUMN, MAX_COLUMN, MIN_COLUMN, sf::Vector2f(0, pos_y_slider_col)));
 
 		slider_row->centerSliderHorizontally(this->window_size.width);
 		slider_col->centerSliderHorizontally(this->window_size.width);
@@ -122,12 +122,17 @@ GameEvent DifficultiesScene::onMouseButtonReleased(const MouseActionType mouse_t
 
 
 GameEvent DifficultiesScene::onMouseButtonPressed(const MouseActionType mouse_type) {
-	bool change = false;
+	auto game_event = Scene::onMouseButtonPressed(mouse_type);
 
-	change |= slider_row->onMousePressed(mouse_type);
-	change |= slider_col->onMousePressed(mouse_type);
+	if (game_event == GameEvent::Unknown) {
+		bool change = false;
+		change |= slider_row->onMousePressed(mouse_type);
+		change |= slider_col->onMousePressed(mouse_type);
 
-	return change ? GameEvent::ChangesInScene : GameEvent::Unknown;
+		game_event = change ? GameEvent::ChangesInScene : GameEvent::Unknown;
+	}
+
+	return game_event;
 }
 
 

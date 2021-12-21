@@ -40,6 +40,7 @@ enum class SceneType {
 	Playing,
 	Leaderboard,
 	PopUp,
+	Background,
 	Unknown
 };
 

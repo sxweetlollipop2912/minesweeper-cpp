@@ -98,8 +98,12 @@ const sf::Vector2f POS_COEF_SCOREBOARD_FLAG = sf::Vector2f(70 / (float)447, (401
 const float POS_Y_COEF_LEADERBOARD_TITLE = 1 / (float)8;
 const float POS_Y_COEF_COL = 1 / (float)3;
 // AUDIO
-const sf::Vector2f RIGHT_DOWN_COEF_NEXT_SONG = RIGHT_DOWN_COEF_BOARD_AREA;
+const float VOLUME_HEIGHT = 5 / (float)1000;
+const float VOLUME_WIDTH = 150 / (float)1500;
+const sf::Vector2f RIGHT_DOWN_COEF_VOLUME = RIGHT_DOWN_COEF_BOARD_AREA;
+const sf::Vector2f RIGHT_DOWN_COEF_NEXT_SONG = sf::Vector2f(RIGHT_DOWN_COEF_VOLUME.x, RIGHT_DOWN_COEF_VOLUME.y - VOLUME_HEIGHT * (float)5);
 const sf::Vector2f NEXT_SONG_SIZE = sf::Vector2f(40, 40);
+
 
 
 // IMAGE PATHS

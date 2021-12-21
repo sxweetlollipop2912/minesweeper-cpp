@@ -8,6 +8,7 @@ AudioManager::AudioManager() {
 	cfgs.clear();
 	current_song_idx = -1;
 	current_status = MusicStatus::Stopped;
+	volume = 100;
 }
 
 
@@ -151,7 +152,18 @@ void AudioManager::startMusic() {
 }
 
 
+void AudioManager::turnVolume(const int volume) {
+	if (current_status != MusicStatus::Stopping) {
+		this->volume = volume;
+	}
+}
+
+
 AudioVisualCfg::Cfg AudioManager::update() {
+	if (current_status != MusicStatus::Stopping) {
+		music.setVolume(volume);
+	}
+
 	AudioVisualCfg::Cfg cfg;
 
 	if (current_status != MusicStatus::Stopped) {
@@ -172,7 +184,7 @@ AudioVisualCfg::Cfg AudioManager::update() {
 				current_status = MusicStatus::Playing;
 			}
 			else {
-				music.setVolume(100 - (volume_down * (float)100));
+				music.setVolume(volume - (volume_down * (float)100));
 			}
 		}
 

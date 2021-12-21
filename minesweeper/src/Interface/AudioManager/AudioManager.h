@@ -28,6 +28,7 @@ private:
 
 	int current_song_idx;
 	int current_cfg_idx;
+	int volume;
 	MusicStatus current_status;
 
 	sf::Clock clock;
@@ -49,6 +50,7 @@ public:
 
 	void onNextMusicEvent();
 	void startMusic();
+	void turnVolume(const int volume);
 
 	// This should be called on every frame.
 	AudioVisualCfg::Cfg update();

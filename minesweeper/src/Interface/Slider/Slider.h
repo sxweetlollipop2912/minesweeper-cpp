@@ -10,14 +10,15 @@
 
 class Slider {
 private:
-    	sf::Text sfText;
+    sf::Text sfText;
 
-	sf::RectangleShape slider;
+	sf::CircleShape slider;
 	sf::RectangleShape axis;
 	Text text;
 
 	int min_value;
 	int max_value;
+	bool visible_numbers;
 
 	sf::Vector2f top_left_pos;
 
@@ -30,7 +31,7 @@ private:
 	void loadText(sf::Text& text, const int x, const int y, const std::string s, const int font_size);
 
 public:
-	Slider(const int min_value = 0, const int max_value = 0, const sf::Vector2f top_left_pos = sf::Vector2f(0, 0), const sf::Color axis_color = sf::Color(63, 63, 63), const sf::Color slider_color = sf::Color(192, 192, 192));
+	Slider(const int min_value = 0, const int max_value = 0, const int init_value = 0, const sf::Vector2f top_left_pos = sf::Vector2f(0, 0), const int axis_width = 200, const int axis_height = 10, const bool visible_numbers = true, const sf::Color axis_color = sf::Color(63, 63, 63), const sf::Color slider_color = sf::Color(192, 192, 192));
 
 	float getSliderValue() const;
 

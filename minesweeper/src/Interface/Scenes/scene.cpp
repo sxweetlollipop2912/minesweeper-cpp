@@ -16,20 +16,6 @@ Scene::Scene(const sf::VideoMode& window_size, const SceneType scene_type) {
 	buttons_event[STR_UNKNOWN] = GameEvent::Unknown;
 	hovered_button = STR_UNKNOWN;
 	pos_mouse = sf::Vector2i(-1, -1);
-
-	// Default scene buttons.
-	{
-		buttons_event[STR_NEXT_SONG] = GameEvent::NextSong;
-
-		Button& next_song_button = buttons[STR_NEXT_SONG];
-		next_song_button.setImage(TextureType::NextSong);
-		next_song_button.setSize(NEXT_SONG_SIZE);
-
-		sf::Vector2f TL_next_song;
-		TL_next_song.x = RIGHT_DOWN_COEF_NEXT_SONG.x * window_size.width - next_song_button.getSize().x;
-		TL_next_song.y = RIGHT_DOWN_COEF_NEXT_SONG.y * window_size.height - next_song_button.getSize().y;
-		next_song_button.setTopLeftPos(TL_next_song);
-	}
 }
 
 
