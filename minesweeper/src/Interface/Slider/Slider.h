@@ -10,6 +10,8 @@
 
 class Slider {
 private:
+	sf::Text sfText;
+
 	sf::RectangleShape slider;
 	sf::RectangleShape axis;
 	Text text;

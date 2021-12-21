@@ -180,14 +180,12 @@ void Background::setNextConfig(const AudioVisualCfg::Cfg& cfg) {
 void Background::draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing) {
 	renderer->draw(background);
 
-	sf::CircleShape shape;
-
 	for (auto& circle : circles) {
-		shape.setRadius(circle.radius);
-		shape.setOrigin(circle.radius, circle.radius);
-		shape.setFillColor(cur_second_color);
-		shape.setPosition(circle.pos);
+		circle_shape.setRadius(circle.radius);
+		circle_shape.setOrigin(circle.radius, circle.radius);
+		circle_shape.setFillColor(cur_second_color);
+		circle_shape.setPosition(circle.pos);
 		
-		renderer->draw(shape);
+		renderer->draw(circle_shape);
 	}
 }

@@ -20,6 +20,8 @@ class Scene {
 protected:
 	const std::string STR_UNKNOWN = "unknown";
 	const std::string STR_NEXT_SONG = "next_song";
+	sf::Sprite sprite;
+	sf::Text text;
 
 	SceneType scene_type;
 	sf::VideoMode window_size;

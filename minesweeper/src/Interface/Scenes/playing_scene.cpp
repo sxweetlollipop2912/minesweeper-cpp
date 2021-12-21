@@ -246,8 +246,6 @@ Position PlayingScene::getLastPressedCell() const {
 
 
 void PlayingScene::draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing) {
-	sf::Sprite sprite;
-
 	for (int i = 0; i < board.number_of_rows; i++) {
 		for (int j = 0; j < board.number_of_cols; j++) {
 			if (is_focusing && Position(i, j) == board.hovered_cell) {

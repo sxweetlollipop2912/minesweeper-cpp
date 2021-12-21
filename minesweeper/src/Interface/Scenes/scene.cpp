@@ -151,9 +151,6 @@ SceneType Scene::getNextScene(const GameEvent game_event) const {
 
 
 void Scene::draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing) {
-	sf::Sprite sprite;
-	sf::Text text;
-
 	bool is_focusing_on_current = is_focusing;
 	if (pop_up)
 		is_focusing_on_current = false;
