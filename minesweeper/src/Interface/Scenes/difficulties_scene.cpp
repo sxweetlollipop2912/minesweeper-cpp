@@ -122,12 +122,17 @@ GameEvent DifficultiesScene::onMouseButtonReleased(const MouseActionType mouse_t
 
 
 GameEvent DifficultiesScene::onMouseButtonPressed(const MouseActionType mouse_type) {
-	bool change = false;
+	auto game_event = Scene::onMouseButtonPressed(mouse_type);
 
-	change |= slider_row->onMousePressed(mouse_type);
-	change |= slider_col->onMousePressed(mouse_type);
+	if (game_event == GameEvent::Unknown) {
+		bool change = false;
+		change |= slider_row->onMousePressed(mouse_type);
+		change |= slider_col->onMousePressed(mouse_type);
 
-	return change ? GameEvent::ChangesInScene : GameEvent::Unknown;
+		game_event = change ? GameEvent::ChangesInScene : GameEvent::Unknown;
+	}
+
+	return game_event;
 }
 
 
