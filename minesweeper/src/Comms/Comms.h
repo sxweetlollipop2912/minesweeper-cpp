@@ -2,11 +2,12 @@
 
 #include <vector>
 
-#include "../Constants.h"
-#include "../Enums.h"
 #include "../Interface/Board/Position.h"
 #include "../Interface/Board/Board.h"
+#include "../Game/GameTools.h"
 #include "../Structs.h"
+#include "../Constants.h"
+#include "../Enums.h"
 
 
 /// > INTERFACE: handles UI, graphical stuff, receives inputs from user then sends to GAME for processing.
@@ -36,6 +37,7 @@ namespace Comms {
 		// This can be a custom board size, or a generic board size (depends on difficulty).
 		int new_row = -1;
 		int new_col = -1;
+		Difficulty difficulty = Difficulty::Unknown;
 
 		// Only assigned when GameEvent `game_event` is one the following: OpenCell, FlagCell, AutoOpenCell.
 		// `current_scene` should be SceneType::Playing.
@@ -43,22 +45,6 @@ namespace Comms {
 		Position cell_pos = Position(-1, -1);
 	};
 
-
-	/*struct GameInfo {
-		// Only needed in SceneType::Playing.
-		// These should be the info of current saved game.
-		GameState game_state = GameState::Ongoing;
-		int board_row = -1;
-		int board_col = -1;
-		GAMECELL cell_board[MAX_ROW][MAX_COLUMN];
-		char mine_board[MAX_ROW][MAX_COLUMN];
-		Timer current_timer = { 0,0,0,false };
-		int flag_remaining = -1;
-
-		// Only needed in SceneType::Leaderboard or in GameEvent::ShowLeaderboard.
-		// Xài std::make_shared<Records>(records_var) để tạo shared pointer.
-		std::shared_ptr<Records> records = nullptr;
-	};*/
 
 	struct GameInfo {
 		// Only needed in SceneType::Playing.
@@ -71,17 +57,16 @@ namespace Comms {
 		Timer current_timer = { 0,0,0,false }, old_timer = { 0,0,0,false };
 		GAMEPREDICATE game_Feature, old_game_Feature;
 		PLAYER current_player, old_player;
-		//int flag_remaining = -1;
 
 		// Only needed in SceneType::Leaderboard or in GameEvent::ShowLeaderboard.
-		// Xài std::make_shared<Records>(records_var) để tạo shared pointer.
-		std::shared_ptr<Records> records = nullptr;
+		std::shared_ptr<Records> records = std::make_shared<Records>();
+
 	};
 	
 
 
 	/// Used by INTERFACE to send InterfaceInfo whenever there are changes, to GAME.
-	Result interfaceInfoSending(const InterfaceInfo info);
+	Result interfaceInfoSending(const InterfaceInfo& info);
 
-	Result gameInfoSending(const GameInfo info);
+	Result gameInfoSending(const GameInfo& info);
 }
