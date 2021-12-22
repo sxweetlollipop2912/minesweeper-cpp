@@ -22,7 +22,6 @@ private:
 	int number_of_cols;
 	float cell_size;
 
-	Position last_pressed_cell;
 	Position hovered_cell;
 
 	// Assigns all elements in board to default value.
@@ -59,7 +58,6 @@ public:
 
 	int getRows() const;
 	int getCols() const;
-	Position getLastPressedCell() const;
 
 	// Checks if a coordinate is valid on this board.
 	bool isValidPos(const Position& pos) const;

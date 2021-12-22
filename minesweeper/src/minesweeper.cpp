@@ -32,6 +32,9 @@ void registerResources() {
         if (ResourceVault::setTexture(TextureType::CellFlagged, FLAGGED_CELL_IMG_PATH) == Result::failure) {
             std::cout << "Loading CellFlagged texture failed!";
         }
+        if (ResourceVault::setTexture(TextureType::CellMine, MINE_CELL_IMG_PATH) == Result::failure) {
+            std::cout << "Loading CellMine texture failed!";
+        }
         if (ResourceVault::setTexture(TextureType::CellBlank, BLANK_CELL_IMG_PATH) == Result::failure) {
             std::cout << "Loading CellBlank texture failed!";
         }
@@ -72,27 +75,6 @@ void registerResources() {
 
 int main() {
     srand(time(NULL));
-
-    /*int choice;
-
-    PLAYER newPlayer, oldPlayer;
-
-    GAMEPREDICATE game_Feature, old_game_Feature;
-
-    GAMECELL game_Board[MAX_ROW][MAX_COLUMN], old_game_Board[MAX_ROW][MAX_COLUMN];
-
-    char mine_Board[MAX_ROW][MAX_COLUMN], old_mine_Board[MAX_ROW][MAX_COLUMN];
-    do {
-        welcomePlayer(choice);
-        implementChoice(choice, mine_Board, old_mine_Board, game_Feature, old_game_Feature,
-            newPlayer, oldPlayer, game_Board, old_game_Board);
-    } while (true);*/
-
-    // Phần này bị warning gì á tui k rõ nữa, ông xem làm gì đc k
-    // C6262: Function uses '16396' bytes of stack: exceeds /analyze:stacksize '16384'. Consider moving some data to heap.
-    //
-    // Comment phần trên để chạy phần dưới
-    //*************************************************************************
 
     registerResources();
 

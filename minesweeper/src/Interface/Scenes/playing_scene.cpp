@@ -12,6 +12,8 @@ PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_row
 
 	buttons_event[STR_RETURN_BUTTON] = GameEvent::QuitToMenu;
 
+	last_pressed_cell = Position(-1, -1);
+
 
 	// Board
 	{
@@ -186,24 +188,24 @@ GameEvent PlayingScene::onMouseButtonReleased(const MouseActionType mouse_type) 
 				// RMB: Flag/Unflag a cell.
 			case MouseActionType::RMB:
 			{
-				Position cell_pos = board.hovered_cell;
-				std::cout << "RMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
+				last_pressed_cell = board.hovered_cell;
+				std::cout << "RMB " << last_pressed_cell.r << ' ' << last_pressed_cell.c << '\n';
 
 				return GameEvent::FlagCell;
 			}
 			// LMB: Open a cell.
 			case MouseActionType::LMB:
 			{
-				Position cell_pos = board.hovered_cell;
-				std::cout << "LMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
+				last_pressed_cell = board.hovered_cell;
+				std::cout << "LMB " << last_pressed_cell.r << ' ' << last_pressed_cell.c << '\n';
 
 				return GameEvent::OpenCell;
 			}
 			// Double-LMB: Auto-open nearby safe cells.
 			case MouseActionType::DoubleLMB:
 			{
-				Position cell_pos = board.hovered_cell;
-				std::cout << "DoubleLMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
+				last_pressed_cell = board.hovered_cell;
+				std::cout << "DoubleLMB " << last_pressed_cell.r << ' ' << last_pressed_cell.c << '\n';
 
 				return GameEvent::AutoOpenCell;
 			}
@@ -241,7 +243,7 @@ int PlayingScene::getBoardCols() const {
 
 
 Position PlayingScene::getLastPressedCell() const {
-	return board.getLastPressedCell();
+	return last_pressed_cell;
 }
 
 

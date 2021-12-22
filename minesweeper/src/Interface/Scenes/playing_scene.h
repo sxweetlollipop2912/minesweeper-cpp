@@ -29,6 +29,7 @@ private:
 	const std::string STR_RETURN_BUTTON = "return";
 
 	Board board;
+	Position last_pressed_cell;
 
 
 	std::string timerStr(int h, int m, int s);
