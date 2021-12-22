@@ -3,7 +3,7 @@
 #include "../Interface/Window/Window.h"
 
 
-void Comms::interfaceInfoSending(const InterfaceInfo& info) {
+Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
     auto& current_info = (*Window::getInstance())->current_game_info;
 
     switch (info.game_event) {
@@ -278,10 +278,14 @@ void Comms::interfaceInfoSending(const InterfaceInfo& info) {
     }
 
     gameInfoSending(current_info);
+
+    return Result::success;
 }
 
 
-void Comms::gameInfoSending(const GameInfo& info) {
+Result Comms::gameInfoSending(const GameInfo& info) {
     auto window = Window::getInstance();
     (*window)->updateGameInfo(info);
+
+    return Result::success;
 }
