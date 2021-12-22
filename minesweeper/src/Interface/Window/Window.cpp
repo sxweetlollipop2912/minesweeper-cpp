@@ -314,10 +314,14 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 
 				// Sends to GAME.
 				Comms::interfaceInfoSending(current_interface_info);
-			}
 
-			last_game_event = game_event;
-			setCurrentSceneType(nxt_scene_type);
+				setCurrentSceneType(current_interface_info.current_scene);
+				last_game_event = current_interface_info.game_event;
+			}
+			else {
+				setCurrentSceneType(nxt_scene_type);
+				last_game_event = game_event;
+			}
 
 			getCurrentScene()->changeMousePosition(pos_mouse);
 		}
