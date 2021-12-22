@@ -49,7 +49,7 @@ enum class SceneType {
 	Beginner = 1,
 	Intermediate = 2,
 	Expert = 3,
-	Custom,
+	Custom = 0,
 	Unknown
 };
 
