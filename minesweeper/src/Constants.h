@@ -16,10 +16,14 @@ const int MIN_ROW = 9;
 const int MAX_ROW = 30;
 const int BEGINNER_ROW = 9;
 const int BEGINNER_COL = 9;
+const int BEGINNER_MINE = 10;
 const int INTERMEDIATE_ROW = 16;
 const int INTERMEDIATE_COL = 16;
+const int INTERMEDIATE_MINE = 40;
 const int EXPERT_ROW = 16;
 const int EXPERT_COL = 30;
+const int EXPERT_MINE = 99;
+const float CUSTOM_MINE_COEF = 0.2f;
 const int MAX_RECORDS_PER_DIFF = 3;
 const int MAX_SONGS = 2;
 
