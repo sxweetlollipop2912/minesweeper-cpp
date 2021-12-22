@@ -25,7 +25,8 @@
 
 // This is a singleton.
 class Window {
-	friend Result Comms::gameInfoSending(const GameInfo info);
+	friend void Comms::gameInfoSending(const GameInfo& info);
+	friend void Comms::interfaceInfoSending(const InterfaceInfo& info);
 
 private:
 	static Window* instance;

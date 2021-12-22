@@ -83,7 +83,7 @@ int main() {
     (*window)->initializeMenuScene();
     (*window)->initializeLeaderboardScene();
     (*window)->initializeDifficultiesScene();
-    (*window)->initializePlayingScene(30, 30);
+    (*window)->initializePlayingScene();
 
     (*window)->createWindow();
 

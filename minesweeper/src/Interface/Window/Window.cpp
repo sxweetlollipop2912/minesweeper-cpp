@@ -248,6 +248,19 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 			std::cout << "ROW " << current_interface_info.new_row << '\n';
 			std::cout << "COL " << current_interface_info.new_col << '\n';
 
+			if (current_interface_info.new_row == BEGINNER_ROW && current_interface_info.new_col == BEGINNER_COL) {
+				current_interface_info.difficulty = Difficulty::Beginner;
+			}
+			else if (current_interface_info.new_row == INTERMEDIATE_ROW && current_interface_info.new_col == INTERMEDIATE_COL) {
+				current_interface_info.difficulty = Difficulty::Intermediate;
+			}
+			else if (current_interface_info.new_row == EXPERT_ROW && current_interface_info.new_col == EXPERT_COL) {
+				current_interface_info.difficulty = Difficulty::Expert;
+			}
+			else {
+				current_interface_info.difficulty = Difficulty::Custom;
+			}
+
 			break;
 		}
 		case GameEvent::LoadGame:
