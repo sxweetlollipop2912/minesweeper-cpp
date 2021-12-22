@@ -17,7 +17,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                     set_up_game(current_info.game_Feature, current_info.cell_board, current_info.mine_board, BEGINNER_ROW, BEGINNER_COL, BEGINNER_MINE, BEGINNER_MINE);
 
                     //Setting mines into mine_board as well as reverse mine_board
-                    mine_settingUp(1, current_info.game_Feature, current_info.mine_board, current_info.old_mine_board, current_info.cell_board);
+                    mine_settingUp(current_info.current_player.level, current_info.game_Feature, current_info.mine_board, current_info.old_mine_board, current_info.cell_board);
 
                     //Reverse other data
                     mine_reserveData(current_info.current_player, current_info.old_player, current_info.cell_board, current_info.old_cell_board, current_info.game_Feature, current_info.old_game_Feature, current_info.old_timer, current_info.current_timer);
@@ -34,7 +34,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                     set_up_game(current_info.game_Feature, current_info.cell_board, current_info.mine_board, INTERMEDIATE_ROW, INTERMEDIATE_COL, INTERMEDIATE_MINE, INTERMEDIATE_MINE);
 
                     //Setting mines into mine_board as well as reverse mine_board
-                    mine_settingUp(1, current_info.game_Feature, current_info.mine_board, current_info.old_mine_board, current_info.cell_board);
+                    mine_settingUp(current_info.current_player.level, current_info.game_Feature, current_info.mine_board, current_info.old_mine_board, current_info.cell_board);
 
                     //Reverse other data
                     mine_reserveData(current_info.current_player, current_info.old_player, current_info.cell_board, current_info.old_cell_board, current_info.game_Feature, current_info.old_game_Feature, current_info.old_timer, current_info.current_timer);
@@ -49,7 +49,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                     set_up_game(current_info.game_Feature, current_info.cell_board, current_info.mine_board, EXPERT_ROW, EXPERT_COL, EXPERT_MINE, EXPERT_MINE);
 
                     //Setting mines into mine_board as well as reverse mine_board
-                    mine_settingUp(1, current_info.game_Feature, current_info.mine_board, current_info.old_mine_board, current_info.cell_board);
+                    mine_settingUp(current_info.current_player.level, current_info.game_Feature, current_info.mine_board, current_info.old_mine_board, current_info.cell_board);
 
                     //Reverse other data
                     mine_reserveData(current_info.current_player, current_info.old_player, current_info.cell_board, current_info.old_cell_board, current_info.game_Feature, current_info.old_game_Feature, current_info.old_timer, current_info.current_timer);
@@ -60,13 +60,13 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                     //Set_up mines
                     int mines = (float)(info.new_row * info.new_col) * CUSTOM_MINE_COEF;
 
-                    current_info.current_player.level = 0;
+                    current_info.current_player.level = (int)Difficulty::Custom;
 
                     //Set_up game_Feature && cell_Board && mine_Board
                     set_up_game(current_info.game_Feature, current_info.cell_board, current_info.mine_board, info.new_row, info.new_col, mines, mines);
 
                     //Setting mines into mine_board as well as reverse mine_board
-                    mine_settingUp(1, current_info.game_Feature, current_info.mine_board, current_info.old_mine_board, current_info.cell_board);
+                    mine_settingUp(current_info.current_player.level, current_info.game_Feature, current_info.mine_board, current_info.old_mine_board, current_info.cell_board);
 
                     //Reverse other data
                     mine_reserveData(current_info.current_player, current_info.old_player, current_info.cell_board, current_info.old_cell_board, current_info.game_Feature, current_info.old_game_Feature, current_info.old_timer, current_info.current_timer);

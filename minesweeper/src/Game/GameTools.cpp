@@ -284,8 +284,8 @@ void mine_Create(const GAMEPREDICATE& game_Feature, char mine_Board[][MAX_COLUMN
 		}
 		if (isLegal) {
 			mine_Board[x][y] = old_mine_Board[x][y] = '&';
+			hasPlaced++;
 		}
-		hasPlaced++;
 	}
 	for (int i = 0; i < game_Feature.MAX_ROW; i++) {
 		for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
@@ -414,6 +414,16 @@ void mine_settingUp(int theLevel, const GAMEPREDICATE& game_Feature, char mine_B
 	}
 	case (int)Difficulty::Expert: {
 		mine_Create(game_Feature, mine_Board, old_mine_Board, EXPERT_MINE);
+		for (int i = 0; i < game_Feature.MAX_ROW; i++) {
+			for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
+				mine_gameBoard_Count(i, j, game_Board, mine_Board, game_Feature);
+			}
+		}
+		break;
+	}
+	case (int)Difficulty::Custom:
+	{
+		mine_Create(game_Feature, mine_Board, old_mine_Board, (float)(game_Feature.MAX_ROW * game_Feature.MAX_COLUMN) * CUSTOM_MINE_COEF);
 		for (int i = 0; i < game_Feature.MAX_ROW; i++) {
 			for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
 				mine_gameBoard_Count(i, j, game_Board, mine_Board, game_Feature);
