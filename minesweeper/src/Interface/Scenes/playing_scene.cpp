@@ -189,7 +189,6 @@ GameEvent PlayingScene::onMouseButtonReleased(const MouseActionType mouse_type) 
 			case MouseActionType::RMB:
 			{
 				last_pressed_cell = board.hovered_cell;
-				std::cout << "RMB " << last_pressed_cell.r << ' ' << last_pressed_cell.c << '\n';
 
 				return GameEvent::FlagCell;
 			}
@@ -197,7 +196,6 @@ GameEvent PlayingScene::onMouseButtonReleased(const MouseActionType mouse_type) 
 			case MouseActionType::LMB:
 			{
 				last_pressed_cell = board.hovered_cell;
-				std::cout << "LMB " << last_pressed_cell.r << ' ' << last_pressed_cell.c << '\n';
 
 				return GameEvent::OpenCell;
 			}
@@ -205,7 +203,6 @@ GameEvent PlayingScene::onMouseButtonReleased(const MouseActionType mouse_type) 
 			case MouseActionType::DoubleLMB:
 			{
 				last_pressed_cell = board.hovered_cell;
-				std::cout << "DoubleLMB " << last_pressed_cell.r << ' ' << last_pressed_cell.c << '\n';
 
 				return GameEvent::AutoOpenCell;
 			}
