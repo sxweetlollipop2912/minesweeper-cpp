@@ -80,8 +80,8 @@ void Window::initializeDifficultiesScene() {
 
 
 void Window::initializePlayingScene(const int board_rows, const int board_cols) {
-	int rows = std::max(board_rows, 0);
-	int cols = std::max(board_cols, 0);
+	int rows = std::min(MAX_ROW, std::max(board_rows, MIN_ROW));
+	int cols = std::min(MAX_COLUMN, std::max(board_cols, MIN_COLUMN));
 
 	if ((board_rows < 0 || board_cols < 0) && scenes.find(SceneType::Playing) != scenes.end()) {
 		auto current_playing_scene = std::dynamic_pointer_cast<PlayingScene>(scenes.at(SceneType::Playing));
@@ -120,7 +120,7 @@ void Window::closeWindow() {
 }
 
 
-void Window::updateGameInfo(const Comms::GameInfo info) {
+void Window::updateGameInfo(const Comms::GameInfo& info) {
 	current_game_info = info;
 
 	switch (current_interface_info.game_event) {
@@ -133,11 +133,20 @@ void Window::updateGameInfo(const Comms::GameInfo info) {
 		case GameEvent::NewGame:
 		case GameEvent::LoadGame:
 		{
-			initializePlayingScene(current_game_info.board_row, current_game_info.board_col);
+			if (current_game_info.game_Feature.MAX_ROW < 0 || current_game_info.game_Feature.MAX_COLUMN < 0) {
+				current_interface_info.current_scene = SceneType::Difficulties;
+			}
+			else {
+				initializePlayingScene(current_game_info.game_Feature.MAX_ROW, current_game_info.game_Feature.MAX_COLUMN);
 
-			auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
-			scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board, 
-				current_game_info.game_Feature.flags);
+				auto scene = std::dynamic_pointer_cast<PlayingScene>(scenes.at(current_interface_info.current_scene));
+				scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board,
+					current_game_info.game_Feature.flags);
+
+				if (current_game_info.game_state == GameState::Won) std::cout << "WON!\n";
+				else if (current_game_info.game_state == GameState::Ongoing) std::cout << "ongoing!\n";
+				else if (current_game_info.game_state == GameState::Lost) std::cout << "LOST!\n";
+			}
 
 			break;
 		}
@@ -145,7 +154,7 @@ void Window::updateGameInfo(const Comms::GameInfo info) {
 		{
 			initializeLeaderboardScene();
 
-			auto scene = std::dynamic_pointer_cast<LeaderboardScene>(getCurrentScene());
+			auto scene = std::dynamic_pointer_cast<LeaderboardScene>(scenes.at(current_interface_info.current_scene));
 			scene->updateRecords(current_game_info.records);
 
 			break;
@@ -154,7 +163,7 @@ void Window::updateGameInfo(const Comms::GameInfo info) {
 		case GameEvent::FlagCell:
 		case GameEvent::AutoOpenCell:
 		{
-			auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
+			auto scene = std::dynamic_pointer_cast<PlayingScene>(scenes.at(current_interface_info.current_scene));
 			scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board,
 				current_game_info.game_Feature.flags);
 
@@ -167,7 +176,7 @@ void Window::updateGameInfo(const Comms::GameInfo info) {
 				switch (getCurrentSceneType()) {
 				case SceneType::Playing:
 				{
-					auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
+					auto scene = std::dynamic_pointer_cast<PlayingScene>(scenes.at(current_interface_info.current_scene));
 					scene->updateTimer(current_game_info.current_timer);
 
 					break;

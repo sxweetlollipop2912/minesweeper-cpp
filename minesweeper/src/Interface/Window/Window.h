@@ -48,7 +48,7 @@ private:
 
 	Window(const sf::VideoMode& window_size = sf::VideoMode(1500, 1000), const std::string& title = TITLE, const int window_style = sf::Style::Close);
 
-	void updateGameInfo(const Comms::GameInfo info);
+	void updateGameInfo(const Comms::GameInfo& game_info);
 	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool handleGameEvents(const GameEvent game_event);
@@ -58,7 +58,6 @@ private:
 	bool changeMousePosition(const sf::Vector2i& pos);
 	// Sets current scene type.
 	void setCurrentSceneType(const SceneType& type);
-
 	// Call upon a mouse button PRESS event.
 	// Cannot detect a DoubleLMB at this stage.
 	// Returns true if there are visual changes.
