@@ -7,6 +7,7 @@ AudioManager::AudioManager() {
 	queue.clear();
 	cfgs.clear();
 	current_song_idx = -1;
+	current_cfg_idx = 0;
 	current_status = MusicStatus::Stopped;
 	volume = 100;
 }

@@ -52,11 +52,11 @@ namespace Comms {
 		GameState game_state = GameState::Ongoing;
 		int board_row = -1;
 		int board_col = -1;
-		GAMECELL cell_board[MAX_ROW][MAX_COLUMN], old_cell_board[MAX_ROW][MAX_COLUMN];
-		char mine_board[MAX_ROW][MAX_COLUMN], old_mine_board[MAX_ROW][MAX_COLUMN];
-		Timer current_timer = { 0,0,0,false }, old_timer = { 0,0,0,false };
-		GAMEPREDICATE game_Feature, old_game_Feature;
-		PLAYER current_player, old_player;
+		GAMECELL cell_board[MAX_ROW][MAX_COLUMN];
+		char mine_board[MAX_ROW][MAX_COLUMN];
+		Timer current_timer = { 0,0,0,false };
+		GAMEPREDICATE game_Feature;
+		PLAYER current_player;
 
 		// Only needed in SceneType::Leaderboard or in GameEvent::ShowLeaderboard.
 		std::shared_ptr<Records> records = std::make_shared<Records>();

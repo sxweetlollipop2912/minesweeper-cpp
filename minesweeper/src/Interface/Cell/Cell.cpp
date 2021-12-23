@@ -111,18 +111,19 @@ Result Cell::setType(const CellType type, const int number) {
 
 	switch (type) {
 	case CellType::Mine:
-		if (setImageForMineType() == Result::failure) {
-			std::cout << "failed!!!!\n";
+		if (setImageForMineType() == Result::failure)
 			return Result::failure;
-		}
+
 		break;
 	case CellType::Blank:
 		if (setImageForBlankType() == Result::failure)
 			return Result::failure;
+
 		break;
 	case CellType::Number:
 		if (setImageForNumberType() == Result::failure)
 			return Result::failure;
+
 		break;
 	default:
 		break;

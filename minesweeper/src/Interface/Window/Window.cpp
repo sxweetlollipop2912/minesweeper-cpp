@@ -27,6 +27,7 @@ Window::Window(const sf::VideoMode& window_size, const std::string& title, const
 	setCurrentSceneType(SceneType::Menu);
 	last_game_event = GameEvent::Unknown;
 	lock_mouse_button = MouseActionType::Unknown;
+
 	pos_mouse = sf::Vector2i(-1, -1);
 }
 
