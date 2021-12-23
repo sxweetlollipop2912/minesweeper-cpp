@@ -100,22 +100,6 @@ void timer() {
 	}
 }
 
-//ostream& operator <<(ostream& outs, const Time& thePlayer) {
-//	if (thePlayer.hours < 10) {
-//		outs << "0";
-//	}
-//	outs << thePlayer.hours << ":";
-//	if (thePlayer.minutes < 10) {
-//		outs << "0";
-//	}
-//	outs << thePlayer.minutes << ":";
-//	if (thePlayer.seconds < 10) {
-//		outs << "0";
-//	}
-//	outs << thePlayer.seconds;
-//	return outs;
-//}
-
 ostream& operator << (ostream& outs, const Time& clock) {
 	outs << clock.hours << " " << clock.minutes << " " << clock.seconds;
 	return outs;
@@ -170,16 +154,12 @@ ifstream& operator >> (ifstream& inFile, vector <PLAYER>& score_Board) {
 }
 
 void set_up_game(GAMEPREDICATE& game_Feature, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], int theRow, int theColumn, int max_Mine, int theFlags) {
+	std::cout << "total mines " << max_Mine << '\n';
 	game_Feature.MAX_ROW = theRow;
 	game_Feature.MAX_COLUMN = theColumn;
 	game_Feature.maxMine = max_Mine;
 	game_Feature.flags = theFlags;
-	for (int i = 0; i < game_Feature.MAX_ROW; i++) {
-		for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
-			(game_Board[i][j]).isOpened = (game_Board[i][j]).isFlag = (game_Board[i][j]).mine_Count = 0;
-			mine_Board[i][j] = '.';
-		}
-	}
+	mine_board_Clear(game_Board, mine_Board, game_Feature);
 }
 
 bool isValid(int theRow, int theColumn, const GAMEPREDICATE& game_Feature) {
@@ -298,6 +278,49 @@ bool isFull(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], co
 	return true;
 }
 
+int count_Flags(int x, int y, GAMECELL game_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature) {
+	int results = 0;
+	for (int i = -1; i < 2; i++) {
+		for (int j = -1; j < 2; j++) {
+			if (i != 0 || j != 0) {
+				if (isValid(x + i, y + j, game_Feature)) {
+					if (game_Board[x + i][y + j].isFlag) {
+						results++;
+					}
+				}
+			}
+		}
+	}
+	return results;
+}
+
+bool auto_open_Cell(int x, int y, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature) {
+
+	game_Board[x][y].isOpened = true;
+
+	if (isMine(x, y, mine_Board)) {
+		return false;
+	}
+
+	if ((game_Board[x][y].mine_Count != 0) && (game_Board[x][y].mine_Count == count_Flags(x, y, game_Board, game_Feature))) {
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				if (i != 0 || j != 0) {
+					if (isValid(x + i, y + j, game_Feature)) {
+						if (!(game_Board[x + i][y + j].isOpened || game_Board[x + i][y + j].isFlag)) {
+							game_Board[x + i][y + j].isOpened = true;
+							if (isMine(x + i, y + j, mine_Board)) {
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return true;
+}
 
 void mine_settingUp(int theLevel, const GAMEPREDICATE& game_Feature, char mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_COLUMN]) {
 	switch (theLevel) {
@@ -395,7 +418,7 @@ void mine_reserveData(const PLAYER& current_Player, GAMECELL game_Board[][MAX_CO
 
 bool mine_updateData(char mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_COLUMN], GAMEPREDICATE& game_Feature,/* Time& new_Timers,*/ PLAYER& new_Player) {
 	ifstream inFile(DATA_PATH + "last_Gamefeature.txt");
-	if (inFile.fail()) {
+	if (inFile.fail() || inFile.peek() == std::ifstream::traits_type::eof()) {
 		cout << " Cannot open last_Gamefeature";
 		return false;
 	}
@@ -403,8 +426,8 @@ bool mine_updateData(char mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_CO
 	inFile.close();
 
 	inFile.open(DATA_PATH + "last_Gameboard.txt");
-	if (inFile.fail()) {
-		cout << " Cannot open last_Gameboard";
+	if (inFile.fail() || inFile.peek() == std::ifstream::traits_type::eof()) {
+		cout << " Cannot open last_Gamefeature";
 		return false;
 	}
 	for (int i = 0; i < game_Feature.MAX_ROW; i++) {
@@ -416,8 +439,8 @@ bool mine_updateData(char mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_CO
 	inFile.close();
 
 	inFile.open(DATA_PATH + "last_Mineboard.txt");
-	if (inFile.fail()) {
-		cout << " Cannot open last_Mineboard";
+	if (inFile.fail() || inFile.peek() == std::ifstream::traits_type::eof()) {
+		cout << " Cannot open last_Gamefeature";
 		return false;
 	}
 	for (int i = 0; i < game_Feature.MAX_ROW; i++) {
@@ -427,17 +450,9 @@ bool mine_updateData(char mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_CO
 	}
 	inFile.close();
 
-	/*inFile.open(DATA_PATH + "last_Clock.txt");
-	if (inFile.fail()) {
-		cout << " Cannot open last_Clock";
-		return false;
-	}
-	inFile >> new_Timers;
-	inFile.close();*/
-
 	inFile.open(DATA_PATH + "last_Player.txt");
-	if (inFile.fail()) {
-		cout << " Cannot open last_Player";
+	if (inFile.fail() || inFile.peek() == std::ifstream::traits_type::eof()) {
+		cout << " Cannot open last_Gamefeature";
 		return false;
 	}
 	inFile >> new_Player;
