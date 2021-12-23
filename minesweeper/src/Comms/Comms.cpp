@@ -20,7 +20,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                     mine_settingUp(current_info.current_player.level, current_info.game_Feature, current_info.mine_board, current_info.cell_board);
 
                     //Reverse other data
-                    mine_reserveData(current_info.current_player, current_info.cell_board, current_info.game_Feature, current_info.current_timer);
+                    mine_reserveData(current_info.current_player, current_info.cell_board, current_info.game_Feature, info.current_timer);
 
                     break;
                 }
@@ -35,7 +35,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                     mine_settingUp(current_info.current_player.level, current_info.game_Feature, current_info.mine_board, current_info.cell_board);
 
                     //Reverse other data
-                    mine_reserveData(current_info.current_player, current_info.cell_board, current_info.game_Feature, current_info.current_timer);
+                    mine_reserveData(current_info.current_player, current_info.cell_board, current_info.game_Feature, info.current_timer);
 
                     break;
                 }
@@ -50,7 +50,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                     mine_settingUp(current_info.current_player.level, current_info.game_Feature, current_info.mine_board, current_info.cell_board);
 
                     //Reverse other data
-                    mine_reserveData(current_info.current_player, current_info.cell_board, current_info.game_Feature, current_info.current_timer);
+                    mine_reserveData(current_info.current_player, current_info.cell_board, current_info.game_Feature, info.current_timer);
 
                     break;
                 }
@@ -67,7 +67,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                     mine_settingUp(current_info.current_player.level, current_info.game_Feature, current_info.mine_board, current_info.cell_board);
 
                     //Reverse other data
-                    mine_reserveData(current_info.current_player, current_info.cell_board, current_info.game_Feature, current_info.current_timer);
+                    mine_reserveData(current_info.current_player, current_info.cell_board, current_info.game_Feature, info.current_timer);
 
                     break;
                 }
@@ -77,7 +77,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
         case GameEvent::LoadGame: {
 
             //Update data of the previous time from TEXT_FILE
-            if (!mine_updateData(current_info.mine_board, current_info.cell_board, current_info.game_Feature, current_info.current_timer, current_info.current_player)) {
+            if (!mine_updateData(current_info.mine_board, current_info.cell_board, current_info.game_Feature, current_info.current_player)) {
                 current_info.game_Feature.MAX_ROW = current_info.game_Feature.MAX_COLUMN = -1;
             }
 
@@ -91,7 +91,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
         }
         case GameEvent::OpenCell: {
             int a = info.cell_pos.r, b = info.cell_pos.c;
-            mine_updateData(current_info.mine_board, current_info.cell_board, current_info.game_Feature, current_info.current_timer, current_info.current_player);
+            mine_updateData(current_info.mine_board, current_info.cell_board, current_info.game_Feature, current_info.current_player);
 
             if (!current_info.cell_board[a][b].isFlag && !current_info.cell_board[a][b].isOpened) {
                 if (current_info.mine_board[a][b] == '&') {
@@ -120,14 +120,14 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                         cout << " Cannot open last_Clock";
                         exit(1);
                     }                   
-                    outFile << current_info.current_timer;
+                    outFile << info.current_timer;
                     outFile.close();
 
                     bool Full = isFull(current_info.cell_board, current_info.mine_board, current_info.game_Feature);
                     if (Full) {
                         current_info.game_Feature.STOP = true;
                         current_info.game_state = GameState::Won;
-                        current_info.current_player.timePlay = current_info.current_timer;
+                        current_info.current_player.timePlay = info.current_timer;
                         addtoRecord(current_info.current_player.level, current_info.current_player, *current_info.records);
                     }
                 }
@@ -138,7 +138,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                     cout << " Cannot open last_Clock";
                     exit(1);
                 }
-                outFile << current_info.current_timer;
+                outFile << info.current_timer;
                 outFile.close();
             }
 
@@ -146,7 +146,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
         }
         case GameEvent::FlagCell: {
             int a = info.cell_pos.r, b = info.cell_pos.c;
-            mine_updateData(current_info.mine_board, current_info.cell_board, current_info.game_Feature, current_info.current_timer, current_info.current_player);
+            mine_updateData(current_info.mine_board, current_info.cell_board, current_info.game_Feature, current_info.current_player);
 
             if (current_info.cell_board[a][b].isOpened) {
                 ofstream outFile(DATA_PATH + "last_Clock.txt");
@@ -154,7 +154,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                     cout << " Cannot open last_Clock";
                     exit(1);
                 }
-                outFile << current_info.current_timer;
+                outFile << info.current_timer;
                 outFile.close();
             }
             else {
@@ -184,7 +184,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                     cout << " Cannot open last_Clock";
                     exit(1);
                 }
-                outFile << current_info.current_timer;
+                outFile << info.current_timer;
                 outFile.close();
 
                 outFile.open(DATA_PATH + "last_Gamefeature.txt");
@@ -200,7 +200,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
         }
         case GameEvent::AutoOpenCell: {
 
-            mine_updateData(current_info.mine_board, current_info.cell_board, current_info.game_Feature, current_info.current_timer, current_info.current_player);
+            mine_updateData(current_info.mine_board, current_info.cell_board, current_info.game_Feature, current_info.current_player);
 
             for (int i = 0; i < current_info.game_Feature.MAX_ROW; i++) {
                 for (int j = 0; j < current_info.game_Feature.MAX_COLUMN; j++) {
@@ -229,7 +229,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                 cout << " Cannot open last_Clock";
                 exit(1);
             }
-            outFile << current_info.current_timer;
+            outFile << info.current_timer;
             outFile.close();
 
             outFile.open(DATA_PATH + "last_Gamefeature.txt");
@@ -263,7 +263,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
 
 Result Comms::gameInfoSending(const GameInfo& info) {
     auto window = Window::getInstance();
-    (*window)->updateGameInfo(info);
+    (*window)->updateGameInfo();
 
     return Result::success;
 }

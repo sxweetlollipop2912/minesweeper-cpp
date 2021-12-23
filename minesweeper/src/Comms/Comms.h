@@ -39,6 +39,9 @@ namespace Comms {
 		int new_col = -1;
 		Difficulty difficulty = Difficulty::Unknown;
 
+		// Only assigned during SceneType::Playing
+		Time current_timer = Time(-1, -1, -1, false);
+
 		// Only assigned when GameEvent `game_event` is one the following: OpenCell, FlagCell, AutoOpenCell.
 		// `current_scene` should be SceneType::Playing.
 		// Otherwise, it is Position( r: -1, c: -1 ).
@@ -54,7 +57,6 @@ namespace Comms {
 		int board_col = -1;
 		GAMECELL cell_board[MAX_ROW][MAX_COLUMN];
 		char mine_board[MAX_ROW][MAX_COLUMN];
-		Timer current_timer = { 0,0,0,false };
 		GAMEPREDICATE game_Feature;
 		PLAYER current_player;
 

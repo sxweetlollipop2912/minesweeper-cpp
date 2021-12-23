@@ -11,6 +11,7 @@
 #include "../Board/Position.h"
 #include "../Button/Button.h"
 #include "../Text/Text.h"
+#include "../Timer/Timer.h"
 #include "../../Structs.h"
 #include "../../Constants.h"
 #include "../../Enums.h"
@@ -30,11 +31,12 @@ private:
 
 	Board board;
 	Position last_pressed_cell;
+	Timer timer;
 
 
 	std::string timerStr(int h, int m, int s);
 
-	void updateTimer(const Timer timer);
+	void updateTimer(const Time timer);
 	// Updates the grahics side of the board.
 	// Returns Result::success / Result::failure:
 	//	> success: board is successfully updated.
@@ -53,6 +55,14 @@ private:
 	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool changeMousePosition(const sf::Vector2i& pos) override;
+	// Call on a lost window focus event.
+	void onLostFocus() override;
+	// Call on a gained window focus event.
+	void onGainedFocus() override;
+	// Call on every frame.
+	// Returns true if there are visual changes.
+	// Otherwise, returns false
+	bool updatePerFrame() override;
 
 public:
 	PlayingScene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode(), const int board_rows = 0, const int board_cols = 0);

@@ -83,6 +83,17 @@ bool Scene::changeMousePosition(const sf::Vector2i& mouse_position) {
 }
 
 
+void Scene::onLostFocus() {}
+
+
+void Scene::onGainedFocus() {}
+
+
+bool Scene::updatePerFrame() {
+	return false;
+}
+
+
 bool Scene::spawnPopUp(const GameEvent game_event) {
 	if (pop_up) {
 		return false;

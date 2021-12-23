@@ -190,6 +190,12 @@ bool Window::handleSfEvents(const sf::Event& event) {
 	case sf::Event::MouseButtonReleased:
 		onMouseButtonReleased(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
 		break;
+	case sf::Event::LostFocus:
+		getCurrentScene()->onLostFocus();
+		break;
+	case sf::Event::GainedFocus:
+		getCurrentScene()->onGainedFocus();
+		break;
 	default:
 		break;
 	}
@@ -460,12 +466,7 @@ void Window::updatePerFrame() {
 	background->setNextConfig(audio_cfg);
 	background->update();
 
-	if (constantly_changing_scenes.find(getCurrentSceneType()) != constantly_changing_scenes.end()) {
-		current_interface_info.game_event = GameEvent::Unknown;
-		current_interface_info.current_scene = getCurrentSceneType();
-
-		Comms::interfaceInfoSending(current_interface_info);
-	}
+	getCurrentScene()->updatePerFrame();
 }
 
 

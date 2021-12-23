@@ -5,7 +5,7 @@
 #include "../Constants.h"
 
 Records records;
-Timer new_Timers = { 0,0,0,0 }, old_Timers;
+Time new_Timers = Time(0, 0, 0, false), old_Timers;
 
 void TextColor(int color) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
@@ -27,7 +27,7 @@ char InttoChar(int k) {
 	}
 }
 
-void insertArray(char* h, Timer* j) {
+void insertArray(char* h, Time* j) {
 	int balt = 0;
 	char u;
 	balt = j->seconds;
@@ -63,15 +63,13 @@ void gotoXY(int column, int line) {
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 // function to display the timer
-void displayClock()
-{
+void displayClock() {
 	char a[8] = { '0','0',':','0','0',':','0','0' };
 	insertArray(a, &new_Timers);
 	WriteBlockChar(a, 1, 8, 70, 3, 0x004);
 }
 
-void timer()
-{
+void timer() {
 	while (!new_Timers.STOP) {
 
 		// display the timer
@@ -102,29 +100,29 @@ void timer()
 	}
 }
 
-ostream& operator <<(ostream& outs, const Timer& thePlayer) {
-	if (thePlayer.hours < 10) {
-		outs << "0";
-	}
-	outs << thePlayer.hours << ":";
-	if (thePlayer.minutes < 10) {
-		outs << "0";
-	}
-	outs << thePlayer.minutes << ":";
-	if (thePlayer.seconds < 10) {
-		outs << "0";
-	}
-	outs << thePlayer.seconds;
+//ostream& operator <<(ostream& outs, const Time& thePlayer) {
+//	if (thePlayer.hours < 10) {
+//		outs << "0";
+//	}
+//	outs << thePlayer.hours << ":";
+//	if (thePlayer.minutes < 10) {
+//		outs << "0";
+//	}
+//	outs << thePlayer.minutes << ":";
+//	if (thePlayer.seconds < 10) {
+//		outs << "0";
+//	}
+//	outs << thePlayer.seconds;
+//	return outs;
+//}
+
+ostream& operator << (ostream& outs, const Time& clock) {
+	outs << clock.hours << " " << clock.minutes << " " << clock.seconds;
 	return outs;
 }
 
-ofstream& operator << (ofstream& outFile, const Timer& clock) {
-	outFile << clock.hours << " " << clock.minutes << " " << clock.seconds;
-	return outFile;
-}
-
 ofstream& operator << (ofstream& outFile, const PLAYER& anObject) {
-	outFile << anObject.timePlay << " " << anObject.level <<  endl;
+	outFile << anObject.timePlay << " " << anObject.level << endl;
 	return outFile;
 }
 
@@ -144,7 +142,7 @@ ifstream& operator >> (ifstream& inFile, GAMEPREDICATE& game_Feature) {
 	return inFile;
 }
 
-ifstream& operator >> (ifstream& inFile, Timer& old_Clock) {
+ifstream& operator >> (ifstream& inFile, Time& old_Clock) {
 	inFile >> old_Clock.hours >> old_Clock.minutes >> old_Clock.seconds;
 	return inFile;
 }
@@ -303,7 +301,8 @@ bool isFull(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], co
 
 void mine_settingUp(int theLevel, const GAMEPREDICATE& game_Feature, char mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_COLUMN]) {
 	switch (theLevel) {
-	case (int)Difficulty::Beginner: {
+	case (int)Difficulty::Beginner:
+	{
 		mine_Create(game_Feature, mine_Board, BEGINNER_MINE);
 		for (int i = 0; i < game_Feature.MAX_ROW; i++) {
 			for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
@@ -312,7 +311,8 @@ void mine_settingUp(int theLevel, const GAMEPREDICATE& game_Feature, char mine_B
 		}
 		break;
 	}
-	case (int)Difficulty::Intermediate: {
+	case (int)Difficulty::Intermediate:
+	{
 		mine_Create(game_Feature, mine_Board, INTERMEDIATE_MINE);
 		for (int i = 0; i < game_Feature.MAX_ROW; i++) {
 			for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
@@ -321,7 +321,8 @@ void mine_settingUp(int theLevel, const GAMEPREDICATE& game_Feature, char mine_B
 		}
 		break;
 	}
-	case (int)Difficulty::Expert: {
+	case (int)Difficulty::Expert:
+	{
 		mine_Create(game_Feature, mine_Board, EXPERT_MINE);
 		for (int i = 0; i < game_Feature.MAX_ROW; i++) {
 			for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
@@ -352,7 +353,7 @@ void auto_play(int& theRow, int& theColumn, GAMECELL game_Board[][MAX_COLUMN], c
 }
 
 
-void mine_reserveData(const PLAYER& current_Player, GAMECELL game_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature, const Timer& new_Timers) {
+void mine_reserveData(const PLAYER& current_Player, GAMECELL game_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature, const Time& new_Timers) {
 	ofstream outFile(DATA_PATH + "last_Gameboard.txt");
 	if (outFile.fail()) {
 		cout << " Cannot open last_Gameboard";
@@ -392,7 +393,7 @@ void mine_reserveData(const PLAYER& current_Player, GAMECELL game_Board[][MAX_CO
 }
 
 
-bool mine_updateData(char mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_COLUMN], GAMEPREDICATE& game_Feature, Timer& new_Timers, PLAYER& new_Player) {
+bool mine_updateData(char mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_COLUMN], GAMEPREDICATE& game_Feature,/* Time& new_Timers,*/ PLAYER& new_Player) {
 	ifstream inFile(DATA_PATH + "last_Gamefeature.txt");
 	if (inFile.fail()) {
 		cout << " Cannot open last_Gamefeature";
@@ -400,7 +401,7 @@ bool mine_updateData(char mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_CO
 	}
 	inFile >> game_Feature;
 	inFile.close();
-	
+
 	inFile.open(DATA_PATH + "last_Gameboard.txt");
 	if (inFile.fail()) {
 		cout << " Cannot open last_Gameboard";
@@ -426,13 +427,13 @@ bool mine_updateData(char mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_CO
 	}
 	inFile.close();
 
-	inFile.open(DATA_PATH + "last_Clock.txt");
+	/*inFile.open(DATA_PATH + "last_Clock.txt");
 	if (inFile.fail()) {
 		cout << " Cannot open last_Clock";
 		return false;
 	}
 	inFile >> new_Timers;
-	inFile.close();
+	inFile.close();*/
 
 	inFile.open(DATA_PATH + "last_Player.txt");
 	if (inFile.fail()) {
@@ -456,7 +457,8 @@ bool operator < (const PLAYER& first, const PLAYER& second) {
 void addtoRecord(int theLevel, const PLAYER& newPlayer, Records& records) {
 	ofstream outFile;
 	switch (theLevel) {
-	case 1: {
+	case 1:
+	{
 		records.beginner.push_back(newPlayer);
 		outFile.open(DATA_PATH + "beginner_records.txt", ios::app);
 		if (outFile.fail()) {
@@ -467,7 +469,8 @@ void addtoRecord(int theLevel, const PLAYER& newPlayer, Records& records) {
 		sort(records.beginner.begin(), records.beginner.end());
 		break;
 	}
-	case 2: {
+	case 2:
+	{
 		records.intermediate.push_back(newPlayer);
 		outFile.open(DATA_PATH + "intermediate_records.txt", ios::app);
 		if (outFile.fail()) {
@@ -478,7 +481,8 @@ void addtoRecord(int theLevel, const PLAYER& newPlayer, Records& records) {
 		sort(records.intermediate.begin(), records.intermediate.end());
 		break;
 	}
-	case 3: {
+	case 3:
+	{
 		records.expert.push_back(newPlayer);
 		outFile.open(DATA_PATH + "expert_records.txt", ios::app);
 		if (outFile.fail()) {

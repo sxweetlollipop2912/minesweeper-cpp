@@ -4,20 +4,39 @@
 #include <vector>
 
 #include <SFML/Graphics.hpp>
+
+#include "Interface/Timer/Timer.h"
  
 using std::string;
 
 
-struct Timer {
+struct Time {
 	int hours;
 	int minutes;
 	int seconds;
-	bool STOP = false;
+	bool STOP;
+
+	Time(const int hours = 0, const int minutes = 0, const int seconds = 0, const bool STOP = false) {
+		this->hours = hours;
+		this->minutes = minutes;
+		this->seconds = seconds;
+		this->STOP = STOP;
+	}
+
+	Time(const sf::Time& time) {
+		int sec = time.asSeconds();
+		hours = sec / 3600;
+		sec %= 3600;
+		minutes = sec / 60;
+		sec %= 60;
+		seconds = sec;
+		STOP = false;
+	}
 };
 
 struct PLAYER {
 	std::string name;
-	Timer timePlay = { 0,0,0, false };
+	Time timePlay = Time(0, 0, 0, false);
 	int level;
 };
 

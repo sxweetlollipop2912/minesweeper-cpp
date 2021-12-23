@@ -52,6 +52,14 @@ protected:
 	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	virtual bool changeMousePosition(const sf::Vector2i& pos);
+	// Call on a lost window focus event.
+	virtual void onLostFocus();
+	// Call on a gained window focus event.
+	virtual void onGainedFocus();
+	// Call on every frame.
+	// Returns true if there are visual changes.
+	// Otherwise, returns false
+	virtual bool updatePerFrame();
 	// Spawn a PopUp in current Scene base on current GameEvent.
 	// Returns false if no PopUp is spawned running the method (either because another PopUp has already been spawned or there is no PopUp for the GameEvent.
 	// Otherwise, returns true.

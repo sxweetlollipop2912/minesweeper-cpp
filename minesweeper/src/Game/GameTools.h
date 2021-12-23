@@ -24,7 +24,7 @@ void TextColor(int color);
 
 char InttoChar(int k);
 
-void insertArray(char* h, Timer* j);
+void insertArray(char* h, Time* j);
 
 void WriteBlockChar(char* Arraych, int row, int col, int x, int y, int color);
 
@@ -34,9 +34,9 @@ void displayClock();
 
 void timer();
 
-ostream& operator << (ostream& outs, const Timer& thePlayer);
+//ostream& operator << (ostream& outs, const Time& thePlayer);
 
-ofstream& operator << (ofstream& outFile, const Timer& clock);
+ostream& operator << (ostream& outs, const Time& clock);
 
 ofstream& operator << (ofstream& outFile, const PLAYER& anObject);
 
@@ -46,7 +46,7 @@ ofstream& operator << (ofstream& outFile, const GAMECELL& anObject);
 
 ifstream& operator >> (ifstream& inFile, GAMEPREDICATE& game_Feature);
 
-ifstream& operator >> (ifstream& inFile, Timer& old_Clock);
+ifstream& operator >> (ifstream& inFile, Time& old_Clock);
 
 ifstream& operator >> (ifstream& inFile, PLAYER& oldPlayer);
 
@@ -76,9 +76,9 @@ void mine_settingUp(int theLevel, const GAMEPREDICATE& game_Feature, char mine_B
 
 void auto_play(int& theRow, int& theColumn, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], GAMEPREDICATE game_Feature);
 
-void mine_reserveData(const PLAYER& current_Player, GAMECELL game_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature, const Timer& new_Timers);
+void mine_reserveData(const PLAYER& current_Player, GAMECELL game_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature, const Time& new_Timers);
 
-bool mine_updateData(char mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_COLUMN], GAMEPREDICATE& game_Feature, Timer& new_Timers, PLAYER& new_Player);
+bool mine_updateData(char mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_COLUMN], GAMEPREDICATE& game_Feature, /*Time& new_Timers,*/ PLAYER& new_Player);
 
 bool operator < (const PLAYER& first, const PLAYER& second);
 

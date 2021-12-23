@@ -3,7 +3,7 @@
 #include "playing_scene.h"
 
 
-PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_rows, const int board_cols) 
+PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_rows, const int board_cols)
 	: Scene(window_size, SceneType::Playing) {
 	next_scene[GameEvent::AutoOpenCell] = SceneType::Playing;
 	next_scene[GameEvent::OpenCell] = SceneType::Playing;
@@ -14,6 +14,7 @@ PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_row
 
 	last_pressed_cell = Position(-1, -1);
 
+	timer.reset();
 
 	// Board
 	{
@@ -122,7 +123,7 @@ std::string PlayingScene::timerStr(int h, int m, int s) {
 }
 
 
-void PlayingScene::updateTimer(const Timer new_timer) {
+void PlayingScene::updateTimer(const Time new_timer) {
 	Text& timer = texts[STR_TIMER];
 	timer.setText(timerStr(new_timer.hours, new_timer.minutes, new_timer.seconds));
 }
@@ -181,7 +182,12 @@ void PlayingScene::setTopLeftPosScoreboard(const sf::Vector2f top_left_pos) {
 GameEvent PlayingScene::onMouseButtonReleased(const MouseActionType mouse_type) {
 	auto game_event = this->Scene::onMouseButtonReleased(mouse_type);
 
-	if (game_event == GameEvent::Unknown && !pop_up) {
+	if (pop_up) {
+		timer.pause();
+	}
+	else if (game_event == GameEvent::Unknown) {
+		timer.resume();
+
 		// If mouse is hovering over a cell.
 		if (board.isValidPos(board.hovered_cell)) {
 			switch (mouse_type) {
@@ -226,6 +232,23 @@ bool PlayingScene::changeMousePosition(const sf::Vector2i& pos) {
 	}
 
 	return re;
+}
+
+
+void PlayingScene::onLostFocus() {
+	timer.pause();
+}
+
+
+void PlayingScene::onGainedFocus() {
+	timer.resume();
+}
+
+
+bool PlayingScene::updatePerFrame() {
+	updateTimer(timer.getElapsedTime());
+
+	return true;
 }
 
 
