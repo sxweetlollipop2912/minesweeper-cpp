@@ -54,8 +54,11 @@ enum class SceneType {
 };
 
 
+ // Handle only (FirstLMB and SecondLMB) or (LMB and DoubleLMB), never both.
 enum class MouseActionType {
 	Move,
+	FirstLMB,
+	SecondLMB,
 	LMB,
 	RMB,
 	DoubleLMB,

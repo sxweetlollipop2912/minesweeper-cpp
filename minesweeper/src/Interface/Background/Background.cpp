@@ -76,7 +76,7 @@ Background::Background(const sf::VideoMode window_size, const sf::Color primary_
 GameEvent Background::onMouseButtonReleased(const MouseActionType mouse_type) {
 	auto game_event = this->Scene::onMouseButtonReleased(mouse_type);
 
-	volume->onMouseReleased(mouse_type);
+	volume->onMouseButtonReleased(mouse_type);
 
 	return game_event;
 }
@@ -84,10 +84,10 @@ GameEvent Background::onMouseButtonReleased(const MouseActionType mouse_type) {
 
 GameEvent Background::onMouseButtonPressed(const MouseActionType mouse_type) {
 	auto game_event = Scene::onMouseButtonPressed(mouse_type);
-
+	
 	if (game_event == GameEvent::Unknown) {
 		bool change = false;
-		change |= volume->onMousePressed(mouse_type);
+		change |= volume->onMouseButtonPressed(mouse_type);
 
 		game_event = change ? GameEvent::ChangesInScene : GameEvent::Unknown;
 	}

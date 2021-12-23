@@ -2,6 +2,7 @@
 
 #include <map>
 #include <set>
+#include <deque>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -23,6 +24,15 @@
 #include "../../Structs.h"
 
 
+struct MouseAction {
+	MouseActionType type;
+	sf::Time pressed_moment;
+	MouseAction(const MouseActionType& type = MouseActionType::Unknown, const sf::Time& pressed_moment = sf::microseconds(0)) {
+		this->type = type, this->pressed_moment = pressed_moment;
+	}
+};
+
+
 // This is a singleton.
 class Window {
 	friend Result Comms::gameInfoSending(const GameInfo& info);
@@ -30,6 +40,8 @@ class Window {
 
 private:
 	static Window* instance;
+
+	sf::Clock game_clock;
 
 	std::shared_ptr<Background> background;
 	AudioManager audio_manager;
@@ -46,6 +58,8 @@ private:
 	sf::Vector2i pos_mouse;
 	// Locks mouse button when it is in use, i.e, a RMB won't be detected while a LMB is pressed and hasn't been released.
 	MouseActionType lock_mouse_button;
+	std::deque <MouseAction> pressed_actions;
+	std::deque <MouseAction> released_actions;
 
 	Window(const sf::VideoMode& window_size = sf::VideoMode(1500, 1000), const std::string& title = TITLE, const int window_style = sf::Style::Close);
 
@@ -61,13 +75,9 @@ private:
 	void setCurrentSceneType(const SceneType& type);
 	// Call upon a mouse button PRESS event.
 	// Cannot detect a DoubleLMB at this stage.
-	// Returns true if there are visual changes.
-	// Otherwise, returns false
-	bool onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vector2i& position);
+	void onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vector2i& position);
 	// Call upon a mouse button RELEASE event.
-	// Returns true if there are visual changes.
-	// Otherwise, returns false
-	bool onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position);
+	void onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position);
 
 public:
 	std::shared_ptr<sf::RenderWindow> render_window;

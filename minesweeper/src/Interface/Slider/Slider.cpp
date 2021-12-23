@@ -57,9 +57,8 @@ bool Slider::changeMousePosition(const sf::Vector2i& position) {
 }
 
 
-bool Slider::onMousePressed(const MouseActionType mouse_type) {
-	if (mouse_type == MouseActionType::LMB || mouse_type == MouseActionType::DoubleLMB) {
-
+bool Slider::onMouseButtonPressed(const MouseActionType mouse_type) {
+	if (mouse_type == MouseActionType::FirstLMB || mouse_type == MouseActionType::SecondLMB) {
 		if (slider.getGlobalBounds().contains(mouse_pos.x, mouse_pos.y)) {
 			sliding = true;
 		}
@@ -72,11 +71,10 @@ bool Slider::onMousePressed(const MouseActionType mouse_type) {
 }
 
 
-void Slider::onMouseReleased(const MouseActionType mouse_type) {
-	if (mouse_type != MouseActionType::LMB && mouse_type != MouseActionType::DoubleLMB)
-		return;
-
-	sliding = false;
+void Slider::onMouseButtonReleased(const MouseActionType mouse_type) {
+	if (mouse_type == MouseActionType::FirstLMB || mouse_type == MouseActionType::SecondLMB) {
+		sliding = false;
+	}
 }
 
 

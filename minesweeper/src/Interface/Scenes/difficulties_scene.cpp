@@ -93,13 +93,13 @@ DifficultiesScene::DifficultiesScene(const sf::VideoMode& window_size) : Scene(w
 
 
 GameEvent DifficultiesScene::onMouseButtonReleased(const MouseActionType mouse_type) {
-	slider_row->onMouseReleased(mouse_type);
-	slider_col->onMouseReleased(mouse_type);
+	slider_row->onMouseButtonReleased(mouse_type);
+	slider_col->onMouseButtonReleased(mouse_type);
 
 	auto game_event = this->Scene::onMouseButtonReleased(mouse_type);
 
 	if (game_event == GameEvent::ChangesInScene && !pop_up) {
-		if (mouse_type != MouseActionType::LMB && mouse_type != MouseActionType::DoubleLMB) {
+		if (mouse_type != MouseActionType::FirstLMB) {
 			return GameEvent::Unknown;
 		}
 
@@ -126,8 +126,8 @@ GameEvent DifficultiesScene::onMouseButtonPressed(const MouseActionType mouse_ty
 
 	if (game_event == GameEvent::Unknown) {
 		bool change = false;
-		change |= slider_row->onMousePressed(mouse_type);
-		change |= slider_col->onMousePressed(mouse_type);
+		change |= slider_row->onMouseButtonPressed(mouse_type);
+		change |= slider_col->onMouseButtonPressed(mouse_type);
 
 		game_event = change ? GameEvent::ChangesInScene : GameEvent::Unknown;
 	}

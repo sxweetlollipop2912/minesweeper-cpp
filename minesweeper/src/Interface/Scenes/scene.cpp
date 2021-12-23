@@ -37,7 +37,7 @@ GameEvent Scene::onMouseButtonReleased(const MouseActionType mouse_type) {
 	}
 	// Otherwise,
 	else {
-		if (mouse_type != MouseActionType::LMB && mouse_type != MouseActionType::DoubleLMB) {
+		if (mouse_type != MouseActionType::FirstLMB) {
 			return GameEvent::Unknown;
 		}
 

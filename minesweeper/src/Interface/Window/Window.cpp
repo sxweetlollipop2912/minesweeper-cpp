@@ -107,7 +107,13 @@ bool Window::changeMousePosition(const sf::Vector2i& mouse_position) {
 
 
 void Window::setCurrentSceneType(const SceneType& type) {
-	current_scene_type = type;
+	if (type != current_scene_type) {
+		pressed_actions.clear();
+		released_actions.clear();
+		lock_mouse_button = MouseActionType::Unknown;
+
+		current_scene_type = type;
+	}
 }
 
 
@@ -204,10 +210,10 @@ bool Window::handleSfEvents(const sf::Event& event) {
 		change |= changeMousePosition(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
 		break;
 	case sf::Event::MouseButtonPressed:
-		change |= onMouseButtonPressed(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+		onMouseButtonPressed(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
 		break;
 	case sf::Event::MouseButtonReleased:
-		change |= onMouseButtonReleased(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+		onMouseButtonReleased(event.mouseButton.button, sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
 		break;
 	default:
 		break;
@@ -245,9 +251,6 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 
 			current_interface_info.new_row = std::min(scene->getCurrentRow(), scene->getCurrentCol());
 			current_interface_info.new_col = std::max(scene->getCurrentRow(), scene->getCurrentCol());
-
-			std::cout << "ROW " << current_interface_info.new_row << '\n';
-			std::cout << "COL " << current_interface_info.new_col << '\n';
 
 			if (current_interface_info.new_row == BEGINNER_ROW && current_interface_info.new_col == BEGINNER_COL) {
 				current_interface_info.difficulty = Difficulty::Beginner;
@@ -345,36 +348,58 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 }
 
 
-bool Window::onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vector2i& position) {
+void Window::onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vector2i& position) {
 	if (lock_mouse_button != MouseActionType::Unknown) {
-		return false;
+		return;
 	}
 
 	// Determines mouse action type.
 	switch (button) {
 	case sf::Mouse::Left:
-		lock_mouse_button = MouseActionType::LMB;
-		break;
+	{
+		if (!released_actions.empty() && released_actions.front().type == MouseActionType::LMB &&
+			(game_clock.getElapsedTime() - released_actions.front().pressed_moment) <= DOUBLE_CLICK_TIME_LIMIT) {
 
-	case sf::Mouse::Right:
+			lock_mouse_button = MouseActionType::DoubleLMB;
+
+			released_actions.pop_front();
+			pressed_actions.pop_front();
+		}
+		else {
+			lock_mouse_button = MouseActionType::LMB;
+		}
+		break;
+	}
+
+	case sf::Mouse::Right: 
+	{
 		lock_mouse_button = MouseActionType::RMB;
 		break;
 	}
-
-	// Runs scene-specific mouse released event handling methods.
-	// Gets the next game event, if exists
-	GameEvent nxt_event = GameEvent::Unknown;
-	{
-		nxt_event = scenes.at(getCurrentSceneType())->onMouseButtonPressed(lock_mouse_button);
-		if (nxt_event == GameEvent::Unknown)
-			nxt_event = background->onMouseButtonPressed(lock_mouse_button);
 	}
 
-	return handleGameEvents(nxt_event);
+	pressed_actions.push_front(MouseAction(lock_mouse_button, game_clock.getElapsedTime()));
+	released_actions.push_front(MouseAction(MouseActionType::Unknown, pressed_actions.front().pressed_moment));
+
+	if (pressed_actions.front().type == MouseActionType::LMB || pressed_actions.front().type == MouseActionType::DoubleLMB) {
+		// Runs scene-specific mouse released event handling methods.
+		// Gets the next game event, if exists
+		GameEvent nxt_event = GameEvent::Unknown;
+		{
+			auto mouse_type = pressed_actions.front().type == MouseActionType::LMB ? MouseActionType::FirstLMB : MouseActionType::SecondLMB;
+
+			auto bg_event = background->onMouseButtonPressed(mouse_type);
+			nxt_event = scenes.at(getCurrentSceneType())->onMouseButtonPressed(mouse_type);
+			if (nxt_event == GameEvent::Unknown)
+				nxt_event = bg_event;
+		}
+
+		handleGameEvents(nxt_event);
+	}
 }
 
 
-bool Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position) {
+void Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position) {
 	bool match = false;
 
 	if (lock_mouse_button == MouseActionType::DoubleLMB && button == sf::Mouse::Left)
@@ -384,47 +409,77 @@ bool Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Ve
 	if (lock_mouse_button == MouseActionType::RMB && button == sf::Mouse::Right)
 		match = true;
 
-	if (!match) return false;
+	if (match) {
+		released_actions.front().type = lock_mouse_button;
+		lock_mouse_button = MouseActionType::Unknown;
 
+		if (released_actions.front().type == MouseActionType::LMB || released_actions.front().type == MouseActionType::DoubleLMB) {
+			// Runs scene-specific mouse released event handling methods.
+			// Gets the next game event, if exists
+			GameEvent nxt_event = GameEvent::Unknown;
+			{
+				auto mouse_type = released_actions.front().type == MouseActionType::LMB ? MouseActionType::FirstLMB : MouseActionType::SecondLMB;
 
-	MouseActionType type = lock_mouse_button;
-	lock_mouse_button = MouseActionType::Unknown;
-
-
-	// Detects double left click.
-	// If a double left click is detected, sets `lock_mouse_button` to `MouseActionType::DoubleLMB` and returns.
-	{
-		sf::Clock elapse;
-		sf::Event event;
-
-		if (type == MouseActionType::LMB) {
-			while (elapse.getElapsedTime().asMilliseconds() < 50) {
-				while (render_window->pollEvent(event)) {
-					if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-						lock_mouse_button = MouseActionType::DoubleLMB;
-
-						return false;
-					}
-				}
+				auto bg_event = background->onMouseButtonReleased(mouse_type);
+				nxt_event = scenes.at(getCurrentSceneType())->onMouseButtonReleased(mouse_type);
+				if (nxt_event == GameEvent::Unknown)
+					nxt_event = bg_event;
 			}
+
+			handleGameEvents(nxt_event);
 		}
 	}
-
-	// Runs scene-specific mouse released event handling methods.
-	// Gets the next game event, if exists
-	GameEvent nxt_event = GameEvent::Unknown;
-	{
-		auto bg_event = background->onMouseButtonReleased(type);
-		nxt_event = scenes.at(getCurrentSceneType())->onMouseButtonReleased(type);
-		if (nxt_event == GameEvent::Unknown)
-			nxt_event = bg_event;
-	}
-
-	return handleGameEvents(nxt_event);
 }
 
 
 void Window::updatePerFrame() {
+	// Mouse action handling
+	{
+		if (!pressed_actions.empty()) {
+			auto last_mouse_action = pressed_actions.back().type;
+
+			if (last_mouse_action != MouseActionType::LMB ||
+				(game_clock.getElapsedTime() - pressed_actions.back().pressed_moment) > DOUBLE_CLICK_TIME_LIMIT) {
+
+				pressed_actions.pop_back();
+
+				// Runs scene-specific mouse released event handling methods.
+				// Gets the next game event, if exists
+				GameEvent nxt_event = GameEvent::Unknown;
+				{
+					auto bg_event = background->onMouseButtonPressed(last_mouse_action);
+					nxt_event = scenes.at(getCurrentSceneType())->onMouseButtonPressed(last_mouse_action);
+					if (nxt_event == GameEvent::Unknown)
+						nxt_event = bg_event;
+				}
+
+				handleGameEvents(nxt_event);
+			}
+		}
+
+		if (!released_actions.empty() && released_actions.back().type != MouseActionType::Unknown) {
+			auto last_mouse_action = released_actions.back().type;
+
+			if (last_mouse_action != MouseActionType::LMB ||
+				(game_clock.getElapsedTime() - released_actions.back().pressed_moment) > DOUBLE_CLICK_TIME_LIMIT) {
+
+				released_actions.pop_back();
+
+				// Runs scene-specific mouse released event handling methods.
+				// Gets the next game event, if exists
+				GameEvent nxt_event = GameEvent::Unknown;
+				{
+					auto bg_event = background->onMouseButtonReleased(last_mouse_action);
+					nxt_event = scenes.at(getCurrentSceneType())->onMouseButtonReleased(last_mouse_action);
+					if (nxt_event == GameEvent::Unknown)
+						nxt_event = bg_event;
+				}
+
+				handleGameEvents(nxt_event);
+			}
+		}
+	}
+
 	audio_manager.turnVolume(background->volume->getSliderValue());
 	auto audio_cfg = audio_manager.update();
 	background->setNextConfig(audio_cfg);

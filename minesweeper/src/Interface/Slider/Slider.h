@@ -46,8 +46,8 @@ public:
 	bool changeMousePosition(const sf::Vector2i& position);
 	// Returns true if slider is pressed.
 	// Otherwise, returns false.
-	bool onMousePressed(const MouseActionType mouse_type);
-	void onMouseReleased(const MouseActionType mouse_type);
+	bool onMouseButtonPressed(const MouseActionType mouse_type);
+	void onMouseButtonReleased(const MouseActionType mouse_type);
 
 	// Draws all textures and texts in the scene on an sf::RenderTarget object
 	void draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing = true);

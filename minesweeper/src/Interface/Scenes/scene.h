@@ -42,6 +42,7 @@ protected:
 	void setWindowSize(const sf::VideoMode window_size);
 
 	// Call on a mouse button released event.
+	// Base method only handles single clicks, not double clicks or held-buttons.
 	// Returns corresponding GameEvent.
 	virtual GameEvent onMouseButtonReleased(const MouseActionType mouse_type);
 	// Call on a mouse button pressed event.

@@ -7,8 +7,9 @@
 #include "Structs.h"
 
 const float EPS = 1e-7;
+const sf::Time DOUBLE_CLICK_TIME_LIMIT = sf::milliseconds(150);
 
-// GAME
+// GAME CONFIG
 const std::string TITLE = "minesweeper";
 const int MIN_COLUMN = 9;
 const int MAX_COLUMN = 30;
