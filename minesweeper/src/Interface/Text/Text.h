@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "../GraphicsObject/GraphicsObject.h"
-#include "../ResourceVault/ResourceVault.h"
+#include "../ResourceManager/ResourceManager.h"
 #include "../../Enums.h"
 #include "../../Constants.h"
 
@@ -28,18 +28,7 @@ public:
 	// Initializes button with:
 	// - Default font, font size, text color, text style.
 	// - Empty text
-	Text() {
-		width = 0;
-		height = 0;
-		top_left_pos.x = top_left_pos.y = 0;
-
-		setFontType(FontType::FontDefault);
-
-		content.clear();
-		font_size = DEFAULT_LARGE_FONT_SIZE;
-		text_color = DEFAULT_TEXT_COLOR;
-		style = sf::Text::Style::Regular;
-	}
+	Text();
 
 	// Gets text in std::string.
 	std::string getString() const;

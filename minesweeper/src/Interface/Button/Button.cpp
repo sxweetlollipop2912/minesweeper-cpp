@@ -47,7 +47,7 @@ sf::Vector2f Button::getSize() const {
 }
 
 sf::Vector2u Button::getImageSize() const {
-    auto texture = ResourceVault::getTexture(texture_type);
+    auto texture = (*ResourceManager::getInstance())->getTexture(texture_type);
 
     return texture->getSize();
 }
@@ -69,7 +69,7 @@ sf::Vector2f Button::getPadding() const {
 
 
 void Button::getDefaultSprite(sf::Sprite& sprite) const {
-    auto texture = ResourceVault::getTexture(texture_type);
+    auto texture = (*ResourceManager::getInstance())->getTexture(texture_type);
 
     Graphics::loadSpriteFromTexture(sprite, *texture, top_left_pos);
     sprite.setScale(scale);
@@ -82,7 +82,7 @@ void Button::getDefaultSprite(sf::Sprite& sprite) const {
 
 
 void Button::getHoveredSprite(sf::Sprite& sprite) const {
-    auto texture = ResourceVault::getTexture(texture_type);
+    auto texture = (*ResourceManager::getInstance())->getTexture(texture_type);
 
     Graphics::loadSpriteFromTexture(sprite, *texture, top_left_pos);
     sprite.setScale(scale);
@@ -109,7 +109,7 @@ bool Button::isMouseHovering(const sf::Vector2i& mouse_position) const {
 
 
 Result Button::setImage(const TextureType texture_type, const sf::Vector2f& top_left_pos, const sf::Vector2f& scale) {
-    if (!ResourceVault::findTexture(texture_type)) {
+    if (!(*ResourceManager::getInstance())->findTexture(texture_type)) {
         return Result::failure;
     }
 

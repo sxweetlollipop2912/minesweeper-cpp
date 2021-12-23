@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "../GraphicsObject/GraphicsObject.h"
-#include "../ResourceVault/ResourceVault.h"
+#include "../ResourceManager/ResourceManager.h"
 #include "../Text/Text.h"
 #include "../../Enums.h"
 #include "../../Constants.h"

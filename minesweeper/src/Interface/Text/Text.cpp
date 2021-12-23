@@ -3,6 +3,20 @@
 #include "Text.h"
 
 
+Text::Text() {
+    width = 0;
+    height = 0;
+    top_left_pos.x = top_left_pos.y = 0;
+
+    setFontType(FontType::FontDefault);
+
+    content.clear();
+    font_size = DEFAULT_LARGE_FONT_SIZE;
+    text_color = DEFAULT_TEXT_COLOR;
+    style = sf::Text::Style::Regular;
+}
+
+
 void Text::calSpaceTaken() {
     sf::Text text;
     getSfText(text);
@@ -46,7 +60,7 @@ sf::Vector2f Text::getPosRightDown() const {
 
 
 void Text::getSfText(sf::Text& text) const {
-    std::shared_ptr<sf::Font> font = ResourceVault::getFont(font_type);
+    std::shared_ptr<sf::Font> font = (*ResourceManager::getInstance())->getFont(font_type);
     Graphics::createText(text, content, *font, font_size, text_color, style, top_left_pos);
 }
 
