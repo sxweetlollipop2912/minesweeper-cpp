@@ -1,4 +1,4 @@
-﻿#include "Comms.h"
+#include "Comms.h"
 
 #include "../Interface/Window/Window.h"
 
@@ -202,43 +202,34 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
 
             mine_updateData(current_info.mine_board, current_info.cell_board, current_info.game_Feature, current_info.current_player);
 
-            for (int i = 0; i < current_info.game_Feature.MAX_ROW; i++) {
-                for (int j = 0; j < current_info.game_Feature.MAX_COLUMN; j++) {
-                    if (!(current_info.cell_board[i][j].isFlag || current_info.cell_board[i][j].isOpened)) {
-                        if (!isMine(i, j, current_info.mine_board)) {
-                            current_info.cell_board[i][j].isOpened = true;
-                        }
+            int x = info.cell_pos.r, y = info.cell_pos.c;
+
+            if (auto_open_Cell(x, y, current_info.cell_board, current_info.mine_board, current_info.game_Feature)) {
+
+                ofstream outFile(DATA_PATH + "last_Gameboard.txt");
+                if (outFile.fail()) {
+                    cout << " Cannot open last_Gameboard";
+                    exit(1);
+                }
+                for (int i = 0; i < current_info.game_Feature.MAX_ROW; i++) {
+                    for (int j = 0; j < current_info.game_Feature.MAX_COLUMN; j++) {
+                        outFile << current_info.cell_board[i][j] << endl;
                     }
                 }
-            }
+                outFile.close();
 
-            ofstream outFile(DATA_PATH + "last_Gameboard.txt");
-            if (outFile.fail()) {
-                cout << " Cannot open last_Gameboard";
-                exit(1);
-            }
-            for (int i = 0; i < current_info.game_Feature.MAX_ROW; i++) {
-                for (int j = 0; j < current_info.game_Feature.MAX_COLUMN; j++) {
-                    outFile << current_info.cell_board[i][j] << endl;
+                outFile.open(DATA_PATH + "last_Clock.txt");
+                if (outFile.fail()) {
+                    cout << " Cannot open last_Clock";
+                    exit(1);
                 }
-            }
-            outFile.close();
+                outFile << info.current_timer;
+                outFile.close();
 
-            outFile.open(DATA_PATH + "last_Clock.txt");
-            if (outFile.fail()) {
-                cout << " Cannot open last_Clock";
-                exit(1);
             }
-            outFile << info.current_timer;
-            outFile.close();
-
-            outFile.open(DATA_PATH + "last_Gamefeature.txt");
-            if (outFile.fail()) {
-                cout << " Cannot open Game_Feature";
-                exit(1);
+            else {
+                current_info.game_state = GameState::Lost;
             }
-            outFile << current_info.game_Feature;
-            outFile.close();
 
 
             break;
