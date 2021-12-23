@@ -35,7 +35,6 @@ struct Time {
 };
 
 struct PLAYER {
-	std::string name;
 	Time timePlay = Time(0, 0, 0, false);
 	int level;
 };
