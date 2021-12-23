@@ -8,6 +8,7 @@
 #include <SFML/Window.hpp>
 
 #include "../Scenes/scene.h"
+#include "../ResourceManager/ResourceManager.h"
 #include "../../Enums.h"
 #include "../../Constants.h"
 #include "../../Structs.h"
@@ -45,7 +46,6 @@ private:
 	sf::CircleShape circle_shape;
 	std::vector <Circle> circles;
 
-	sf::Clock clock;
 	sf::Time last_color_update;
 	sf::Time last_pos_update;
 

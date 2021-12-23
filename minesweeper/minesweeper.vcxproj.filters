@@ -63,9 +63,6 @@
     <ClCompile Include="src\Interface\Cell\Cell.cpp">
       <Filter>Interface\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Interface\ResourceVault\ResourceVault.cpp">
-      <Filter>Interface\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Interface\Board\Position.cpp">
       <Filter>Interface\Source Files</Filter>
     </ClCompile>
@@ -78,9 +75,6 @@
     <ClCompile Include="src\Game\GameTools.cpp">
       <Filter>Game\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Interface\Scenes\leaderboard_scene.cpp">
-      <Filter>Interface\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Interface\Slider\Slider.cpp">
       <Filter>Interface\Source Files</Filter>
     </ClCompile>
@@ -91,6 +85,15 @@
       <Filter>Interface\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Interface\AudioManager\AudioManager.cpp">
+      <Filter>Interface\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Interface\Timer\Timer.cpp">
+      <Filter>Interface\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Interface\Scenes\leaderboard_scene.cpp">
+      <Filter>Interface\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Interface\ResourceManager\ResourceManager.cpp">
       <Filter>Interface\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,9 +128,6 @@
     <ClInclude Include="src\Interface\Cell\Cell.h">
       <Filter>Interface\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Interface\ResourceVault\ResourceVault.h">
-      <Filter>Interface\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Interface\Board\Position.h">
       <Filter>Interface\Header Files</Filter>
     </ClInclude>
@@ -159,6 +159,12 @@
       <Filter>Interface\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Interface\AudioManager\AudioManager.h">
+      <Filter>Interface\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Interface\Timer\Timer.h">
+      <Filter>Interface\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Interface\ResourceManager\ResourceManager.h">
       <Filter>Interface\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

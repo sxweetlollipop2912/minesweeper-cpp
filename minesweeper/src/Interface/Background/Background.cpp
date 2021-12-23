@@ -17,9 +17,8 @@ Background::Background(const sf::VideoMode window_size, const sf::Color primary_
 	this->circle_speed = circle_speed;
 	transition_duration = sf::microseconds(0);
 
-	last_color_update = sf::microseconds(0);
-	last_pos_update = sf::microseconds(0);
-	clock.restart();
+	last_color_update = (*ResourceManager::getInstance())->getElapsedTime();
+	last_pos_update = (*ResourceManager::getInstance())->getElapsedTime();
 
 	background.setSize(sf::Vector2f(window_size.width, window_size.height ));
 	background.setFillColor(cur_prim_color);
@@ -110,7 +109,7 @@ void Background::calCurrentColor() {
 	if (transition_duration.asMilliseconds() < 0)
 		return;
 
-	auto time_elapsed = clock.getElapsedTime() - last_color_update;
+	auto time_elapsed = (*ResourceManager::getInstance())->getElapsedTime() - last_color_update;
 	transition_duration -= time_elapsed;
 	float rate = (1 / (float)transition_duration.asMilliseconds()) * (float)time_elapsed.asMilliseconds();
 
@@ -143,7 +142,7 @@ void Background::calCurrentColor() {
 		}
 	}
 
-	last_color_update = clock.getElapsedTime();
+	last_color_update = (*ResourceManager::getInstance())->getElapsedTime();
 }
 
 
@@ -162,7 +161,7 @@ void Background::calCurrentCirclesPos() {
 		}
 	}
 
-	auto time_elapsed = (clock.getElapsedTime() - last_pos_update).asMilliseconds();
+	auto time_elapsed = ((*ResourceManager::getInstance())->getElapsedTime() - last_pos_update).asMilliseconds();
 	float distance = circle_speed * (time_elapsed / (float)sf::seconds(1).asMilliseconds());
 
 	for (auto& circle : circles) {
@@ -173,7 +172,7 @@ void Background::calCurrentCirclesPos() {
 		pos.y += veloc.y * distance;
 	}
 
-	last_pos_update = clock.getElapsedTime();
+	last_pos_update = (*ResourceManager::getInstance())->getElapsedTime();
 }
 
 
@@ -209,7 +208,7 @@ void Background::setNextColor(const Color next_prim_color, const Color next_seco
 
 	if (transition_duration.asSeconds() > 0) {
 		this->transition_duration = transition_duration;
-		last_color_update = clock.getElapsedTime();
+		last_color_update = (*ResourceManager::getInstance())->getElapsedTime();
 	}
 }
 

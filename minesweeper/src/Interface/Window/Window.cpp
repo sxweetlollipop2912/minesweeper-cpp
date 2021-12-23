@@ -18,12 +18,6 @@ Window::Window(const sf::VideoMode& window_size, const std::string& title, const
 	audio_manager.setRandomMusiclist(MAX_SONGS);
 	audio_manager.startMusic();
 
-	auto menu_scene = std::shared_ptr<MenuScene>(new MenuScene(window_size));
-	auto playing_scene = std::shared_ptr<PlayingScene>(new PlayingScene(window_size, 0, 0));
-
-	scenes[SceneType::Menu] = std::static_pointer_cast<Scene>(menu_scene);
-	scenes[SceneType::Playing] = std::static_pointer_cast<Scene>(playing_scene);
-
 	setCurrentSceneType(SceneType::Menu);
 	last_game_event = GameEvent::Unknown;
 	lock_mouse_button = MouseActionType::Unknown;
@@ -127,9 +121,7 @@ void Window::closeWindow() {
 }
 
 
-void Window::updateGameInfo(const Comms::GameInfo& info) {
-	current_game_info = info;
-
+void Window::updateGameInfo() {
 	switch (current_interface_info.game_event) {
 		case GameEvent::QuitToMenu:
 		{
@@ -173,23 +165,6 @@ void Window::updateGameInfo(const Comms::GameInfo& info) {
 			auto scene = std::dynamic_pointer_cast<PlayingScene>(scenes.at(current_interface_info.current_scene));
 			scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board,
 				current_game_info.game_Feature.flags);
-
-			break;
-		}
-		case GameEvent::Unknown: 
-		{
-			// From updatePerFrame() method.
-			if (constantly_changing_scenes.find(getCurrentSceneType()) != constantly_changing_scenes.end()) {
-				switch (getCurrentSceneType()) {
-				case SceneType::Playing:
-				{
-					auto scene = std::dynamic_pointer_cast<PlayingScene>(scenes.at(current_interface_info.current_scene));
-					scene->updateTimer(current_game_info.current_timer);
-
-					break;
-				}
-				}
-			}
 
 			break;
 		}
@@ -358,7 +333,7 @@ void Window::onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vec
 	case sf::Mouse::Left:
 	{
 		if (!released_actions.empty() && released_actions.front().type == MouseActionType::LMB &&
-			(game_clock.getElapsedTime() - released_actions.front().pressed_moment) <= DOUBLE_CLICK_TIME_LIMIT) {
+			((*ResourceManager::getInstance())->getElapsedTime() - released_actions.front().pressed_moment) <= DOUBLE_CLICK_TIME_LIMIT) {
 
 			lock_mouse_button = MouseActionType::DoubleLMB;
 
@@ -378,7 +353,7 @@ void Window::onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vec
 	}
 	}
 
-	pressed_actions.push_front(MouseAction(lock_mouse_button, game_clock.getElapsedTime()));
+	pressed_actions.push_front(MouseAction(lock_mouse_button, (*ResourceManager::getInstance())->getElapsedTime()));
 	released_actions.push_front(MouseAction(MouseActionType::Unknown, pressed_actions.front().pressed_moment));
 
 	if (pressed_actions.front().type == MouseActionType::LMB || pressed_actions.front().type == MouseActionType::DoubleLMB) {
@@ -439,7 +414,7 @@ void Window::updatePerFrame() {
 			auto last_mouse_action = pressed_actions.back().type;
 
 			if (last_mouse_action != MouseActionType::LMB ||
-				(game_clock.getElapsedTime() - pressed_actions.back().pressed_moment) > DOUBLE_CLICK_TIME_LIMIT) {
+				((*ResourceManager::getInstance())->getElapsedTime() - pressed_actions.back().pressed_moment) > DOUBLE_CLICK_TIME_LIMIT) {
 
 				pressed_actions.pop_back();
 
@@ -461,7 +436,7 @@ void Window::updatePerFrame() {
 			auto last_mouse_action = released_actions.back().type;
 
 			if (last_mouse_action != MouseActionType::LMB ||
-				(game_clock.getElapsedTime() - released_actions.back().pressed_moment) > DOUBLE_CLICK_TIME_LIMIT) {
+				((*ResourceManager::getInstance())->getElapsedTime() - released_actions.back().pressed_moment) > DOUBLE_CLICK_TIME_LIMIT) {
 
 				released_actions.pop_back();
 

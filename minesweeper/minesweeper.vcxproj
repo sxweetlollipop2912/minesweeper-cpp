@@ -29,7 +29,7 @@
     <ClCompile Include="src\Interface\Cell\Cell.cpp" />
     <ClCompile Include="src\Interface\GraphicsObject\GraphicsObject.cpp" />
     <ClCompile Include="src\Interface\PopUp\PopUp.cpp" />
-    <ClCompile Include="src\Interface\ResourceVault\ResourceVault.cpp" />
+    <ClCompile Include="src\Interface\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="src\Interface\Scenes\difficulties_scene.cpp" />
     <ClCompile Include="src\Interface\Scenes\leaderboard_scene.cpp" />
     <ClCompile Include="src\Interface\Scenes\menu_scene.cpp" />
@@ -37,6 +37,7 @@
     <ClCompile Include="src\Interface\Scenes\scene.cpp" />
     <ClCompile Include="src\Interface\Slider\Slider.cpp" />
     <ClCompile Include="src\Interface\Text\Text.cpp" />
+    <ClCompile Include="src\Interface\Timer\Timer.cpp" />
     <ClCompile Include="src\Interface\Window\Window.cpp" />
     <ClCompile Include="src\minesweeper.cpp" />
   </ItemGroup>
@@ -53,7 +54,7 @@
     <ClInclude Include="src\Interface\Cell\Cell.h" />
     <ClInclude Include="src\Interface\GraphicsObject\GraphicsObject.h" />
     <ClInclude Include="src\Interface\PopUp\PopUp.h" />
-    <ClInclude Include="src\Interface\ResourceVault\ResourceVault.h" />
+    <ClInclude Include="src\Interface\ResourceManager\ResourceManager.h" />
     <ClInclude Include="src\Interface\Scenes\difficulties_scene.h" />
     <ClInclude Include="src\Interface\Scenes\leaderboard_scene.h" />
     <ClInclude Include="src\Interface\Scenes\menu_scene.h" />
@@ -61,6 +62,7 @@
     <ClInclude Include="src\Interface\Scenes\scene.h" />
     <ClInclude Include="src\Interface\Slider\Slider.h" />
     <ClInclude Include="src\Interface\Text\Text.h" />
+    <ClInclude Include="src\Interface\Timer\Timer.h" />
     <ClInclude Include="src\Interface\Window\Window.h" />
     <ClInclude Include="src\Structs.h" />
   </ItemGroup>

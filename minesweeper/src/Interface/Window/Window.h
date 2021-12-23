@@ -7,7 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-#include "../ResourceVault/ResourceVault.h"
+#include "../ResourceManager/ResourceManager.h"
 #include "../AudioManager/AudioManager.h"
 #include "../Background/Background.h"
 #include "../Button/Button.h"
@@ -41,16 +41,13 @@ class Window {
 private:
 	static Window* instance;
 
-	sf::Clock game_clock;
+	Comms::GameInfo current_game_info;
+	Comms::InterfaceInfo current_interface_info;
 
 	std::shared_ptr<Background> background;
 	AudioManager audio_manager;
 
 	std::map <SceneType, std::shared_ptr<Scene>> scenes;
-	std::set <SceneType> constantly_changing_scenes;
-
-	Comms::GameInfo current_game_info;
-	Comms::InterfaceInfo current_interface_info;
 
 	SceneType current_scene_type;
 	GameEvent last_game_event;
@@ -63,7 +60,7 @@ private:
 
 	Window(const sf::VideoMode& window_size = sf::VideoMode(1500, 1000), const std::string& title = TITLE, const int window_style = sf::Style::Close);
 
-	void updateGameInfo(const Comms::GameInfo& game_info);
+	void updateGameInfo();
 	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool handleGameEvents(const GameEvent game_event);

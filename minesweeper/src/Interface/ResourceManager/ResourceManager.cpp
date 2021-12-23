@@ -1,16 +1,26 @@
 #include <iostream>
 
-#include "ResourceVault.h"
+#include "ResourceManager.h"
 
 
-std::map <TextureType, std::shared_ptr<sf::Texture>> ResourceVault::map_texture = {};
-std::map <FontType, std::shared_ptr<sf::Font>> ResourceVault::map_font = {};
+ResourceManager* ResourceManager::instance = nullptr;
 
 
-ResourceVault::ResourceVault() {}
+ResourceManager::ResourceManager() {
+    map_texture.clear();
+    map_font.clear();
+}
 
 
-bool ResourceVault::findTexture(const TextureType type) {
+std::shared_ptr<ResourceManager*> ResourceManager::getInstance() {
+    if (!instance) {
+        instance = new ResourceManager();
+    }
+    return std::make_shared<ResourceManager*>(instance);
+}
+
+
+bool ResourceManager::findTexture(const TextureType type) const {
     if (map_texture.find(type) == map_texture.end()) {
         return false;
     }
@@ -22,7 +32,7 @@ bool ResourceVault::findTexture(const TextureType type) {
 }
 
 
-bool ResourceVault::findFont(const FontType type) {
+bool ResourceManager::findFont(const FontType type) const {
     if (map_font.find(type) == map_font.end()) {
         return false;
     }
@@ -34,7 +44,7 @@ bool ResourceVault::findFont(const FontType type) {
 }
 
 
-std::shared_ptr<sf::Texture> ResourceVault::getTexture(const TextureType type) {
+std::shared_ptr<sf::Texture> ResourceManager::getTexture(const TextureType type) const {
     if (!findTexture(type)) {
         return std::make_unique<sf::Texture>(sf::Texture());
     }
@@ -43,7 +53,7 @@ std::shared_ptr<sf::Texture> ResourceVault::getTexture(const TextureType type) {
 }
 
 
-std::shared_ptr<sf::Font> ResourceVault::getSafeFont(const FontType type) {
+std::shared_ptr<sf::Font> ResourceManager::getSafeFont(const FontType type) const {
     if (findFont(type)) {
         return map_font.at(type);
     }
@@ -55,7 +65,7 @@ std::shared_ptr<sf::Font> ResourceVault::getSafeFont(const FontType type) {
 }
 
 
-std::shared_ptr<sf::Font> ResourceVault::getFont(const FontType type) {
+std::shared_ptr<sf::Font> ResourceManager::getFont(const FontType type) const {
     if (!findFont(type))
         return std::make_shared<sf::Font>(sf::Font());
 
@@ -63,8 +73,13 @@ std::shared_ptr<sf::Font> ResourceVault::getFont(const FontType type) {
 }
 
 
+sf::Time ResourceManager::getElapsedTime() const {
+    return game_clock.getElapsedTime();
+}
 
-Result ResourceVault::setTexture(const TextureType type, const std::string& file_path) {
+
+
+Result ResourceManager::setTexture(const TextureType type, const std::string& file_path) {
     auto texture = std::make_shared<sf::Texture>(sf::Texture());
 
     if (Graphics::loadTextureFromFilepath(*texture, file_path) == Result::failure) {
@@ -77,7 +92,7 @@ Result ResourceVault::setTexture(const TextureType type, const std::string& file
 }
 
 
-Result ResourceVault::setFont(const FontType type, const std::string& file_path) {
+Result ResourceManager::setFont(const FontType type, const std::string& file_path) {
     auto font = std::make_shared<sf::Font>(sf::Font());
 
     if (Graphics::loadFont(*font, file_path) == Result::failure) {
