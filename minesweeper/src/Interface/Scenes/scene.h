@@ -27,6 +27,7 @@ protected:
 	SceneType scene_type;
 	sf::VideoMode window_size;
 	sf::Vector2i pos_mouse;
+	bool use_double_lmb;
 
 	// Only one pop-up holder for one scene.
 	std::shared_ptr<Scene> pop_up;
@@ -66,7 +67,7 @@ protected:
 	bool spawnPopUp(const GameEvent game_event);
 
 public:
-	Scene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode(), const SceneType scene_type = SceneType::Unknown);
+	Scene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode(), const SceneType scene_type = SceneType::Unknown, const bool use_double_lmb = false);
 
 
 	// Returns SceneType::Unknown if no next scene corresponding with game_event is found.

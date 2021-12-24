@@ -4,9 +4,10 @@
 #include "../PopUp/PopUp.h"
 
 
-Scene::Scene(const sf::VideoMode& window_size, const SceneType scene_type) {
+Scene::Scene(const sf::VideoMode& window_size, const SceneType scene_type, const bool use_double_lmb) {
 	this->scene_type = scene_type;
 	this->window_size = window_size;
+	this->use_double_lmb = use_double_lmb;
 
 	pop_up = nullptr;
 	buttons.clear();
@@ -37,7 +38,8 @@ GameEvent Scene::onMouseButtonReleased(const MouseActionType mouse_type) {
 	}
 	// Otherwise,
 	else {
-		if (mouse_type != MouseActionType::FirstLMB) {
+		if ((!use_double_lmb && mouse_type != MouseActionType::FirstLMB) || 
+			(use_double_lmb && mouse_type != MouseActionType::LMB && mouse_type != MouseActionType::DoubleLMB)) {
 			return GameEvent::Unknown;
 		}
 
@@ -102,7 +104,7 @@ bool Scene::spawnPopUp(const GameEvent game_event) {
 	switch (game_event) {
 	case GameEvent::QuitGame:
 	{
-		PopUp pu(game_event, window_size, "You are about to quit the game.\nAre you sure?");
+		PopUp pu(game_event, window_size, use_double_lmb, "You are about to quit the game.\nAre you sure?");
 		auto ptr = std::make_shared<PopUp>(pu);
 
 		pop_up = std::static_pointer_cast<Scene>(ptr);
@@ -111,7 +113,7 @@ bool Scene::spawnPopUp(const GameEvent game_event) {
 	}
 	case GameEvent::NewGame:
 	{
-		PopUp pu(game_event, window_size, "Do you want to create new game?\nCurrent save game will be lost.");
+		PopUp pu(game_event, window_size, use_double_lmb, "Do you want to create new game?\nCurrent save game will be lost.");
 		auto ptr = std::make_shared<PopUp>(pu);
 
 		pop_up = std::static_pointer_cast<Scene>(ptr);
@@ -121,7 +123,7 @@ bool Scene::spawnPopUp(const GameEvent game_event) {
 	case GameEvent::QuitToMenu:
 	{
 		if (scene_type == SceneType::Playing) {
-			PopUp pu(game_event, window_size, "Do you want to quit to menu?\nCurrent game will be saved.");
+			PopUp pu(game_event, window_size, use_double_lmb, "Do you want to quit to menu?\nCurrent game will be saved.");
 			auto ptr = std::make_shared<PopUp>(pu);
 
 			pop_up = std::static_pointer_cast<Scene>(ptr);

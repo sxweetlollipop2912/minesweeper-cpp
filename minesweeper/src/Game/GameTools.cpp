@@ -295,9 +295,9 @@ int count_Flags(int x, int y, GAMECELL game_Board[][MAX_COLUMN], const GAMEPREDI
 }
 
 bool auto_open_Cell(int x, int y, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature) {
-
-	game_Board[x][y].isOpened = true;
-
+	if (!game_Board[x][y].isOpened) {
+		return true;
+	}
 	if (isMine(x, y, mine_Board)) {
 		return false;
 	}
@@ -311,6 +311,9 @@ bool auto_open_Cell(int x, int y, GAMECELL game_Board[][MAX_COLUMN], char mine_B
 							game_Board[x + i][y + j].isOpened = true;
 							if (isMine(x + i, y + j, mine_Board)) {
 								return false;
+							}
+							if (game_Board[x + i][y + j].mine_Count == 0) {
+								splash_Feature(x + i, y + j, game_Board, mine_Board, game_Feature);
 							}
 						}
 					}

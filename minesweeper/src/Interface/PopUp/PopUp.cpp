@@ -1,7 +1,7 @@
 #include "PopUp.h"
 
 
-PopUp::PopUp(const GameEvent game_event, const sf::VideoMode& window_size, const std::string& msg, const std::string& yes_msg, const std::string& no_msg) : Scene(window_size, SceneType::PopUp) {
+PopUp::PopUp(const GameEvent game_event, const sf::VideoMode& window_size, bool use_double_lmb, const std::string& msg, const std::string& yes_msg, const std::string& no_msg) : Scene(window_size, SceneType::PopUp, use_double_lmb) {
 	buttons_event[STR_YES] = game_event;
 	buttons_event[STR_NO] = GameEvent::ClosePopUp;
 

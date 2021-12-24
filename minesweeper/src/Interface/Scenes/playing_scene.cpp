@@ -4,7 +4,7 @@
 
 
 PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_rows, const int board_cols)
-	: Scene(window_size, SceneType::Playing) {
+	: Scene(window_size, SceneType::Playing, true) {
 	next_scene[GameEvent::AutoOpenCell] = SceneType::Playing;
 	next_scene[GameEvent::OpenCell] = SceneType::Playing;
 	next_scene[GameEvent::FlagCell] = SceneType::Playing;
@@ -91,11 +91,10 @@ PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_row
 	// Buttons
 	{
 		Button& return_button = buttons[STR_RETURN_BUTTON];
-		return_button.setImage(TextureType::ButtonDefault);
-		return_button.setPadding(sf::Vector2f(DEFAULT_PADDING_SIZE.x / 2, DEFAULT_PADDING_SIZE.y / 2));
-		return_button.label.setText("Back to Menu");
-		return_button.label.setFontSize(DEFAULT_SMALL_FONT_SIZE);
-		return_button.alignImageAndText();
+		return_button.setImage(TextureType::ReturnButton);
+		return_button.setSize(RETURN_BUTTON_SIZE);
+		return_button.setTopLeftPosY(board.getPosTopLeft().y);
+		return_button.setTopLeftPosX(board.getPosTopLeft().x - return_button.getSize().x - (return_button.getSize().x / (float)3));
 	}
 }
 

@@ -121,7 +121,7 @@ GameEvent DifficultiesScene::onMouseButtonReleased(const MouseActionType mouse_t
 GameEvent DifficultiesScene::onMouseButtonPressed(const MouseActionType mouse_type) {
 	auto game_event = Scene::onMouseButtonPressed(mouse_type);
 
-	if (game_event == GameEvent::Unknown) {
+	if (game_event == GameEvent::Unknown && !pop_up) {
 		bool change = false;
 		change |= slider_row->onMouseButtonPressed(mouse_type);
 		change |= slider_col->onMouseButtonPressed(mouse_type);
