@@ -153,12 +153,10 @@ ifstream& operator >> (ifstream& inFile, vector <PLAYER>& score_Board) {
 	return inFile;
 }
 
-void set_up_game(GAMEPREDICATE& game_Feature, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], int theRow, int theColumn, int max_Mine, int theFlags) {
-	std::cout << "total mines " << max_Mine << '\n';
+void set_up_game(GAMEPREDICATE& game_Feature, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], int theRow, int theColumn, int max_Mine) {
 	game_Feature.MAX_ROW = theRow;
 	game_Feature.MAX_COLUMN = theColumn;
-	game_Feature.maxMine = max_Mine;
-	game_Feature.flags = theFlags;
+	game_Feature.flags = game_Feature.maxMine = max_Mine;
 	mine_board_Clear(game_Board, mine_Board, game_Feature);
 }
 
@@ -243,6 +241,16 @@ void mine_board_Clear(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_C
 			game_Board[i][j].isFlag = game_Board[i][j].isOpened = (game_Board[i][j]).mine_Count = 0;
 		}
 	}
+
+	ofstream outFile(DATA_PATH + "marked_mines.txt");
+	if (outFile.fail()) {
+		cout << " Cannot open.";
+		exit(1);
+	}
+	//Clear the marked-mines TEXT FILE
+	outFile << "";
+	outFile.close();
+
 }
 
 
@@ -262,13 +270,35 @@ void splash_Feature(int x, int y, GAMECELL game_Board[][MAX_COLUMN], char mine_B
 	}
 }
 
-bool fully_Flagged(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature) {
+int fully_Flagged(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature) {
+	int count = 0;
+	ifstream inFile(DATA_PATH + "marked_mines.txt");
+	if (inFile.fail()) {
+		cout << " Cannot open marked_mines";
+		exit(1);
+	}
 
-	for (int x = 0; x < game_Feature.MAX_ROW; x++) {
-		for (int y = 0; y < game_Feature.MAX_COLUMN; y++) {
-
+	int x, y;
+	while (!inFile.eof()) {
+		inFile >> x >> y;
+		if (game_Board[x][y].isFlag) {
+			count++;
 		}
 	}
+
+	return count;
+}
+
+void open_all_Cell(GAMECELL game_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature) {
+
+	for (int i = 0; i < game_Feature.MAX_ROW; i++) {
+		for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
+			if (!game_Board[i][j].isFlag) {
+				game_Board[i][j].isOpened = true;
+			}
+		}
+	}
+
 }
 
 bool isFull(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature) {
@@ -373,8 +403,8 @@ void mine_settingUp(int theLevel, const GAMEPREDICATE& game_Feature, char mine_B
 }
 
 
-bool auto_play(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature) {
-	int theRow, theColumn;
+bool auto_play(int& theRow, int& theColumn, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], GAMEPREDICATE game_Feature) {
+
 	do {
 		theRow = rand() % (game_Feature.MAX_ROW);
 		theColumn = rand() % (game_Feature.MAX_COLUMN);
@@ -540,6 +570,7 @@ void addtoRecord(int theLevel, const PLAYER& newPlayer, Records& records) {
 
 
 void update_ScoreBoard(Records& record) {
+
 	ifstream file1(DATA_PATH + "beginner_records.txt"),
 		file2(DATA_PATH + "intermediate_records.txt"),
 		file3(DATA_PATH + "expert_records.txt");
