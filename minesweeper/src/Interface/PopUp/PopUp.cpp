@@ -6,17 +6,17 @@ PopUp::PopUp(const GameEvent game_event, const sf::VideoMode& window_size, const
 	buttons_event[STR_NO] = GameEvent::ClosePopUp;
 
 	Button& box = buttons[STR_BOX];
-	box.setImage(TextureType::ButtonDefault);
+	box.setImage(TextureType::PopUpBackground);
 	box.label.setText(msg);
 	box.setTransparent();
 
 	Button& yes_button = buttons[STR_YES];
-	yes_button.setImage(TextureType::ButtonDefault);
+	yes_button.setImage(TextureType::YesNoButton);
 	yes_button.label.setText(yes_msg);
 	yes_button.alignImageAndText();
 
 	Button& no_button = buttons[STR_NO];
-	no_button.setImage(TextureType::ButtonDefault);
+	no_button.setImage(TextureType::YesNoButton);
 	no_button.label.setText(no_msg);
 	no_button.alignImageAndText();
 

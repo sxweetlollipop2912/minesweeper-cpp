@@ -236,6 +236,4 @@ void Cell::setScale(const sf::Vector2f& scale) {}
 void Cell::alignImageAndText() {}
 
 
-Result Cell::centerTextInButton() {
-	return Result::failure;
-}
+void Cell::centerTextInButton() {}

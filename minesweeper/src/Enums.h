@@ -29,7 +29,7 @@ enum class GameEvent {
 	Won,
 	Lost,
 	ChangesInScene,
-	NextSong,
+	SkipSong,
 	Unknown
 };
 
@@ -83,8 +83,11 @@ enum class CellType {
 
 
 enum class TextureType {
-	ButtonDefault,
-	NextSong,
+	DefaultButton,
+	YesNoButton,
+	PopUpBackground,
+	ReturnButton,
+	SkipSong,
 	Scoreboard,
 	CellMine,
 	CellClosed,

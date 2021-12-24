@@ -13,10 +13,19 @@
 
 
 void registerResources() {
-    if ((*ResourceManager::getInstance())->setTexture(TextureType::ButtonDefault, DEFAULT_BUTTON_PATH) == Result::failure) {
+    if ((*ResourceManager::getInstance())->setTexture(TextureType::DefaultButton, DEFAULT_BUTTON_PATH) == Result::failure) {
         std::cout << "Loading ButtonDefault texture failed!";
     }
-    if ((*ResourceManager::getInstance())->setTexture(TextureType::NextSong, DEFAULT_BUTTON_PATH) == Result::failure) {
+    if ((*ResourceManager::getInstance())->setTexture(TextureType::ReturnButton, RETURN_BUTTON_PATH) == Result::failure) {
+        std::cout << "Loading ReturnButton texture failed!";
+    }
+    if ((*ResourceManager::getInstance())->setTexture(TextureType::YesNoButton, YES_NO_BUTTON_PATH) == Result::failure) {
+        std::cout << "Loading YesNoButton texture failed!";
+    }
+    if ((*ResourceManager::getInstance())->setTexture(TextureType::PopUpBackground, POP_UP_BACKGROUND) == Result::failure) {
+        std::cout << "Loading PopUpBackground texture failed!";
+    }
+    if ((*ResourceManager::getInstance())->setTexture(TextureType::SkipSong, SKIP_SONG_BUTTON_PATH) == Result::failure) {
         std::cout << "Loading NextSong texture failed!";
     }
 

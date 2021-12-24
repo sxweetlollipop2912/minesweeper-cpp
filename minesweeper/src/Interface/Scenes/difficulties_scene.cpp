@@ -21,21 +21,21 @@ DifficultiesScene::DifficultiesScene(const sf::VideoMode& window_size) : Scene(w
 		// Difficulty buttons
 		{
 			Button& beginner_button = buttons[STR_BEGINNER_BUTTON];
-			beginner_button.setImage(TextureType::ButtonDefault);
+			beginner_button.setImage(TextureType::DefaultButton);
 			beginner_button.label.setText("Beginner");
 			beginner_button.label.setFontSize(DEFAULT_NORMAL_FONT_SIZE);
 			beginner_button.setTopLeftPosY(pos_y_diff_button);
 			beginner_button.alignImageAndText();
 
 			Button& inter_button = buttons[STR_INTER_BUTTON];
-			inter_button.setImage(TextureType::ButtonDefault);
+			inter_button.setImage(TextureType::DefaultButton);
 			inter_button.label.setText("Intermediate");
 			inter_button.label.setFontSize(DEFAULT_NORMAL_FONT_SIZE);
 			inter_button.setTopLeftPosY(pos_y_diff_button);
 			inter_button.alignImageAndText();
 
 			Button& expert_button = buttons[STR_EXPERT_BUTTON];
-			expert_button.setImage(TextureType::ButtonDefault);
+			expert_button.setImage(TextureType::DefaultButton);
 			expert_button.label.setText("Expert");
 			expert_button.label.setFontSize(DEFAULT_NORMAL_FONT_SIZE);
 			expert_button.setTopLeftPosY(pos_y_diff_button);
@@ -56,26 +56,23 @@ DifficultiesScene::DifficultiesScene(const sf::VideoMode& window_size) : Scene(w
 
 			inter_button.centerButtonHorizontally(this->window_size.width);
 
-			float padding_x = this->window_size.width / (float)4;
-			beginner_button.setTopLeftPosX(padding_x);
+			float space_x = this->window_size.width / (float)30;
+			beginner_button.setTopLeftPosX(inter_button.getPosTopLeft().x - space_x - beginner_button.getSize().x);
 			beginner_button.centerTextInButton();
-			expert_button.setTopLeftPosX(this->window_size.width - padding_x - expert_button.getSize().x);
+			expert_button.setTopLeftPosX(inter_button.getPosTopLeft().x + inter_button.getSize().x + space_x);
 			expert_button.centerTextInButton();
 		}
 
 		Button& continue_button = buttons[STR_CONTINUE_BUTTON];
-		continue_button.setImage(TextureType::ButtonDefault);
+		continue_button.setImage(TextureType::DefaultButton);
 		continue_button.label.setText("Continue");
 		continue_button.setTopLeftPosY(pos_y_continue_button);
 		continue_button.alignImageAndText();
 		continue_button.centerButtonHorizontally(this->window_size.width);
 
 		Button& return_button = buttons[STR_RETURN_BUTTON];
-		return_button.setImage(TextureType::ButtonDefault);
-		return_button.setPadding(sf::Vector2f(DEFAULT_PADDING_SIZE.x / 2, DEFAULT_PADDING_SIZE.y / 2));
-		return_button.label.setText("Back to Menu");
-		return_button.label.setFontSize(DEFAULT_SMALL_FONT_SIZE);
-		return_button.alignImageAndText();
+		return_button.setImage(TextureType::ReturnButton);
+		return_button.setSize(RETURN_BUTTON_SIZE);
 	}
 
 	// Sliders
