@@ -76,9 +76,9 @@ bool isFull(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], co
 
 void mine_settingUp(int theLevel, const GAMEPREDICATE& game_Feature, char mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_COLUMN]);
 
-void auto_play(int& theRow, int& theColumn, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], GAMEPREDICATE game_Feature);
+bool auto_play(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature);
 
-void mine_reserveData(const PLAYER& current_Player, GAMECELL game_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature, const Time& new_Timers);
+void mine_reserveData(const PLAYER& current_Player, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature, const Time& new_Timers);
 
 bool mine_updateData(char mine_Board[][MAX_COLUMN], GAMECELL game_Board[][MAX_COLUMN], GAMEPREDICATE& game_Feature, /*Time& new_Timers,*/ PLAYER& new_Player);
 
