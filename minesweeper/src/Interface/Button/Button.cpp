@@ -29,14 +29,8 @@ Result Button::equalizeButtonsSize(Button& button1, Button& button2) {
     button1.setPadding(padding);
     button2.setPadding(padding);
 
-    if (button1.centerTextInButton() == Result::failure) {
-        return Result::failure;
-    }
-    if (button2.centerTextInButton() == Result::failure) {
-        return Result::failure;
-    }
-
-    return Result::success;
+    button1.centerTextInButton();
+    button2.centerTextInButton();
 }
 
 
@@ -75,7 +69,7 @@ void Button::getDefaultSprite(sf::Sprite& sprite) const {
     sprite.setScale(scale);
 
     if (transparent)
-        sprite.setColor(sf::Color(255, 255, 255, 220));
+        sprite.setColor(sf::Color(255, 255, 255, DEFAULT_TRANSPARENT_ALPHA_VALUE));
     else
         sprite.setColor(sf::Color(255, 255, 255, 255));
 }
@@ -88,10 +82,16 @@ void Button::getHoveredSprite(sf::Sprite& sprite) const {
     sprite.setScale(scale);
 
     // Darken the hovered sprite a bit.
-    if (transparent)
-        sprite.setColor(sf::Color(150, 150, 150, 220));
-    else
-        sprite.setColor(sf::Color(150, 150, 150, 255));
+    if (transparent) {
+        auto color = HOVERED_COLOR;
+        color.a = DEFAULT_TRANSPARENT_ALPHA_VALUE;
+        sprite.setColor(color);
+    }
+    else {
+        auto color = HOVERED_COLOR;
+        color.a = 255;
+        sprite.setColor(color);
+    }
 }
 
 
@@ -176,45 +176,21 @@ void Button::alignImageAndText() {
 }
 
 
-Result Button::centerButtonHorizontally(const float window_width) {
+void Button::centerButtonHorizontally(const float space_width, const float left_pos_x) {
     float button_width = getSize().x;
-
-    if (window_width < button_width)
-        return Result::failure;
-
-    float old_x = top_left_pos.x;
-    top_left_pos.x = (window_width / 2) - (button_width / 2);
-
-    if (top_left_pos.x < 0 || centerTextInButton() == Result::failure) {
-        top_left_pos.x = old_x;
-
-        return Result::failure;
-    }
-
-    return Result::success;
+    top_left_pos.x = left_pos_x + (space_width / 2) - (button_width / 2);
+    centerTextInButton();
 }
 
 
-Result Button::centerButtonVertically(const float window_height) {
+void Button::centerButtonVertically(const float space_height, const float top_pos_y) {
     float button_height = getSize().y;
-
-    if (window_height < button_height)
-        return Result::failure;
-
-    float old_y = top_left_pos.y;
-    top_left_pos.y = (window_height / 2) - (button_height / 2);
-
-    if (top_left_pos.y < 0 || centerTextInButton() == Result::failure) {
-        top_left_pos.y = old_y;
-
-        return Result::failure;
-    }
-
-    return Result::success;
+    top_left_pos.y = top_pos_y + (space_height / 2) - (button_height / 2);
+    centerTextInButton();
 }
 
 
-Result Button::centerTextInButton() {
+void Button::centerTextInButton() {
     float text_width = label.getWidth();
     float text_height = label.getHeight();
 
@@ -224,10 +200,5 @@ Result Button::centerTextInButton() {
     desired_pos.x = ((top_left_pos.x + pos_right_down.x) / 2) - (text_width / 2);
     desired_pos.y = ((top_left_pos.y + pos_right_down.y) / 2) - (text_height / 2);
 
-    if (desired_pos.x < 0 || desired_pos.y < 0)
-        return Result::failure;
-
     label.setTopLeftPos(desired_pos);
-
-    return Result::success;
 }

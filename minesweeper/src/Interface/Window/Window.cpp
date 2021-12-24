@@ -282,7 +282,7 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 			// Load whole board, splash screen etc.
 			break;
 		}
-		case GameEvent::NextSong:
+		case GameEvent::SkipSong:
 		{
 			audio_manager.onNextMusicEvent();
 
@@ -290,7 +290,7 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 		}
 	}
 
-	if (game_event != GameEvent::Unknown && game_event != GameEvent::NextSong) {
+	if (game_event != GameEvent::Unknown && game_event != GameEvent::SkipSong) {
 		auto scene = getCurrentScene();
 
 		if (game_event == GameEvent::ChangesInScene) {
