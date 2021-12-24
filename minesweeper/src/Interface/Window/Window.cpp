@@ -413,6 +413,11 @@ void Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Ve
 }
 
 
+void Window::setVolumeTopLeftPos(const sf::Vector2f& top_left_pos) {
+	background->volume->setTopLeftPos(top_left_pos);
+}
+
+
 void Window::updatePerFrame() {
 	// Mouse action handling
 	{

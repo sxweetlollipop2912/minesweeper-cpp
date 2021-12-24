@@ -76,6 +76,10 @@ private:
 	// Call upon a mouse button RELEASE event.
 	void onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position);
 
+	// Between scenes
+	void setVolumeTopLeftPos(const sf::Vector2f& top_left_pos);
+	void setSkipSongTopLeftPos(const sf::Vector2f& top_left_pos);
+
 public:
 	std::shared_ptr<sf::RenderWindow> render_window;
 	sf::VideoMode window_size;

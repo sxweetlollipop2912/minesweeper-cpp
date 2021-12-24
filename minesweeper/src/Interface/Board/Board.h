@@ -78,5 +78,5 @@ public:
 	void setPadding(const sf::Vector2f& padding) override;
 	void setScale(const sf::Vector2f& scale) override;
 	void alignImageAndText() override;
-	Result centerTextInButton() override;
+	void centerTextInButton() override;
 };

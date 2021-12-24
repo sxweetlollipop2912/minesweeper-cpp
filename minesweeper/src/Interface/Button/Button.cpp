@@ -10,10 +10,11 @@ Button::Button() {
     padding = DEFAULT_PADDING_SIZE;
     scale = sf::Vector2f(1, 1);
     transparent = false;
+    stretchable = false;
 }
 
 
-Result Button::equalizeButtonsSize(Button& button1, Button& button2) {
+void Button::equalizeButtonsSize(Button& button1, Button& button2) {
     float width = std::max(button1.getSize().x, button2.getSize().x);
     float height = std::max(button1.getSize().y, button2.getSize().y);
     button1.setScale(sf::Vector2f(width / button1.getImageSize().x, height / button1.getImageSize().y));
@@ -114,7 +115,7 @@ Result Button::setImage(const TextureType texture_type, const sf::Vector2f& top_
     }
 
     this->texture_type = texture_type;
-    this->scale = scale;
+    setScale(scale);
 
     if (top_left_pos.x != -1) {
         this->top_left_pos = top_left_pos;
@@ -145,15 +146,24 @@ void Button::setPadding(const sf::Vector2f& padding) {
 
 
 void Button::setScale(const sf::Vector2f& scale) {
-    this->scale = scale;
+    if (stretchable) {
+        this->scale = scale;
+    }
+    else {
+        auto x = std::max(scale.x, scale.y);
+        this->scale = sf::Vector2f(x, x);
+    }
 }
 
 
 void Button::setSize(const sf::Vector2f& size) {
     auto img_size = getImageSize();
 
+    sf::Vector2f scale;
     scale.x = size.x / (float)img_size.x;
     scale.y = size.y / (float)img_size.y;
+
+    setScale(scale);
 }
 
 
@@ -169,8 +179,10 @@ void Button::alignImageAndText() {
     float desired_width = text_width + 2 * padding.x;
     float desired_height = text_height + 2 * padding.y;
 
+    sf::Vector2f scale;
     scale.x = desired_width / getImageSize().x;
     scale.y = desired_height / getImageSize().y;
+    setScale(scale);
 
     label.setTopLeftPos(top_left_pos + padding);
 }

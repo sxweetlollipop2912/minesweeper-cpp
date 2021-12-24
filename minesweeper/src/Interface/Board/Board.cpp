@@ -160,8 +160,6 @@ void Board::setScale(const sf::Vector2f& scale) {}
 void Board::alignImageAndText() {}
 
 
-Result Board::centerTextInButton() {
-	return Result::failure;
-}
+void Board::centerTextInButton() {}
 
 

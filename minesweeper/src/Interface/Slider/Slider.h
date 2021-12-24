@@ -36,9 +36,8 @@ public:
 	float getSliderValue() const;
 
 	// Centers slider on X-axis.
-	// > Returns Result::failure if it is unable to center slider (due to out-of-bound top-left position after centering).
-	// > otherwise, returns Result::success.
-	Result centerSliderHorizontally(const float window_width);
+	void centerSliderHorizontally(const float space_width, const float left_pos_x = 0);
+	void setTopLeftPos(const sf::Vector2f& top_left_pos);
 
 	void setSliderValue(const float new_value);
 	void setSliderPercentValue(const float new_percent_value);
