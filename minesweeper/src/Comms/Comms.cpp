@@ -14,7 +14,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
             current_info.current_player.level = (int)Difficulty::Beginner;
 
             //Set_up game_Feature && cell_Board && mine_Board
-            set_up_game(current_info.game_Feature, current_info.cell_board, current_info.mine_board, BEGINNER_ROW, BEGINNER_COL, BEGINNER_MINE, BEGINNER_MINE);
+            set_up_game(current_info.game_Feature, current_info.cell_board, current_info.mine_board, BEGINNER_ROW, BEGINNER_COL, BEGINNER_MINE);
 
             //Setting mines into mine_board 
             mine_settingUp(current_info.current_player.level, current_info.game_Feature, current_info.mine_board, current_info.cell_board);
@@ -29,7 +29,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
             current_info.current_player.level = (int)Difficulty::Intermediate;
 
             //Set_up game_Feature && cell_Board && mine_Board
-            set_up_game(current_info.game_Feature, current_info.cell_board, current_info.mine_board, INTERMEDIATE_ROW, INTERMEDIATE_COL, INTERMEDIATE_MINE, INTERMEDIATE_MINE);
+            set_up_game(current_info.game_Feature, current_info.cell_board, current_info.mine_board, INTERMEDIATE_ROW, INTERMEDIATE_COL, INTERMEDIATE_MINE);
 
             //Setting mines into mine_board 
             mine_settingUp(current_info.current_player.level, current_info.game_Feature, current_info.mine_board, current_info.cell_board);
@@ -44,7 +44,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
             current_info.current_player.level = (int)Difficulty::Expert;
 
             //Set_up game_Feature && cell_Board && mine_Board
-            set_up_game(current_info.game_Feature, current_info.cell_board, current_info.mine_board, EXPERT_ROW, EXPERT_COL, EXPERT_MINE, EXPERT_MINE);
+            set_up_game(current_info.game_Feature, current_info.cell_board, current_info.mine_board, EXPERT_ROW, EXPERT_COL, EXPERT_MINE);
 
             //Setting mines into mine_board as well as reverse mine_board
             mine_settingUp(current_info.current_player.level, current_info.game_Feature, current_info.mine_board, current_info.cell_board);
@@ -61,7 +61,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
             current_info.current_player.level = (int)Difficulty::Custom;
 
             //Set_up game_Feature && cell_Board && mine_Board
-            set_up_game(current_info.game_Feature, current_info.cell_board, current_info.mine_board, info.new_row, info.new_col, mines, mines);
+            set_up_game(current_info.game_Feature, current_info.cell_board, current_info.mine_board, info.new_row, info.new_col, mines);
 
             //Setting mines into mine_board 
             mine_settingUp(current_info.current_player.level, current_info.game_Feature, current_info.mine_board, current_info.cell_board);
@@ -167,6 +167,38 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                 else {
                     current_info.cell_board[a][b].isFlag = true;
                     current_info.game_Feature.flags--;
+                    if (current_info.game_Feature.flags == 0) {
+                        switch (current_info.current_player.level) {
+                        case (int)Difficulty::Beginner: {
+                            if (fully_Flagged(current_info.cell_board, current_info.mine_board, current_info.game_Feature) == BEGINNER_MINE) {
+                                open_all_Cell(current_info.cell_board, current_info.game_Feature);
+                                current_info.game_state = GameState::Won;
+                            }
+                            break;
+                        }
+                        case (int)Difficulty::Intermediate: {
+                            if (fully_Flagged(current_info.cell_board, current_info.mine_board, current_info.game_Feature) == INTERMEDIATE_MINE) {
+                                open_all_Cell(current_info.cell_board, current_info.game_Feature);
+                                current_info.game_state = GameState::Won;
+                            }
+                            break;
+                        }
+                        case (int)Difficulty::Expert: {
+                            if (fully_Flagged(current_info.cell_board, current_info.mine_board, current_info.game_Feature) == EXPERT_MINE) {
+                                open_all_Cell(current_info.cell_board, current_info.game_Feature);
+                                current_info.game_state = GameState::Won;
+                            }
+                            break;
+                        }
+                        case (int)Difficulty::Custom: {
+                            if (fully_Flagged(current_info.cell_board, current_info.mine_board, current_info.game_Feature) == current_info.game_Feature.maxMine) {
+                                open_all_Cell(current_info.cell_board, current_info.game_Feature);
+                                current_info.game_state = GameState::Won;
+                            }
+                            break;
+                        }
+                        }
+                    }
                 }
 
                 ofstream outFile(DATA_PATH + "last_Gameboard.txt");
