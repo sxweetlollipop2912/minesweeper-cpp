@@ -80,7 +80,15 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
         if (!mine_updateData(current_info.mine_board, current_info.cell_board, current_info.game_Feature, current_info.current_player)) {
             current_info.game_Feature.MAX_ROW = current_info.game_Feature.MAX_COLUMN = -1;
         }
-
+        
+        //Update current_timer for loading game
+        ifstream inFile(DATA_PATH + "last_Clock.txt");
+        if (inFile.fail()) {
+            cout << " Cannot open.";
+        }
+        inFile >> current_info.current_timer;
+        inFile.close();
+        
         break;
     }
     case GameEvent::ShowLeaderboard: {
