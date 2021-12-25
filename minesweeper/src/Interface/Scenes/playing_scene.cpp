@@ -196,25 +196,35 @@ GameEvent PlayingScene::onMouseButtonReleased(const MouseActionType mouse_type) 
 		if (board.isValidPos(board.hovered_cell)) {
 			switch (mouse_type) {
 				// RMB: Flag/Unflag a cell.
-			case MouseActionType::RMB:
+			case MouseActionType::FirstLMB:
 			{
 				last_pressed_cell = board.hovered_cell;
 
-				return GameEvent::FlagCell;
+				break;
+			}
+			// RMB: Flag/Unflag a cell.
+			case MouseActionType::RMB:
+			{
+				last_pressed_cell = board.hovered_cell;
+				game_event = GameEvent::FlagCell;
+
+				break;
 			}
 			// LMB: Open a cell.
 			case MouseActionType::LMB:
 			{
 				last_pressed_cell = board.hovered_cell;
+				game_event = GameEvent::OpenCell;
 
-				return GameEvent::OpenCell;
+				break;
 			}
 			// Double-LMB: Auto-open nearby safe cells.
 			case MouseActionType::DoubleLMB:
 			{
 				last_pressed_cell = board.hovered_cell;
+				game_event = GameEvent::AutoOpenCell;
 
-				return GameEvent::AutoOpenCell;
+				break;
 			}
 			}
 		}
