@@ -11,7 +11,7 @@ private:
 public:
     Timer();
 
-    void reset();
+    void reset(const sf::Time offset = sf::milliseconds(0));
     void resume();
     void pause();
     sf::Time getElapsedTime() const;

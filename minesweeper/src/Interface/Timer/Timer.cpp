@@ -6,9 +6,9 @@ Timer::Timer() {
     reset();
 }
 
-void Timer::reset() {
+void Timer::reset(const sf::Time offset) {
     is_paused = false;
-    run_time = sf::microseconds(0);
+    run_time = offset;
     last_resumed = (*ResourceManager::getInstance())->getElapsedTime();
 }
 

@@ -3,7 +3,7 @@
 #include "playing_scene.h"
 
 
-PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_rows, const int board_cols)
+PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_rows, const int board_cols, const sf::Time timer_offset)
 	: Scene(window_size, SceneType::Playing, true) {
 	next_scene[GameEvent::AutoOpenCell] = SceneType::Playing;
 	next_scene[GameEvent::OpenCell] = SceneType::Playing;
@@ -14,7 +14,7 @@ PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_row
 
 	last_pressed_cell = Position(-1, -1);
 
-	timer.reset();
+	resetTimer();
 
 	// Board
 	{
@@ -122,9 +122,14 @@ std::string PlayingScene::timerStr(int h, int m, int s) {
 }
 
 
-void PlayingScene::updateTimer(const Time new_timer) {
+void PlayingScene::updateTimerStr(const Time new_timer) {
 	Text& timer = texts[STR_TIMER];
 	timer.setText(timerStr(new_timer.hours, new_timer.minutes, new_timer.seconds));
+}
+
+
+void PlayingScene::resetTimer(const sf::Time timer_offset) {
+	timer.reset(std::max(sf::microseconds(0), timer_offset));
 }
 
 
@@ -245,7 +250,7 @@ void PlayingScene::onGainedFocus() {
 
 
 bool PlayingScene::updatePerFrame() {
-	updateTimer(timer.getElapsedTime());
+	updateTimerStr(timer.getElapsedTime());
 
 	return true;
 }

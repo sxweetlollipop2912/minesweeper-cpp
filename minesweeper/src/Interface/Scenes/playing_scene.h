@@ -36,14 +36,16 @@ private:
 
 	std::string timerStr(int h, int m, int s);
 
-	void updateTimer(const Time timer);
+	void setTopLeftPosScoreboard(const sf::Vector2f top_left_pos);
+
+	void updateTimerStr(const Time timer);
 	// Updates the grahics side of the board.
 	// Returns Result::success / Result::failure:
 	//	> success: board is successfully updated.
 	//	> failure: board has not been changed after calling this method.
 	// Regardless of the result, the board is up-to-date at return time.
+	void resetTimer(const sf::Time timer_offset = sf::microseconds(0));
 	Result updateBoard(const GAMECELL cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int flag_remaining);
-	void setTopLeftPosScoreboard(const sf::Vector2f top_left_pos);
 
 
 	// OVERRIDING SCENE METHODS
@@ -65,7 +67,7 @@ private:
 	bool updatePerFrame() override;
 
 public:
-	PlayingScene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode(), const int board_rows = 0, const int board_cols = 0);
+	PlayingScene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode(), const int board_rows = 0, const int board_cols = 0, const sf::Time timer_offset = sf::microseconds(0));
 
 
 	int getBoardRows() const;

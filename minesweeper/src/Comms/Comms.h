@@ -60,6 +60,9 @@ namespace Comms {
 		GAMEPREDICATE game_Feature;
 		PLAYER current_player;
 
+		// Only while loading game.
+		Time current_timer = Time(-1, -1, -1, false);
+
 		// Only needed in SceneType::Leaderboard or in GameEvent::ShowLeaderboard.
 		std::shared_ptr<Records> records = std::make_shared<Records>();
 

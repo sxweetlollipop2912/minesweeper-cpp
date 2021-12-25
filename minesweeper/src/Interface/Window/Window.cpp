@@ -130,7 +130,6 @@ void Window::updateGameInfo() {
 			break;
 		}
 		case GameEvent::NewGame:
-		case GameEvent::LoadGame:
 		{
 			if (current_game_info.game_Feature.MAX_ROW < 0 || current_game_info.game_Feature.MAX_COLUMN < 0) {
 				current_interface_info.current_scene = SceneType::Difficulties;
@@ -141,6 +140,21 @@ void Window::updateGameInfo() {
 				auto scene = std::dynamic_pointer_cast<PlayingScene>(scenes.at(current_interface_info.current_scene));
 				scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board,
 					current_game_info.game_Feature.flags);
+			}
+
+			break;
+		}
+		case GameEvent::LoadGame:
+		{
+			if (current_game_info.game_Feature.MAX_ROW < 0 || current_game_info.game_Feature.MAX_COLUMN < 0) {
+				current_interface_info.current_scene = SceneType::Difficulties;
+			}
+			else {
+				initializePlayingScene(current_game_info.game_Feature.MAX_ROW, current_game_info.game_Feature.MAX_COLUMN);
+				auto scene = std::dynamic_pointer_cast<PlayingScene>(  scenes.at(current_interface_info.current_scene));
+				scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board,
+					current_game_info.game_Feature.flags);
+				scene->resetTimer(current_game_info.current_timer);
 
 				if (current_game_info.game_state == GameState::Won) std::cout << "WON!\n";
 				else if (current_game_info.game_state == GameState::Ongoing) std::cout << "ongoing!\n";
@@ -415,6 +429,10 @@ void Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Ve
 
 void Window::setVolumeTopLeftPos(const sf::Vector2f& top_left_pos) {
 	background->volume->setTopLeftPos(top_left_pos);
+}
+
+
+void Window::setSkipSongTopLeftPos(const sf::Vector2f& top_left_pos) {
 }
 
 

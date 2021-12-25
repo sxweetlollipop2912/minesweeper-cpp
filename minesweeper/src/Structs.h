@@ -32,6 +32,10 @@ struct Time {
 		seconds = sec;
 		STOP = false;
 	}
+
+	operator sf::Time() const {
+		return sf::seconds(seconds + minutes * 60 + hours * 3600);
+	}
 };
 
 struct PLAYER {
