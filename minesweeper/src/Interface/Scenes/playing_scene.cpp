@@ -195,7 +195,6 @@ GameEvent PlayingScene::onMouseButtonReleased(const MouseActionType mouse_type) 
 		// If mouse is hovering over a cell.
 		if (board.isValidPos(board.hovered_cell)) {
 			switch (mouse_type) {
-				// RMB: Flag/Unflag a cell.
 			case MouseActionType::FirstLMB:
 			{
 				last_pressed_cell = board.hovered_cell;
@@ -213,7 +212,6 @@ GameEvent PlayingScene::onMouseButtonReleased(const MouseActionType mouse_type) 
 			// LMB: Open a cell.
 			case MouseActionType::LMB:
 			{
-				last_pressed_cell = board.hovered_cell;
 				game_event = GameEvent::OpenCell;
 
 				break;
@@ -221,7 +219,6 @@ GameEvent PlayingScene::onMouseButtonReleased(const MouseActionType mouse_type) 
 			// Double-LMB: Auto-open nearby safe cells.
 			case MouseActionType::DoubleLMB:
 			{
-				last_pressed_cell = board.hovered_cell;
 				game_event = GameEvent::AutoOpenCell;
 
 				break;
