@@ -152,9 +152,11 @@ void Window::updateGameInfo() {
 			else {
 				initializePlayingScene(current_game_info.game_Feature.MAX_ROW, current_game_info.game_Feature.MAX_COLUMN);
 				auto scene = std::dynamic_pointer_cast<PlayingScene>(  scenes.at(current_interface_info.current_scene));
+
 				scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board,
 					current_game_info.game_Feature.flags);
 				scene->resetTimer(current_game_info.current_timer);
+				scene->updateGameState(current_game_info.game_state);
 
 				if (current_game_info.game_state == GameState::Won) std::cout << "WON!\n";
 				else if (current_game_info.game_state == GameState::Ongoing) std::cout << "ongoing!\n";
@@ -179,6 +181,11 @@ void Window::updateGameInfo() {
 			auto scene = std::dynamic_pointer_cast<PlayingScene>(scenes.at(current_interface_info.current_scene));
 			scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board,
 				current_game_info.game_Feature.flags);
+			scene->updateGameState(current_game_info.game_state);
+
+			if (current_game_info.game_state == GameState::Won) std::cout << "just WON!\n";
+			else if (current_game_info.game_state == GameState::Ongoing) std::cout << "still ongoing!\n";
+			else if (current_game_info.game_state == GameState::Lost) std::cout << "just LOST!\n";
 
 			break;
 		}
@@ -242,23 +249,31 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 		{
 			send_interface_info = true;
 
-			auto scene = std::dynamic_pointer_cast<DifficultiesScene>(getCurrentScene());
+			if (getCurrentSceneType() == SceneType::Difficulties) {
+				auto scene = std::dynamic_pointer_cast<DifficultiesScene>(getCurrentScene());
 
-			current_interface_info.new_row = std::min(scene->getCurrentRow(), scene->getCurrentCol());
-			current_interface_info.new_col = std::max(scene->getCurrentRow(), scene->getCurrentCol());
+				current_interface_info.new_row = std::min(scene->getCurrentRow(), scene->getCurrentCol());
+				current_interface_info.new_col = std::max(scene->getCurrentRow(), scene->getCurrentCol());
 
-			if (current_interface_info.new_row == BEGINNER_ROW && current_interface_info.new_col == BEGINNER_COL) {
-				current_interface_info.difficulty = Difficulty::Beginner;
+				if (current_interface_info.new_row == BEGINNER_ROW && current_interface_info.new_col == BEGINNER_COL) {
+					current_interface_info.difficulty = Difficulty::Beginner;
+				}
+				else if (current_interface_info.new_row == INTERMEDIATE_ROW && current_interface_info.new_col == INTERMEDIATE_COL) {
+					current_interface_info.difficulty = Difficulty::Intermediate;
+				}
+				else if (current_interface_info.new_row == EXPERT_ROW && current_interface_info.new_col == EXPERT_COL) {
+					current_interface_info.difficulty = Difficulty::Expert;
+				}
+				else {
+					current_interface_info.difficulty = Difficulty::Custom;
+				}
 			}
-			else if (current_interface_info.new_row == INTERMEDIATE_ROW && current_interface_info.new_col == INTERMEDIATE_COL) {
-				current_interface_info.difficulty = Difficulty::Intermediate;
+
+			else if (getCurrentSceneType() == SceneType::Playing) {
+				// Keeps previous board configurations.
 			}
-			else if (current_interface_info.new_row == EXPERT_ROW && current_interface_info.new_col == EXPERT_COL) {
-				current_interface_info.difficulty = Difficulty::Expert;
-			}
-			else {
-				current_interface_info.difficulty = Difficulty::Custom;
-			}
+
+			current_interface_info.current_timer = sf::microseconds(0);
 
 			break;
 		}
@@ -285,16 +300,6 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 			current_interface_info.cell_pos = scene->getLastPressedCell();
 			current_interface_info.current_timer = scene->getElapsedTime();
 
-			break;
-		}
-		case GameEvent::Won:
-		{
-			// Load whole board, splash screen etc.
-			break;
-		}
-		case GameEvent::Lost: 
-		{
-			// Load whole board, splash screen etc.
 			break;
 		}
 		case GameEvent::SkipSong:

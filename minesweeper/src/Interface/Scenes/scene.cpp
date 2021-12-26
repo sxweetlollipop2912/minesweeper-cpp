@@ -104,7 +104,7 @@ bool Scene::spawnPopUp(const GameEvent game_event) {
 	switch (game_event) {
 	case GameEvent::QuitGame:
 	{
-		PopUp pu(game_event, window_size, use_double_lmb, "You are about to quit the game.\nAre you sure?");
+		PopUp pu(game_event, GameEvent::ClosePopUp, window_size, use_double_lmb, "You are about to quit the game.\nAre you sure?");
 		auto ptr = std::make_shared<PopUp>(pu);
 
 		pop_up = std::static_pointer_cast<Scene>(ptr);
@@ -113,7 +113,7 @@ bool Scene::spawnPopUp(const GameEvent game_event) {
 	}
 	case GameEvent::NewGame:
 	{
-		PopUp pu(game_event, window_size, use_double_lmb, "Do you want to create new game?\nCurrent save game will be lost.");
+		PopUp pu(game_event, GameEvent::ClosePopUp, window_size, use_double_lmb, "Do you want to create new game?\nCurrent save game will be lost.");
 		auto ptr = std::make_shared<PopUp>(pu);
 
 		pop_up = std::static_pointer_cast<Scene>(ptr);
@@ -123,11 +123,29 @@ bool Scene::spawnPopUp(const GameEvent game_event) {
 	case GameEvent::QuitToMenu:
 	{
 		if (scene_type == SceneType::Playing) {
-			PopUp pu(game_event, window_size, use_double_lmb, "Do you want to quit to menu?\nCurrent game will be saved.");
+			PopUp pu(game_event, GameEvent::ClosePopUp, window_size, use_double_lmb, "Do you want to quit to menu?\nCurrent game will be saved.");
 			auto ptr = std::make_shared<PopUp>(pu);
 
 			pop_up = std::static_pointer_cast<Scene>(ptr);
 		}
+
+		break;
+	}
+	case GameEvent::Won:
+	{
+		PopUp pu(GameEvent::NewGame, GameEvent::QuitToMenu, window_size, use_double_lmb, "Congratulations. You've won!!!", "Play again", "Menu");
+		auto ptr = std::make_shared<PopUp>(pu);
+
+		pop_up = std::static_pointer_cast<Scene>(ptr);
+
+		break;
+	}
+	case GameEvent::Lost:
+	{
+		PopUp pu(GameEvent::NewGame, GameEvent::QuitToMenu, window_size, use_double_lmb, "KA-BOOM! Oh no, you've lost :(", "Play again", "Menu");
+		auto ptr = std::make_shared<PopUp>(pu);
+
+		pop_up = std::static_pointer_cast<Scene>(ptr);
 
 		break;
 	}

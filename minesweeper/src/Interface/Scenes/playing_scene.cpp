@@ -13,7 +13,7 @@ PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_row
 	buttons_event[STR_RETURN_BUTTON] = GameEvent::QuitToMenu;
 
 	last_pressed_cell = Position(-1, -1);
-
+	updateGameState(GameState::Ongoing);
 	resetTimer();
 
 	// Board
@@ -141,6 +141,22 @@ Result PlayingScene::updateBoard(const GAMECELL cell_board[][MAX_COLUMN], const 
 }
 
 
+void PlayingScene::updateGameState(const GameState game_state) {
+	if (this->game_state != game_state) {
+		this->game_state = game_state;
+
+		if (game_state == GameState::Won) {
+			std::cout << "spawn won\n";
+			spawnPopUp(GameEvent::Won);
+		}
+		else if (game_state == GameState::Lost) {
+			std::cout << "spawn lost\n";
+			spawnPopUp(GameEvent::Lost);
+		}
+	}
+}
+
+
 void PlayingScene::setTopLeftPosScoreboard(const sf::Vector2f top_left_pos) {
 	Button& scoreboard = buttons[STR_SCOREBOARD];
 	scoreboard.setTopLeftPos(top_left_pos);
@@ -186,43 +202,42 @@ void PlayingScene::setTopLeftPosScoreboard(const sf::Vector2f top_left_pos) {
 GameEvent PlayingScene::onMouseButtonReleased(const MouseActionType mouse_type) {
 	auto game_event = this->Scene::onMouseButtonReleased(mouse_type);
 
-	if (pop_up) {
-		timer.pause();
-	}
-	else if (game_event == GameEvent::Unknown) {
-		timer.resume();
+	if (!pop_up && game_event == GameEvent::Unknown) {
+		if (game_state == GameState::Ongoing) {
+			timer.resume();
 
-		// If mouse is hovering over a cell.
-		if (board.isValidPos(board.hovered_cell)) {
-			switch (mouse_type) {
-			case MouseActionType::FirstLMB:
-			{
-				last_pressed_cell = board.hovered_cell;
+			// If mouse is hovering over a cell.
+			if (board.isValidPos(board.hovered_cell)) {
+				switch (mouse_type) {
+				case MouseActionType::FirstLMB:
+				{
+					last_pressed_cell = board.hovered_cell;
 
-				break;
-			}
-			// RMB: Flag/Unflag a cell.
-			case MouseActionType::RMB:
-			{
-				last_pressed_cell = board.hovered_cell;
-				game_event = GameEvent::FlagCell;
+					break;
+				}
+				// RMB: Flag/Unflag a cell.
+				case MouseActionType::RMB:
+				{
+					last_pressed_cell = board.hovered_cell;
+					game_event = GameEvent::FlagCell;
 
-				break;
-			}
-			// LMB: Open a cell.
-			case MouseActionType::LMB:
-			{
-				game_event = GameEvent::OpenCell;
+					break;
+				}
+				// LMB: Open a cell.
+				case MouseActionType::LMB:
+				{
+					game_event = GameEvent::OpenCell;
 
-				break;
-			}
-			// Double-LMB: Auto-open nearby safe cells.
-			case MouseActionType::DoubleLMB:
-			{
-				game_event = GameEvent::AutoOpenCell;
+					break;
+				}
+				// Double-LMB: Auto-open nearby safe cells.
+				case MouseActionType::DoubleLMB:
+				{
+					game_event = GameEvent::AutoOpenCell;
 
-				break;
-			}
+					break;
+				}
+				}
 			}
 		}
 	}
@@ -257,7 +272,12 @@ void PlayingScene::onGainedFocus() {
 
 
 bool PlayingScene::updatePerFrame() {
-	updateTimerStr(timer.getElapsedTime());
+	if (!pop_up) {
+		updateTimerStr(timer.getElapsedTime());
+	}
+	else {
+		timer.pause();
+	}
 
 	return true;
 }

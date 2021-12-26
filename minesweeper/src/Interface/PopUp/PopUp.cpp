@@ -1,9 +1,9 @@
 #include "PopUp.h"
 
 
-PopUp::PopUp(const GameEvent game_event, const sf::VideoMode& window_size, bool use_double_lmb, const std::string& msg, const std::string& yes_msg, const std::string& no_msg) : Scene(window_size, SceneType::PopUp, use_double_lmb) {
-	buttons_event[STR_YES] = game_event;
-	buttons_event[STR_NO] = GameEvent::ClosePopUp;
+PopUp::PopUp(const GameEvent yes_game_event, const GameEvent no_game_event, const sf::VideoMode& window_size, bool use_double_lmb, const std::string& msg, const std::string& yes_msg, const std::string& no_msg) : Scene(window_size, SceneType::PopUp, use_double_lmb) {
+	buttons_event[STR_YES] = yes_game_event;
+	buttons_event[STR_NO] = no_game_event;
 
 	Button& box = buttons[STR_BOX];
 	box.setImage(TextureType::PopUpBackground);
@@ -12,11 +12,13 @@ PopUp::PopUp(const GameEvent game_event, const sf::VideoMode& window_size, bool 
 
 	Button& yes_button = buttons[STR_YES];
 	yes_button.setImage(TextureType::YesNoButton);
+	yes_button.setPadding(sf::Vector2f(DEFAULT_PADDING_SIZE.x / 2, DEFAULT_PADDING_SIZE.y));
 	yes_button.label.setText(yes_msg);
 	yes_button.alignImageAndText();
 
 	Button& no_button = buttons[STR_NO];
 	no_button.setImage(TextureType::YesNoButton);
+	yes_button.setPadding(sf::Vector2f(DEFAULT_PADDING_SIZE.x / 2, DEFAULT_PADDING_SIZE.y));
 	no_button.label.setText(no_msg);
 	no_button.alignImageAndText();
 

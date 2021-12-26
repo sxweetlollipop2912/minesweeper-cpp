@@ -32,6 +32,7 @@ private:
 	Board board;
 	Position last_pressed_cell;
 	Timer timer;
+	GameState game_state;
 
 
 	std::string timerStr(int h, int m, int s);
@@ -46,6 +47,7 @@ private:
 	// Regardless of the result, the board is up-to-date at return time.
 	void resetTimer(const sf::Time timer_offset = sf::microseconds(0));
 	Result updateBoard(const GAMECELL cell_board[][MAX_COLUMN], const char mine_board[][MAX_COLUMN], const int flag_remaining);
+	void updateGameState(const GameState game_state);
 
 
 	// OVERRIDING SCENE METHODS
