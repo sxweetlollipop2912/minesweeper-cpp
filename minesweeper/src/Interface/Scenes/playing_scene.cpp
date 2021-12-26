@@ -273,6 +273,11 @@ int PlayingScene::getBoardCols() const {
 }
 
 
+sf::Time PlayingScene::getElapsedTime() const {
+	return timer.getElapsedTime();
+}
+
+
 Position PlayingScene::getLastPressedCell() const {
 	return last_pressed_cell;
 }

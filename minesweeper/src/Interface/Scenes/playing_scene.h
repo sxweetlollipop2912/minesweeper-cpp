@@ -72,6 +72,7 @@ public:
 
 	int getBoardRows() const;
 	int getBoardCols() const;
+	sf::Time getElapsedTime() const;
 	Position getLastPressedCell() const;
 
 	// Draws all textures and texts in the scene on an sf::RenderTarget object

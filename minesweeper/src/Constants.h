@@ -52,7 +52,7 @@ const std::string DEFAULT_FONT_PATH = FONT_PATH + (const std::string)"MochiyPopO
 const int DEFAULT_TRANSPARENT_ALPHA_VALUE = 240;
 const sf::Color HOVERED_COLOR = sf::Color(150, 150, 150);
 const sf::Color BACKGROUMD_COLOR = sf::Color(0, 0, 0);
-const sf::Color DEFAULT_TEXT_COLOR = sf::Color(240, 240, 240);
+const sf::Color DEFAULT_TEXT_COLOR = sf::Color(235, 235, 235);
 const AudioVisualCfg::Cfg DEFAULT_VISUAL_CONFIG(sf::Color(16, 20, 20), sf::Color(92, 204, 230), sf::seconds(5), 225, sf::milliseconds(0));
 const float BUBBLE_RADIUS = 150;
 const int NUMBER_OF_BUBBLES = 13;

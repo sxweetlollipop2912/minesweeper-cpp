@@ -283,6 +283,7 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 			auto scene = std::dynamic_pointer_cast<PlayingScene>(getCurrentScene());
 
 			current_interface_info.cell_pos = scene->getLastPressedCell();
+			current_interface_info.current_timer = scene->getElapsedTime();
 
 			break;
 		}
