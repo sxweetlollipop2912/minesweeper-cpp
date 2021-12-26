@@ -157,7 +157,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
 
         mine_updateData(current_info.mine_board, current_info.cell_board, current_info.game_Feature, current_info.current_player);
 
-        if (current_info.game_Feature.flags > 0) {
+        if (current_info.game_Feature.flags > 0 || current_info.cell_board[a][b].isFlag) {
             if (current_info.cell_board[a][b].isOpened) {
                 ofstream outFile(DATA_PATH + "last_Clock.txt");
                 if (outFile.fail()) {
