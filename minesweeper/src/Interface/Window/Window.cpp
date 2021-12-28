@@ -170,7 +170,7 @@ void Window::updateGameInfo() {
 			initializeLeaderboardScene();
 
 			auto scene = std::dynamic_pointer_cast<LeaderboardScene>(scenes.at(current_interface_info.current_scene));
-			scene->updateRecords(current_game_info.records);
+			scene->updateRecords(std::make_shared<Records>(current_game_info.records));
 
 			break;
 		}

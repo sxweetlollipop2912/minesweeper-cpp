@@ -3,6 +3,27 @@
 #include "../Interface/Window/Window.h"
 
 
+void Comms::readGameInfo(GameInfo& game_info, const std::string& path) {
+    std::ifstream ifs(path);
+    if (!ifs.fail()) {
+        boost::archive::text_iarchive ia(ifs);
+        ia >> game_info;
+    }
+    // archive and stream closed when destructors are called
+}
+
+
+void Comms::writeGameInfo(GameInfo& game_info, const std::string& path) {
+    std::ofstream ofs;
+    ofs.open(path);
+
+    boost::archive::text_oarchive oa(ofs);
+
+    oa << game_info;
+    // archive and stream closed when destructors are called
+}
+
+
 Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
     auto& current_info = (*Window::getInstance())->current_game_info;
 
@@ -93,7 +114,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
     }
     case GameEvent::ShowLeaderboard: {
 
-        update_ScoreBoard(*(current_info.records));
+        update_ScoreBoard(current_info.records);
 
         break;
     }
@@ -136,7 +157,7 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                     current_info.game_Feature.STOP = true;
                     current_info.game_state = GameState::Won;
                     current_info.current_player.timePlay = info.current_timer;
-                    addtoRecord(current_info.current_player.level, current_info.current_player, *current_info.records);
+                    addtoRecord(current_info.current_player.level, current_info.current_player, current_info.records);
                 }
             }
         }

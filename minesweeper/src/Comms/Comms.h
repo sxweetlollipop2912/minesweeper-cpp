@@ -1,6 +1,12 @@
 ﻿#pragma once
 
 #include <vector>
+#include <string>
+#include <fstream>
+
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/vector.hpp>
 
 #include "../Interface/Board/Position.h"
 #include "../Interface/Board/Board.h"
@@ -60,15 +66,33 @@ namespace Comms {
 		GAMEPREDICATE game_Feature;
 		PLAYER current_player;
 
-		// Only while loading game.
+		// Only needed while loading game.
 		Time current_timer = Time(-1, -1, -1, false);
 
 		// Only needed in SceneType::Leaderboard or in GameEvent::ShowLeaderboard.
-		std::shared_ptr<Records> records = std::make_shared<Records>();
+		Records records;
 
+
+		template<class Archive>
+		void serialize(Archive& ar, const unsigned int version) {
+			ar& game_state;
+			ar& board_row;
+			ar& board_col;
+			ar& game_Feature;
+			ar& current_player;
+			ar& current_timer;
+			ar& records;
+
+			for (int i = 0; i < board_row; i++) for (int j = 0; j < board_col; j++) {
+				ar& cell_board[i][j];
+				ar& mine_board[i][j];
+			}
+		}
 	};
 	
 
+	void readGameInfo(GameInfo& game_info, const std::string& path);
+	void writeGameInfo(GameInfo& game_info, const std::string& path);
 
 	/// Used by INTERFACE to send InterfaceInfo whenever there are changes, to GAME.
 	Result interfaceInfoSending(const InterfaceInfo& info);

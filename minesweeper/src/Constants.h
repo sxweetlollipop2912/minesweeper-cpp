@@ -28,12 +28,15 @@ const float CUSTOM_MINE_COEF = 0.2f;
 const int MAX_RECORDS_PER_DIFF = 3;
 const int MAX_SONGS = 2;
 
-// PATH
+// DIRECTORIES
 const std::string DATA_PATH = ".\\data\\";
 const std::string ASSET_PATH = ".\\assets\\";
 const std::string IMG_PATH = ASSET_PATH + (const std::string)"images\\";
 const std::string FONT_PATH = ASSET_PATH + (const std::string)"fonts\\";
 const std::string MUSIC_PATH = ASSET_PATH + (const std::string)"music\\";
+
+// SAVES
+const std::string GAME_INFO_PATH = DATA_PATH + (const std::string)"game_info.txt";
 
 
 // WINDOW

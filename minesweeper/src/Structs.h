@@ -36,11 +36,25 @@ struct Time {
 	operator sf::Time() const {
 		return sf::seconds(seconds + minutes * 60 + hours * 3600);
 	}
+
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version) {
+		ar& hours;
+		ar& minutes;
+		ar& seconds;
+		ar& STOP;
+	}
 };
 
 struct PLAYER {
 	Time timePlay = Time(0, 0, 0, false);
 	int level;
+
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version) {
+		ar& timePlay;
+		ar& level;
+	}
 };
 
 struct Records {
@@ -53,6 +67,13 @@ struct Records {
 		intermediate.clear();
 		expert.clear();
 	}
+
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version) {
+		ar& beginner;
+		ar& intermediate;
+		ar& expert;
+	}
 };
 
 struct GAMEPREDICATE {
@@ -61,12 +82,28 @@ struct GAMEPREDICATE {
 	int maxMine;
 	int flags;
 	bool STOP = false;
+
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version) {
+		ar& MAX_ROW;
+		ar& MAX_COLUMN;
+		ar& maxMine;
+		ar& flags;
+		ar& STOP;
+	}
 };
 
 struct GAMECELL {
 	bool isOpened;
 	bool isFlag;
 	int mine_Count;
+
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version) {
+		ar& isOpened;
+		ar& isFlag;
+		ar& mine_Count;
+	}
 };
 
 
