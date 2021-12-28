@@ -2,11 +2,12 @@
 
 #include <map>
 #include <set>
+#include <deque>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-#include "../ResourceVault/ResourceVault.h"
+#include "../ResourceManager/ResourceManager.h"
 #include "../AudioManager/AudioManager.h"
 #include "../Background/Background.h"
 #include "../Button/Button.h"
@@ -23,21 +24,30 @@
 #include "../../Structs.h"
 
 
+struct MouseAction {
+	MouseActionType type;
+	sf::Time pressed_moment;
+	MouseAction(const MouseActionType& type = MouseActionType::Unknown, const sf::Time& pressed_moment = sf::microseconds(0)) {
+		this->type = type, this->pressed_moment = pressed_moment;
+	}
+};
+
+
 // This is a singleton.
 class Window {
-	friend Result Comms::gameInfoSending(const GameInfo info);
+	friend Result Comms::gameInfoSending(const GameInfo& info);
+	friend Result Comms::interfaceInfoSending(const InterfaceInfo& info);
 
 private:
 	static Window* instance;
+
+	Comms::GameInfo current_game_info;
+	Comms::InterfaceInfo current_interface_info;
 
 	std::shared_ptr<Background> background;
 	AudioManager audio_manager;
 
 	std::map <SceneType, std::shared_ptr<Scene>> scenes;
-	std::set <SceneType> constantly_changing_scenes;
-
-	Comms::GameInfo current_game_info;
-	Comms::InterfaceInfo current_interface_info;
 
 	SceneType current_scene_type;
 	GameEvent last_game_event;
@@ -45,10 +55,12 @@ private:
 	sf::Vector2i pos_mouse;
 	// Locks mouse button when it is in use, i.e, a RMB won't be detected while a LMB is pressed and hasn't been released.
 	MouseActionType lock_mouse_button;
+	std::deque <MouseAction> pressed_actions;
+	std::deque <MouseAction> released_actions;
 
 	Window(const sf::VideoMode& window_size = sf::VideoMode(1500, 1000), const std::string& title = TITLE, const int window_style = sf::Style::Close);
 
-	void updateGameInfo(const Comms::GameInfo info);
+	void updateGameInfo();
 	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	bool handleGameEvents(const GameEvent game_event);
@@ -58,16 +70,15 @@ private:
 	bool changeMousePosition(const sf::Vector2i& pos);
 	// Sets current scene type.
 	void setCurrentSceneType(const SceneType& type);
-
 	// Call upon a mouse button PRESS event.
 	// Cannot detect a DoubleLMB at this stage.
-	// Returns true if there are visual changes.
-	// Otherwise, returns false
-	bool onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vector2i& position);
+	void onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vector2i& position);
 	// Call upon a mouse button RELEASE event.
-	// Returns true if there are visual changes.
-	// Otherwise, returns false
-	bool onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position);
+	void onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position);
+
+	// Between scenes
+	void setVolumeTopLeftPos(const sf::Vector2f& top_left_pos);
+	void setSkipSongTopLeftPos(const sf::Vector2f& top_left_pos);
 
 public:
 	std::shared_ptr<sf::RenderWindow> render_window;

@@ -29,7 +29,7 @@ enum class GameEvent {
 	Won,
 	Lost,
 	ChangesInScene,
-	NextSong,
+	SkipSong,
 	Unknown
 };
 
@@ -44,16 +44,21 @@ enum class SceneType {
 	Unknown
 };
 
+
  enum class Difficulty {
-	Beginner,
-	Intermediate,
-	Expert,
-	Custom,
+	Beginner = 1,
+	Intermediate = 2,
+	Expert = 3,
+	Custom = 0,
 	Unknown
 };
 
+
+ // Handle only (FirstLMB and SecondLMB) or (LMB and DoubleLMB), never both.
 enum class MouseActionType {
 	Move,
+	FirstLMB,
+	SecondLMB,
 	LMB,
 	RMB,
 	DoubleLMB,
@@ -78,8 +83,11 @@ enum class CellType {
 
 
 enum class TextureType {
-	ButtonDefault,
-	NextSong,
+	DefaultButton,
+	YesNoButton,
+	PopUpBackground,
+	ReturnButton,
+	SkipSong,
 	Scoreboard,
 	CellMine,
 	CellClosed,

@@ -22,5 +22,5 @@ private:
 	void PositionPopUp(const sf::VideoMode& window_size);
 
 public:
-	PopUp(const GameEvent game_event = GameEvent::Unknown, const sf::VideoMode& window_size = sf::VideoMode(0, 0), const std::string& msg = "", const std::string& yes_msg = "YES", const std::string& no_msg = "NO");
+	PopUp(const GameEvent yes_game_event = GameEvent::Unknown, const GameEvent no_game_event = GameEvent::Unknown, const sf::VideoMode& window_size = sf::VideoMode(0, 0), bool use_double_lmb = false, const std::string& msg = "", const std::string& yes_msg = "YES", const std::string& no_msg = "NO");
 };

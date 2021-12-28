@@ -10,10 +10,11 @@ Button::Button() {
     padding = DEFAULT_PADDING_SIZE;
     scale = sf::Vector2f(1, 1);
     transparent = false;
+    stretchable = false;
 }
 
 
-Result Button::equalizeButtonsSize(Button& button1, Button& button2) {
+void Button::equalizeButtonsSize(Button& button1, Button& button2) {
     float width = std::max(button1.getSize().x, button2.getSize().x);
     float height = std::max(button1.getSize().y, button2.getSize().y);
     button1.setScale(sf::Vector2f(width / button1.getImageSize().x, height / button1.getImageSize().y));
@@ -29,14 +30,8 @@ Result Button::equalizeButtonsSize(Button& button1, Button& button2) {
     button1.setPadding(padding);
     button2.setPadding(padding);
 
-    if (button1.centerTextInButton() == Result::failure) {
-        return Result::failure;
-    }
-    if (button2.centerTextInButton() == Result::failure) {
-        return Result::failure;
-    }
-
-    return Result::success;
+    button1.centerTextInButton();
+    button2.centerTextInButton();
 }
 
 
@@ -47,7 +42,7 @@ sf::Vector2f Button::getSize() const {
 }
 
 sf::Vector2u Button::getImageSize() const {
-    auto texture = ResourceVault::getTexture(texture_type);
+    auto texture = (*ResourceManager::getInstance())->getTexture(texture_type);
 
     return texture->getSize();
 }
@@ -69,29 +64,35 @@ sf::Vector2f Button::getPadding() const {
 
 
 void Button::getDefaultSprite(sf::Sprite& sprite) const {
-    auto texture = ResourceVault::getTexture(texture_type);
+    auto texture = (*ResourceManager::getInstance())->getTexture(texture_type);
 
     Graphics::loadSpriteFromTexture(sprite, *texture, top_left_pos);
     sprite.setScale(scale);
 
     if (transparent)
-        sprite.setColor(sf::Color(255, 255, 255, 220));
+        sprite.setColor(sf::Color(255, 255, 255, DEFAULT_TRANSPARENT_ALPHA_VALUE));
     else
         sprite.setColor(sf::Color(255, 255, 255, 255));
 }
 
 
 void Button::getHoveredSprite(sf::Sprite& sprite) const {
-    auto texture = ResourceVault::getTexture(texture_type);
+    auto texture = (*ResourceManager::getInstance())->getTexture(texture_type);
 
     Graphics::loadSpriteFromTexture(sprite, *texture, top_left_pos);
     sprite.setScale(scale);
 
     // Darken the hovered sprite a bit.
-    if (transparent)
-        sprite.setColor(sf::Color(150, 150, 150, 220));
-    else
-        sprite.setColor(sf::Color(150, 150, 150, 255));
+    if (transparent) {
+        auto color = HOVERED_COLOR;
+        color.a = DEFAULT_TRANSPARENT_ALPHA_VALUE;
+        sprite.setColor(color);
+    }
+    else {
+        auto color = HOVERED_COLOR;
+        color.a = 255;
+        sprite.setColor(color);
+    }
 }
 
 
@@ -109,12 +110,12 @@ bool Button::isMouseHovering(const sf::Vector2i& mouse_position) const {
 
 
 Result Button::setImage(const TextureType texture_type, const sf::Vector2f& top_left_pos, const sf::Vector2f& scale) {
-    if (!ResourceVault::findTexture(texture_type)) {
+    if (!(*ResourceManager::getInstance())->findTexture(texture_type)) {
         return Result::failure;
     }
 
     this->texture_type = texture_type;
-    this->scale = scale;
+    setScale(scale);
 
     if (top_left_pos.x != -1) {
         this->top_left_pos = top_left_pos;
@@ -145,15 +146,24 @@ void Button::setPadding(const sf::Vector2f& padding) {
 
 
 void Button::setScale(const sf::Vector2f& scale) {
-    this->scale = scale;
+    if (stretchable) {
+        this->scale = scale;
+    }
+    else {
+        auto x = std::max(scale.x, scale.y);
+        this->scale = sf::Vector2f(x, x);
+    }
 }
 
 
 void Button::setSize(const sf::Vector2f& size) {
     auto img_size = getImageSize();
 
+    sf::Vector2f scale;
     scale.x = size.x / (float)img_size.x;
     scale.y = size.y / (float)img_size.y;
+
+    setScale(scale);
 }
 
 
@@ -169,52 +179,30 @@ void Button::alignImageAndText() {
     float desired_width = text_width + 2 * padding.x;
     float desired_height = text_height + 2 * padding.y;
 
+    sf::Vector2f scale;
     scale.x = desired_width / getImageSize().x;
     scale.y = desired_height / getImageSize().y;
+    setScale(scale);
 
     label.setTopLeftPos(top_left_pos + padding);
 }
 
 
-Result Button::centerButtonHorizontally(const float window_width) {
+void Button::centerButtonHorizontally(const float space_width, const float left_pos_x) {
     float button_width = getSize().x;
-
-    if (window_width < button_width)
-        return Result::failure;
-
-    float old_x = top_left_pos.x;
-    top_left_pos.x = (window_width / 2) - (button_width / 2);
-
-    if (top_left_pos.x < 0 || centerTextInButton() == Result::failure) {
-        top_left_pos.x = old_x;
-
-        return Result::failure;
-    }
-
-    return Result::success;
+    top_left_pos.x = left_pos_x + (space_width / 2) - (button_width / 2);
+    centerTextInButton();
 }
 
 
-Result Button::centerButtonVertically(const float window_height) {
+void Button::centerButtonVertically(const float space_height, const float top_pos_y) {
     float button_height = getSize().y;
-
-    if (window_height < button_height)
-        return Result::failure;
-
-    float old_y = top_left_pos.y;
-    top_left_pos.y = (window_height / 2) - (button_height / 2);
-
-    if (top_left_pos.y < 0 || centerTextInButton() == Result::failure) {
-        top_left_pos.y = old_y;
-
-        return Result::failure;
-    }
-
-    return Result::success;
+    top_left_pos.y = top_pos_y + (space_height / 2) - (button_height / 2);
+    centerTextInButton();
 }
 
 
-Result Button::centerTextInButton() {
+void Button::centerTextInButton() {
     float text_width = label.getWidth();
     float text_height = label.getHeight();
 
@@ -224,10 +212,5 @@ Result Button::centerTextInButton() {
     desired_pos.x = ((top_left_pos.x + pos_right_down.x) / 2) - (text_width / 2);
     desired_pos.y = ((top_left_pos.y + pos_right_down.y) / 2) - (text_height / 2);
 
-    if (desired_pos.x < 0 || desired_pos.y < 0)
-        return Result::failure;
-
     label.setTopLeftPos(desired_pos);
-
-    return Result::success;
 }

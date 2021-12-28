@@ -27,6 +27,7 @@ protected:
 	SceneType scene_type;
 	sf::VideoMode window_size;
 	sf::Vector2i pos_mouse;
+	bool use_double_lmb;
 
 	// Only one pop-up holder for one scene.
 	std::shared_ptr<Scene> pop_up;
@@ -37,11 +38,13 @@ protected:
 
 	std::map <GameEvent, SceneType> next_scene;
 	std::string hovered_button;
+	std::string pressed_button;
 
 
 	void setWindowSize(const sf::VideoMode window_size);
 
 	// Call on a mouse button released event.
+	// Base method only handles single clicks, not double clicks or held-buttons.
 	// Returns corresponding GameEvent.
 	virtual GameEvent onMouseButtonReleased(const MouseActionType mouse_type);
 	// Call on a mouse button pressed event.
@@ -51,13 +54,21 @@ protected:
 	// Returns true if there are visual changes.
 	// Otherwise, returns false
 	virtual bool changeMousePosition(const sf::Vector2i& pos);
+	// Call on a lost window focus event.
+	virtual void onLostFocus();
+	// Call on a gained window focus event.
+	virtual void onGainedFocus();
+	// Call on every frame.
+	// Returns true if there are visual changes.
+	// Otherwise, returns false
+	virtual bool updatePerFrame();
 	// Spawn a PopUp in current Scene base on current GameEvent.
 	// Returns false if no PopUp is spawned running the method (either because another PopUp has already been spawned or there is no PopUp for the GameEvent.
 	// Otherwise, returns true.
 	bool spawnPopUp(const GameEvent game_event);
 
 public:
-	Scene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode(), const SceneType scene_type = SceneType::Unknown);
+	Scene(const sf::VideoMode& window_size = sf::VideoMode::getDesktopMode(), const SceneType scene_type = SceneType::Unknown, const bool use_double_lmb = false);
 
 
 	// Returns SceneType::Unknown if no next scene corresponding with game_event is found.

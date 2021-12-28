@@ -6,6 +6,7 @@
 
 #include <SFML/Audio.hpp>
 
+#include "../ResourceManager/ResourceManager.h"
 #include "../../Enums.h"
 #include "../../Constants.h"
 #include "../../Structs.h"
@@ -31,8 +32,8 @@ private:
 	int volume;
 	MusicStatus current_status;
 
-	sf::Clock clock;
-	sf::Clock down_volume_clock;
+	sf::Time start_moment;
+	sf::Time start_down_volume_moment;
 
 
 	AudioVisualCfg parseFromCfgFile(const std::string& file_path);

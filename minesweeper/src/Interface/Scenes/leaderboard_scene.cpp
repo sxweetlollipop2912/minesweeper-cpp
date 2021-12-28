@@ -8,7 +8,6 @@ LeaderboardScene::LeaderboardScene(const sf::VideoMode& window_size) : Scene(win
 
 	buttons_event[STR_RETURN_BUTTON] = GameEvent::QuitToMenu;
 
-
 	// Texts
 	{
 		float pos_y_leaderboard_title = (float)this->window_size.height * POS_Y_COEF_LEADERBOARD_TITLE;
@@ -38,31 +37,14 @@ LeaderboardScene::LeaderboardScene(const sf::VideoMode& window_size) : Scene(win
 		expert_col.setFontSize(DEFAULT_TITLE_FONT_SIZE / 3.5);
 		expert_col.setTopLeftPos(sf::Vector2f(this->window_size.width - padding_x - expert_col.getWidth(), pos_y_col));
 
-
-		PLAYER player;
-		player.timePlay.hours = 1;
-		player.timePlay.minutes = 23;
-		player.timePlay.seconds = 46;
-
-		Records records;
-		for (int i = 0; i < 3; i++) {
-			records.beginner.push_back(player);
-			records.intermediate.push_back(player);
-			records.expert.push_back(player);
-		}
-
-		updateRecords(std::make_shared<Records>(records));
-		//updateRecords(std::make_shared<Records>());
+		updateRecords(std::make_shared<Records>());
 	}
 
 	// Buttons
 	{
 		Button& return_button = buttons[STR_RETURN_BUTTON];
-		return_button.setImage(TextureType::ButtonDefault);
-		return_button.setPadding(sf::Vector2f(DEFAULT_PADDING_SIZE.x / 2, DEFAULT_PADDING_SIZE.y / 2));
-		return_button.label.setText("Back to Menu");
-		return_button.label.setFontSize(DEFAULT_SMALL_FONT_SIZE);
-		return_button.alignImageAndText();
+		return_button.setImage(TextureType::ReturnButton);
+		return_button.setSize(RETURN_BUTTON_SIZE);
 	}
 }
 
@@ -105,18 +87,15 @@ void LeaderboardScene::updateRecords(const std::shared_ptr<Records> records) {
 	for (int i = 0; i < MAX_RECORDS_PER_DIFF; i++) {
 		if (i < records->beginner.size()) {
 			PLAYER player = records->beginner[i];
-			beginner += std::to_string(i + 1) + ". " +
-				timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
+			beginner +=timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
 		}
 		if (i < records->intermediate.size()) {
 			PLAYER player = records->intermediate[i];
-			inter += "   " + std::to_string(i + 1) + ". " +
-				timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
+			inter += "       " + timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
 		}
 		if (i < records->expert.size()) {
 			PLAYER player = records->expert[i];
-			expert += std::to_string(i + 1) + ". " +
-				timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
+			expert += timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
 		}
 	}
 

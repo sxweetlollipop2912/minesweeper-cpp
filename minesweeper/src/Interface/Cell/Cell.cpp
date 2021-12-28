@@ -113,14 +113,17 @@ Result Cell::setType(const CellType type, const int number) {
 	case CellType::Mine:
 		if (setImageForMineType() == Result::failure)
 			return Result::failure;
+
 		break;
 	case CellType::Blank:
 		if (setImageForBlankType() == Result::failure)
 			return Result::failure;
+
 		break;
 	case CellType::Number:
 		if (setImageForNumberType() == Result::failure)
 			return Result::failure;
+
 		break;
 	default:
 		break;
@@ -197,21 +200,19 @@ sf::Vector2u Cell::getImageSize() const {
 void Cell::getDefaultSprite(sf::Sprite& sprite) const {
 	button_at_state.at(cell_state).getDefaultSprite(sprite);
 	sprite.scale(getScale());
+	sprite.setPosition(top_left_pos);
 }
 
 
 void Cell::getHoveredSprite(sf::Sprite& sprite) const {
 	button_at_state.at(cell_state).getHoveredSprite(sprite);
 	sprite.scale(getScale());
+	sprite.setPosition(top_left_pos);
 }
 
 
 void Cell::setTopLeftPos(const sf::Vector2f& top_left_pos) {
 	this->Button::setTopLeftPos(top_left_pos);
-
-	for (auto i = button_at_state.begin(); i != button_at_state.end(); i++) {
-		i->second.setTopLeftPos(this->top_left_pos);
-	}
 }
 
 
@@ -235,6 +236,4 @@ void Cell::setScale(const sf::Vector2f& scale) {}
 void Cell::alignImageAndText() {}
 
 
-Result Cell::centerTextInButton() {
-	return Result::failure;
-}
+void Cell::centerTextInButton() {}

@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "../GraphicsObject/GraphicsObject.h"
-#include "../ResourceVault/ResourceVault.h"
+#include "../ResourceManager/ResourceManager.h"
 #include "../Text/Text.h"
 #include "../../Enums.h"
 #include "../../Constants.h"
@@ -18,6 +18,7 @@ protected:
 	sf::Vector2f scale;
 	sf::Vector2f top_left_pos, padding;
 	bool transparent;
+	bool stretchable;
 
 public:
 	Text label;
@@ -32,7 +33,7 @@ public:
 	// Equalizes 2 buttons' size, padding, font_size, and centers text in button's image.
 	// > Returns Result::failure if text is wider than screen,
 	// > otherwise, returns Result::success.
-	static Result equalizeButtonsSize(Button& button1, Button& button2);
+	static void equalizeButtonsSize(Button& button1, Button& button2);
 
 	// Gets size of the button (after apply scaling).
 	virtual sf::Vector2f getSize() const;
@@ -75,23 +76,10 @@ public:
 	// Rescales image & positions text so that CURRENT text is within image's padding.
 	virtual void alignImageAndText();
 	// Centers image and text on X-axis.
-	// > Returns Result::failure if it is unable to center image or text (due to out-of-bound top-left position after centering).
-	// > otherwise, returns Result::success.
-	Result centerButtonHorizontally(const float window_width);
+	void centerButtonHorizontally(const float space_width, const float left_pos_x = 0);
 	// Centers image and text on Y-axis.
-	// > Returns Result::failure if it is unable to center image or text (due to out-of-bound top-left position after centering).
-	// > otherwise, returns Result::success.
-	Result centerButtonVertically(const float window_height);
-	// Tries to insert newlines a text to fit completely inside the button (with respect to button's padding).
-	// This does not position the text.
-	// NOTE: The string will be changed permanently.
-	// Shouldn't cost much time if already positioned b4.
-	// > Returns `Result::failure` if text's content is too large to be positioned within the rectangle,
-	// > otherwise returns `Result::success`.
-	//Result fitTextInsideButton();
+	void centerButtonVertically(const float space_height, const float top_pos_y = 0);
 	// Centers text in button's image.
 	// NOTE: This method does not resize or re-position image.
-	// > Returns Result::failure if it is unable to center text (due to out-of-bound top-left position after centering).
-	// > otherwise, returns Result::success.
-	virtual Result centerTextInButton();
+	virtual void centerTextInButton();
 };

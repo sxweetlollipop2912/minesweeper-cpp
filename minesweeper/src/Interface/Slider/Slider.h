@@ -36,9 +36,8 @@ public:
 	float getSliderValue() const;
 
 	// Centers slider on X-axis.
-	// > Returns Result::failure if it is unable to center slider (due to out-of-bound top-left position after centering).
-	// > otherwise, returns Result::success.
-	Result centerSliderHorizontally(const float window_width);
+	void centerSliderHorizontally(const float space_width, const float left_pos_x = 0);
+	void setTopLeftPos(const sf::Vector2f& top_left_pos);
 
 	void setSliderValue(const float new_value);
 	void setSliderPercentValue(const float new_percent_value);
@@ -46,8 +45,8 @@ public:
 	bool changeMousePosition(const sf::Vector2i& position);
 	// Returns true if slider is pressed.
 	// Otherwise, returns false.
-	bool onMousePressed(const MouseActionType mouse_type);
-	void onMouseReleased(const MouseActionType mouse_type);
+	bool onMouseButtonPressed(const MouseActionType mouse_type);
+	void onMouseButtonReleased(const MouseActionType mouse_type);
 
 	// Draws all textures and texts in the scene on an sf::RenderTarget object
 	void draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing = true);

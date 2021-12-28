@@ -7,8 +7,9 @@
 #include "Structs.h"
 
 const float EPS = 1e-7;
+const sf::Time DOUBLE_CLICK_TIME_LIMIT = sf::milliseconds(200);
 
-// GAME
+// GAME CONFIG
 const std::string TITLE = "minesweeper";
 const int MIN_COLUMN = 9;
 const int MAX_COLUMN = 30;
@@ -16,19 +17,26 @@ const int MIN_ROW = 9;
 const int MAX_ROW = 30;
 const int BEGINNER_ROW = 9;
 const int BEGINNER_COL = 9;
+const int BEGINNER_MINE = 12;
 const int INTERMEDIATE_ROW = 16;
 const int INTERMEDIATE_COL = 16;
+const int INTERMEDIATE_MINE = 40;
 const int EXPERT_ROW = 16;
 const int EXPERT_COL = 30;
+const int EXPERT_MINE = 99;
+const float CUSTOM_MINE_COEF = 0.2f;
 const int MAX_RECORDS_PER_DIFF = 3;
 const int MAX_SONGS = 2;
 
-// PATH
+// DIRECTORIES
 const std::string DATA_PATH = ".\\data\\";
 const std::string ASSET_PATH = ".\\assets\\";
 const std::string IMG_PATH = ASSET_PATH + (const std::string)"images\\";
 const std::string FONT_PATH = ASSET_PATH + (const std::string)"fonts\\";
 const std::string MUSIC_PATH = ASSET_PATH + (const std::string)"music\\";
+
+// SAVES
+const std::string GAME_INFO_PATH = DATA_PATH + (const std::string)"game_info.txt";
 
 
 // WINDOW
@@ -44,8 +52,10 @@ const std::string DEFAULT_FONT_PATH = FONT_PATH + (const std::string)"MochiyPopO
 
 
 // VISUAL
+const int DEFAULT_TRANSPARENT_ALPHA_VALUE = 240;
+const sf::Color HOVERED_COLOR = sf::Color(150, 150, 150);
 const sf::Color BACKGROUMD_COLOR = sf::Color(0, 0, 0);
-const sf::Color DEFAULT_TEXT_COLOR = sf::Color::White;
+const sf::Color DEFAULT_TEXT_COLOR = sf::Color(235, 235, 235);
 const AudioVisualCfg::Cfg DEFAULT_VISUAL_CONFIG(sf::Color(16, 20, 20), sf::Color(92, 204, 230), sf::seconds(5), 225, sf::milliseconds(0));
 const float BUBBLE_RADIUS = 150;
 const int NUMBER_OF_BUBBLES = 13;
@@ -65,10 +75,11 @@ const sf::Time VOLUME_DOWN_TIME = sf::milliseconds(400);
 
 
 // BUTTON
-const sf::Vector2f DEFAULT_PADDING_SIZE = sf::Vector2f(50, 25);
+const sf::Vector2f DEFAULT_PADDING_SIZE = sf::Vector2f(35, 25);
 
 
-// POSITION
+// POSITION AND SCALING
+const sf::Vector2f RETURN_BUTTON_SIZE = sf::Vector2f(60, 60);
 // START SCENE
 const float POS_Y_COEF_TITLE = 1 / (float)7;
 const float SPACE_BETWEEN_BUTTONS_Y_COEF = 2 / (float)17;
@@ -84,8 +95,8 @@ const float POS_Y_COEF_SLODER_COL = 4 / (float)7;
 // PLAYING SCENE
 const float MIN_CELL_SIZE = 30;
 const float MAX_CELL_SIZE = 55;
-const sf::Vector2f TOP_LEFT_COEF_BOARD_AREA = sf::Vector2f(1 / (float)30, 1 / (float)20);
-const sf::Vector2f RIGHT_DOWN_COEF_BOARD_AREA = sf::Vector2f(29 / (float)30, 19 / (float)20);
+const sf::Vector2f TOP_LEFT_COEF_BOARD_AREA = sf::Vector2f((RETURN_BUTTON_SIZE.x * (const float)2) / (float)1500, 1 / (float)20);
+const sf::Vector2f RIGHT_DOWN_COEF_BOARD_AREA = sf::Vector2f((1500 - (RETURN_BUTTON_SIZE.x * (const float)2)) / (float)1500, 19 / (float)20);
 const float SPAPCE_BETWEEN_BOARD_SCOREBOARD_X_COEF = 1 / (float)40;
 // SCOREBOARD
 const float SCOREBOARD_SIZE_Y_COEF = 2 / (float)5;
@@ -99,14 +110,14 @@ const float POS_Y_COEF_LEADERBOARD_TITLE = 1 / (float)8;
 const float POS_Y_COEF_COL = 1 / (float)3;
 // AUDIO
 const float VOLUME_HEIGHT = 5 / (float)1000;
-const float VOLUME_WIDTH = 150 / (float)1500;
+const float VOLUME_WIDTH = 120 / (float)1500;
 const sf::Vector2f RIGHT_DOWN_COEF_VOLUME = RIGHT_DOWN_COEF_BOARD_AREA;
-const sf::Vector2f RIGHT_DOWN_COEF_NEXT_SONG = sf::Vector2f(RIGHT_DOWN_COEF_VOLUME.x, RIGHT_DOWN_COEF_VOLUME.y - VOLUME_HEIGHT * (float)5);
-const sf::Vector2f NEXT_SONG_SIZE = sf::Vector2f(40, 40);
+const sf::Vector2f RIGHT_DOWN_COEF_SKIP_SONG = sf::Vector2f(RIGHT_DOWN_COEF_VOLUME.x, RIGHT_DOWN_COEF_VOLUME.y - VOLUME_HEIGHT * (float)5);
+const sf::Vector2f SKIP_SONG_SIZE = sf::Vector2f(35, 35);
 
 
 
-// IMAGE PATHS
+// BOARD IMAGE PATHS
 const std::string BOARD_IMG_DIR = IMG_PATH + (const std::string)"board\\";
 const std::string SCOREBOARD_IMG_PATH = BOARD_IMG_DIR + (const std::string)"scoreboard.png";
 const std::string CLOSED_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"closed.png";
@@ -123,5 +134,10 @@ const std::string NUM_7_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"num_
 const std::string NUM_8_CELL_IMG_PATH = BOARD_IMG_DIR + (const std::string)"num_8.png";
 
 
-// TEMP
-const std::string DEFAULT_BUTTON_PATH = BOARD_IMG_DIR + (const std::string)"blank.png";
+// OTHER IMG PATHS
+const std::string OTHER_IMG_DIR = IMG_PATH + (const std::string)"other\\";
+const std::string RETURN_BUTTON_PATH = OTHER_IMG_DIR + (const std::string)"return_button.png";
+const std::string SKIP_SONG_BUTTON_PATH = OTHER_IMG_DIR + (const std::string)"skip.png";
+const std::string YES_NO_BUTTON_PATH = OTHER_IMG_DIR + (const std::string)"yes_no_button.png";
+const std::string POP_UP_BACKGROUND = OTHER_IMG_DIR + (const std::string)"pop_up_background.png";
+const std::string DEFAULT_BUTTON_PATH = OTHER_IMG_DIR + (const std::string)"rect_button.png";

@@ -14,7 +14,7 @@ Slider::Slider(const int min, const int max, const int init_value, sf::Vector2f 
 
 	text.setTextColor(DEFAULT_TEXT_COLOR);
 
-	axis.setPosition(sf::Vector2f(top_left_pos.x, top_left_pos.y));
+	axis.setPosition(top_left_pos);
 	axis.setOrigin(0, axis_height / 2);
 	axis.setSize(sf::Vector2f(axis_width, axis_height));
 	axis.setFillColor(axis_color);
@@ -57,11 +57,17 @@ bool Slider::changeMousePosition(const sf::Vector2i& position) {
 }
 
 
-bool Slider::onMousePressed(const MouseActionType mouse_type) {
-	if (mouse_type == MouseActionType::LMB || mouse_type == MouseActionType::DoubleLMB) {
-
+bool Slider::onMouseButtonPressed(const MouseActionType mouse_type) {
+	if (mouse_type == MouseActionType::FirstLMB || mouse_type == MouseActionType::SecondLMB) {
 		if (slider.getGlobalBounds().contains(mouse_pos.x, mouse_pos.y)) {
 			sliding = true;
+		}
+		else if (mouse_pos.x - axis.getPosition().x >= 0 &&
+			mouse_pos.x - axis.getPosition().x <= axis.getSize().x &&
+			std::abs(mouse_pos.y - axis.getPosition().y) <= slider.getRadius() * 2.0f) {
+
+			sliding = true;
+			changeMousePosition(mouse_pos);
 		}
 		else {
 			sliding = false;
@@ -72,11 +78,10 @@ bool Slider::onMousePressed(const MouseActionType mouse_type) {
 }
 
 
-void Slider::onMouseReleased(const MouseActionType mouse_type) {
-	if (mouse_type != MouseActionType::LMB && mouse_type != MouseActionType::DoubleLMB)
-		return;
-
-	sliding = false;
+void Slider::onMouseButtonReleased(const MouseActionType mouse_type) {
+	if (mouse_type == MouseActionType::FirstLMB || mouse_type == MouseActionType::SecondLMB) {
+		sliding = false;
+	}
 }
 
 
@@ -85,25 +90,24 @@ float Slider::getSliderValue() const {
 }
 
 
-Result Slider::centerSliderHorizontally(const float window_width) {
+void Slider::centerSliderHorizontally(const float space_width, const float left_pos_x) {
 	float axis_width = axis.getSize().x;
+	top_left_pos.x = left_pos_x + (space_width / 2) - (axis_width / 2);
+	setTopLeftPos(top_left_pos);
+}
 
-	if (window_width < axis_width)
-		return Result::failure;
 
-	float old_x = top_left_pos.x;
-	top_left_pos.x = (window_width / 2) - (axis_width / 2);
+void Slider::setTopLeftPos(const sf::Vector2f& top_left_pos) {
+	sf::Vector2f diff;
+	diff.x = top_left_pos.x - axis.getPosition().x;
+	diff.y = top_left_pos.y - axis.getPosition().y;
 
-	if (top_left_pos.x < 0) {
-		top_left_pos.x = old_x;
-
-		return Result::failure;
-	}
+	auto slider_pos = slider.getPosition();
+	slider_pos.x += diff.x;
+	slider_pos.y += diff.y;
 
 	axis.setPosition(top_left_pos);
-	slider.setPosition(top_left_pos);
-
-	return Result::success;
+	slider.setPosition(slider_pos);
 }
 
 

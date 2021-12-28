@@ -7,8 +7,11 @@ AudioManager::AudioManager() {
 	queue.clear();
 	cfgs.clear();
 	current_song_idx = -1;
+	current_cfg_idx = 0;
 	current_status = MusicStatus::Stopped;
 	volume = 100;
+	start_moment = sf::microseconds(0);
+	start_down_volume_moment = sf::microseconds(0);
 }
 
 
@@ -130,7 +133,7 @@ Result AudioManager::startPlayingEntry(const int song_idx) {
 	if (!queue.empty() && music.openFromFile(MUSIC_PATH + queue[song_idx].string())) {
 		music.setVolume(100);
 		music.play();
-		clock.restart();
+		start_moment = (*ResourceManager::getInstance())->getElapsedTime();
 		current_cfg_idx = 0;
 
 		return Result::success;
@@ -142,7 +145,7 @@ Result AudioManager::startPlayingEntry(const int song_idx) {
 
 
 void AudioManager::onNextMusicEvent() {
-	down_volume_clock.restart();
+	start_down_volume_moment = (*ResourceManager::getInstance())->getElapsedTime();
 	current_status = MusicStatus::Stopping;
 }
 
@@ -176,7 +179,7 @@ AudioVisualCfg::Cfg AudioManager::update() {
 		}
 
 		if (current_status == MusicStatus::Stopping) {
-			auto time_elapsed = down_volume_clock.getElapsedTime();
+			auto time_elapsed = (*ResourceManager::getInstance())->getElapsedTime() - start_down_volume_moment;
 			auto volume_down = time_elapsed.asMilliseconds() / (float)VOLUME_DOWN_TIME.asMilliseconds();
 
 			if (volume_down > 1) {
@@ -195,7 +198,7 @@ AudioVisualCfg::Cfg AudioManager::update() {
 
 			if (current_cfg_idx < v.size()) {
 				const auto& current_cfg = v[current_cfg_idx];
-				auto now = clock.getElapsedTime();
+				auto now = (*ResourceManager::getInstance())->getElapsedTime() - start_moment;
 				if (now >= current_cfg.time) {
 					cfg = current_cfg;
 					++current_cfg_idx;

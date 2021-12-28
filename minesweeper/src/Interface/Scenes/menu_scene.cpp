@@ -27,25 +27,25 @@ MenuScene::MenuScene(const sf::VideoMode& window_size) : Scene(window_size, Scen
 	title.centerTextHorizontally(this->window_size.width);
 
 	Button& load_game_button = buttons[STR_LOAD_GAME];
-	load_game_button.setImage(TextureType::ButtonDefault);
+	load_game_button.setImage(TextureType::DefaultButton);
 	load_game_button.label.setText("LOAD GAME");
 	load_game_button.setTopLeftPos(sf::Vector2f(0, pos_y_load_game_button));
 	load_game_button.alignImageAndText();
 
 	Button& new_game_button = buttons[STR_NEW_GAME];
-	new_game_button.setImage(TextureType::ButtonDefault);
+	new_game_button.setImage(TextureType::DefaultButton);
 	new_game_button.label.setText("NEW GAME");
 	new_game_button.setTopLeftPos(sf::Vector2f(0, pos_y_new_game_button));
 	new_game_button.alignImageAndText();
 
 	Button& leaderboard_button = buttons[STR_LEADERBOARD];
-	leaderboard_button.setImage(TextureType::ButtonDefault);
+	leaderboard_button.setImage(TextureType::DefaultButton);
 	leaderboard_button.label.setText("LEADERBOARD");
 	leaderboard_button.setTopLeftPos(sf::Vector2f(0, pos_y_leaderboard_button));
 	leaderboard_button.alignImageAndText();
 
 	Button& quit_button = buttons[STR_QUIT_GAME];
-	quit_button.setImage(TextureType::ButtonDefault);
+	quit_button.setImage(TextureType::DefaultButton);
 	quit_button.label.setText("QUIT");
 	quit_button.setTopLeftPos(sf::Vector2f(0, pos_y_quit_button));
 	quit_button.alignImageAndText();

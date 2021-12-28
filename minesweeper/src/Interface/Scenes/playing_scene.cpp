@@ -3,8 +3,8 @@
 #include "playing_scene.h"
 
 
-PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_rows, const int board_cols) 
-	: Scene(window_size, SceneType::Playing) {
+PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_rows, const int board_cols, const sf::Time timer_offset)
+	: Scene(window_size, SceneType::Playing, true) {
 	next_scene[GameEvent::AutoOpenCell] = SceneType::Playing;
 	next_scene[GameEvent::OpenCell] = SceneType::Playing;
 	next_scene[GameEvent::FlagCell] = SceneType::Playing;
@@ -12,6 +12,9 @@ PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_row
 
 	buttons_event[STR_RETURN_BUTTON] = GameEvent::QuitToMenu;
 
+	last_pressed_cell = Position(-1, -1);
+	updateGameState(GameState::Ongoing);
+	resetTimer();
 
 	// Board
 	{
@@ -88,11 +91,10 @@ PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_row
 	// Buttons
 	{
 		Button& return_button = buttons[STR_RETURN_BUTTON];
-		return_button.setImage(TextureType::ButtonDefault);
-		return_button.setPadding(sf::Vector2f(DEFAULT_PADDING_SIZE.x / 2, DEFAULT_PADDING_SIZE.y / 2));
-		return_button.label.setText("Back to Menu");
-		return_button.label.setFontSize(DEFAULT_SMALL_FONT_SIZE);
-		return_button.alignImageAndText();
+		return_button.setImage(TextureType::ReturnButton);
+		return_button.setSize(RETURN_BUTTON_SIZE);
+		return_button.setTopLeftPosY(board.getPosTopLeft().y);
+		return_button.setTopLeftPosX(board.getPosTopLeft().x - return_button.getSize().x - (return_button.getSize().x / (float)3));
 	}
 }
 
@@ -120,9 +122,14 @@ std::string PlayingScene::timerStr(int h, int m, int s) {
 }
 
 
-void PlayingScene::updateTimer(const Timer new_timer) {
+void PlayingScene::updateTimerStr(const Time new_timer) {
 	Text& timer = texts[STR_TIMER];
 	timer.setText(timerStr(new_timer.hours, new_timer.minutes, new_timer.seconds));
+}
+
+
+void PlayingScene::resetTimer(const sf::Time timer_offset) {
+	timer.reset(std::max(sf::microseconds(0), timer_offset));
 }
 
 
@@ -131,6 +138,20 @@ Result PlayingScene::updateBoard(const GAMECELL cell_board[][MAX_COLUMN], const 
 	flag.setText(std::to_string(flag_remaining));
 
 	return board.updateBoard(cell_board, mine_board);
+}
+
+
+void PlayingScene::updateGameState(const GameState game_state) {
+	if (this->game_state != game_state) {
+		this->game_state = game_state;
+
+		if (game_state == GameState::Won) {
+			spawnPopUp(GameEvent::Won);
+		}
+		else if (game_state == GameState::Lost) {
+			spawnPopUp(GameEvent::Lost);
+		}
+	}
 }
 
 
@@ -179,34 +200,42 @@ void PlayingScene::setTopLeftPosScoreboard(const sf::Vector2f top_left_pos) {
 GameEvent PlayingScene::onMouseButtonReleased(const MouseActionType mouse_type) {
 	auto game_event = this->Scene::onMouseButtonReleased(mouse_type);
 
-	if (game_event == GameEvent::Unknown && !pop_up) {
-		// If mouse is hovering over a cell.
-		if (board.isValidPos(board.hovered_cell)) {
-			switch (mouse_type) {
+	if (!pop_up && game_event == GameEvent::Unknown) {
+		if (game_state == GameState::Ongoing) {
+			timer.resume();
+
+			// If mouse is hovering over a cell.
+			if (board.isValidPos(board.hovered_cell)) {
+				switch (mouse_type) {
+				case MouseActionType::FirstLMB:
+				{
+					last_pressed_cell = board.hovered_cell;
+
+					break;
+				}
 				// RMB: Flag/Unflag a cell.
-			case MouseActionType::RMB:
-			{
-				Position cell_pos = board.hovered_cell;
-				std::cout << "RMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
+				case MouseActionType::RMB:
+				{
+					last_pressed_cell = board.hovered_cell;
+					game_event = GameEvent::FlagCell;
 
-				return GameEvent::FlagCell;
-			}
-			// LMB: Open a cell.
-			case MouseActionType::LMB:
-			{
-				Position cell_pos = board.hovered_cell;
-				std::cout << "LMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
+					break;
+				}
+				// LMB: Open a cell.
+				case MouseActionType::LMB:
+				{
+					game_event = GameEvent::OpenCell;
 
-				return GameEvent::OpenCell;
-			}
-			// Double-LMB: Auto-open nearby safe cells.
-			case MouseActionType::DoubleLMB:
-			{
-				Position cell_pos = board.hovered_cell;
-				std::cout << "DoubleLMB " << cell_pos.r << ' ' << cell_pos.c << '\n';
+					break;
+				}
+				// Double-LMB: Auto-open nearby safe cells.
+				case MouseActionType::DoubleLMB:
+				{
+					game_event = GameEvent::AutoOpenCell;
 
-				return GameEvent::AutoOpenCell;
-			}
+					break;
+				}
+				}
 			}
 		}
 	}
@@ -230,6 +259,28 @@ bool PlayingScene::changeMousePosition(const sf::Vector2i& pos) {
 }
 
 
+void PlayingScene::onLostFocus() {
+	timer.pause();
+}
+
+
+void PlayingScene::onGainedFocus() {
+	timer.resume();
+}
+
+
+bool PlayingScene::updatePerFrame() {
+	if (!pop_up) {
+		updateTimerStr(timer.getElapsedTime());
+	}
+	else {
+		timer.pause();
+	}
+
+	return true;
+}
+
+
 int PlayingScene::getBoardRows() const {
 	return board.getRows();
 }
@@ -240,8 +291,13 @@ int PlayingScene::getBoardCols() const {
 }
 
 
+sf::Time PlayingScene::getElapsedTime() const {
+	return timer.getElapsedTime();
+}
+
+
 Position PlayingScene::getLastPressedCell() const {
-	return board.getLastPressedCell();
+	return last_pressed_cell;
 }
 
 

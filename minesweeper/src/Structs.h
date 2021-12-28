@@ -4,21 +4,57 @@
 #include <vector>
 
 #include <SFML/Graphics.hpp>
+
+#include "Interface/Timer/Timer.h"
  
 using std::string;
 
 
-struct Timer {
+struct Time {
 	int hours;
 	int minutes;
 	int seconds;
-	bool STOP = false;
+	bool STOP;
+
+	Time(const int hours = 0, const int minutes = 0, const int seconds = 0, const bool STOP = false) {
+		this->hours = hours;
+		this->minutes = minutes;
+		this->seconds = seconds;
+		this->STOP = STOP;
+	}
+
+	Time(const sf::Time& time) {
+		int sec = time.asSeconds();
+		hours = sec / 3600;
+		sec %= 3600;
+		minutes = sec / 60;
+		sec %= 60;
+		seconds = sec;
+		STOP = false;
+	}
+
+	operator sf::Time() const {
+		return sf::seconds(seconds + minutes * 60 + hours * 3600);
+	}
+
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version) {
+		ar& hours;
+		ar& minutes;
+		ar& seconds;
+		ar& STOP;
+	}
 };
 
 struct PLAYER {
-	std::string name;
-	Timer timePlay = { 0,0,0, false };
+	Time timePlay = Time(0, 0, 0, false);
 	int level;
+
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version) {
+		ar& timePlay;
+		ar& level;
+	}
 };
 
 struct Records {
@@ -31,6 +67,13 @@ struct Records {
 		intermediate.clear();
 		expert.clear();
 	}
+
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version) {
+		ar& beginner;
+		ar& intermediate;
+		ar& expert;
+	}
 };
 
 struct GAMEPREDICATE {
@@ -39,12 +82,28 @@ struct GAMEPREDICATE {
 	int maxMine;
 	int flags;
 	bool STOP = false;
+
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version) {
+		ar& MAX_ROW;
+		ar& MAX_COLUMN;
+		ar& maxMine;
+		ar& flags;
+		ar& STOP;
+	}
 };
 
 struct GAMECELL {
 	bool isOpened;
 	bool isFlag;
 	int mine_Count;
+
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version) {
+		ar& isOpened;
+		ar& isFlag;
+		ar& mine_Count;
+	}
 };
 
 

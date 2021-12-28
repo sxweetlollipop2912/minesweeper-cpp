@@ -7,63 +7,75 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
-#include "Game/GameTools.h"
-#include "Constants.h"
 #include "Interface/Window/Window.h"
-#include "Interface/ResourceVault/ResourceVault.h"
+#include "Interface/ResourceManager/ResourceManager.h"
+#include "Constants.h"
+#include "Comms/Comms.h"
 
 
 void registerResources() {
-    if (ResourceVault::setTexture(TextureType::ButtonDefault, DEFAULT_BUTTON_PATH) == Result::failure) {
+    if ((*ResourceManager::getInstance())->setTexture(TextureType::DefaultButton, DEFAULT_BUTTON_PATH) == Result::failure) {
         std::cout << "Loading ButtonDefault texture failed!";
     }
-    if (ResourceVault::setTexture(TextureType::NextSong, DEFAULT_BUTTON_PATH) == Result::failure) {
+    if ((*ResourceManager::getInstance())->setTexture(TextureType::ReturnButton, RETURN_BUTTON_PATH) == Result::failure) {
+        std::cout << "Loading ReturnButton texture failed!";
+    }
+    if ((*ResourceManager::getInstance())->setTexture(TextureType::YesNoButton, YES_NO_BUTTON_PATH) == Result::failure) {
+        std::cout << "Loading YesNoButton texture failed!";
+    }
+    if ((*ResourceManager::getInstance())->setTexture(TextureType::PopUpBackground, POP_UP_BACKGROUND) == Result::failure) {
+        std::cout << "Loading PopUpBackground texture failed!";
+    }
+    if ((*ResourceManager::getInstance())->setTexture(TextureType::SkipSong, SKIP_SONG_BUTTON_PATH) == Result::failure) {
         std::cout << "Loading NextSong texture failed!";
     }
 
     // PLAYING SCENE TEXTURES
     {
-        if (ResourceVault::setTexture(TextureType::Scoreboard, SCOREBOARD_IMG_PATH) == Result::failure) {
+        if ((*ResourceManager::getInstance())->setTexture(TextureType::Scoreboard, SCOREBOARD_IMG_PATH) == Result::failure) {
             std::cout << "Loading Scoreboard texture failed!";
         }
-        if (ResourceVault::setTexture(TextureType::CellClosed, CLOSED_CELL_IMG_PATH) == Result::failure) {
+        if ((*ResourceManager::getInstance())->setTexture(TextureType::CellClosed, CLOSED_CELL_IMG_PATH) == Result::failure) {
             std::cout << "Loading CellClosed texture failed!";
         }
-        if (ResourceVault::setTexture(TextureType::CellFlagged, FLAGGED_CELL_IMG_PATH) == Result::failure) {
+        if ((*ResourceManager::getInstance())->setTexture(TextureType::CellFlagged, FLAGGED_CELL_IMG_PATH) == Result::failure) {
             std::cout << "Loading CellFlagged texture failed!";
         }
-        if (ResourceVault::setTexture(TextureType::CellBlank, BLANK_CELL_IMG_PATH) == Result::failure) {
+        if ((*ResourceManager::getInstance())->setTexture(TextureType::CellMine, MINE_CELL_IMG_PATH) == Result::failure) {
+            std::cout << "Loading CellMine texture failed!";
+        }
+        if ((*ResourceManager::getInstance())->setTexture(TextureType::CellBlank, BLANK_CELL_IMG_PATH) == Result::failure) {
             std::cout << "Loading CellBlank texture failed!";
         }
-        if (ResourceVault::setTexture(TextureType::CellNum1, NUM_1_CELL_IMG_PATH) == Result::failure) {
+        if ((*ResourceManager::getInstance())->setTexture(TextureType::CellNum1, NUM_1_CELL_IMG_PATH) == Result::failure) {
             std::cout << "Loading CellNum1 texture failed!";
         }
-        if (ResourceVault::setTexture(TextureType::CellNum2, NUM_2_CELL_IMG_PATH) == Result::failure) {
+        if ((*ResourceManager::getInstance())->setTexture(TextureType::CellNum2, NUM_2_CELL_IMG_PATH) == Result::failure) {
             std::cout << "Loading CellNum2 texture failed!";
         }
-        if (ResourceVault::setTexture(TextureType::CellNum3, NUM_3_CELL_IMG_PATH) == Result::failure) {
+        if ((*ResourceManager::getInstance())->setTexture(TextureType::CellNum3, NUM_3_CELL_IMG_PATH) == Result::failure) {
             std::cout << "Loading CellNum3 texture failed!";
         }
-        if (ResourceVault::setTexture(TextureType::CellNum4, NUM_4_CELL_IMG_PATH) == Result::failure) {
+        if ((*ResourceManager::getInstance())->setTexture(TextureType::CellNum4, NUM_4_CELL_IMG_PATH) == Result::failure) {
             std::cout << "Loading CellNum4 texture failed!";
         }
-        if (ResourceVault::setTexture(TextureType::CellNum5, NUM_5_CELL_IMG_PATH) == Result::failure) {
+        if ((*ResourceManager::getInstance())->setTexture(TextureType::CellNum5, NUM_5_CELL_IMG_PATH) == Result::failure) {
             std::cout << "Loading CellNum5 texture failed!";
         }
-        if (ResourceVault::setTexture(TextureType::CellNum6, NUM_6_CELL_IMG_PATH) == Result::failure) {
+        if ((*ResourceManager::getInstance())->setTexture(TextureType::CellNum6, NUM_6_CELL_IMG_PATH) == Result::failure) {
             std::cout << "Loading CellNum6 texture failed!";
         }
-        if (ResourceVault::setTexture(TextureType::CellNum7, NUM_7_CELL_IMG_PATH) == Result::failure) {
+        if ((*ResourceManager::getInstance())->setTexture(TextureType::CellNum7, NUM_7_CELL_IMG_PATH) == Result::failure) {
             std::cout << "Loading CellNum7 texture failed!";
         }
-        if (ResourceVault::setTexture(TextureType::CellNum8, NUM_8_CELL_IMG_PATH) == Result::failure) {
+        if ((*ResourceManager::getInstance())->setTexture(TextureType::CellNum8, NUM_8_CELL_IMG_PATH) == Result::failure) {
             std::cout << "Loading CellNum8 texture failed!";
         }
     }
 
     // FONTS
     {
-        if (ResourceVault::setFont(FontType::FontDefault, DEFAULT_FONT_PATH) == Result::failure) {
+        if ((*ResourceManager::getInstance())->setFont(FontType::FontDefault, DEFAULT_FONT_PATH) == Result::failure) {
             std::cout << "Loading FontDefault font failed!";
         }
     }
@@ -73,27 +85,6 @@ void registerResources() {
 int main() {
     srand(time(NULL));
 
-    /*int choice;
-
-    PLAYER newPlayer, oldPlayer;
-
-    GAMEPREDICATE game_Feature, old_game_Feature;
-
-    GAMECELL game_Board[MAX_ROW][MAX_COLUMN], old_game_Board[MAX_ROW][MAX_COLUMN];
-
-    char mine_Board[MAX_ROW][MAX_COLUMN], old_mine_Board[MAX_ROW][MAX_COLUMN];
-    do {
-        welcomePlayer(choice);
-        implementChoice(choice, mine_Board, old_mine_Board, game_Feature, old_game_Feature,
-            newPlayer, oldPlayer, game_Board, old_game_Board);
-    } while (true);*/
-
-    // Phần này bị warning gì á tui k rõ nữa, ông xem làm gì đc k
-    // C6262: Function uses '16396' bytes of stack: exceeds /analyze:stacksize '16384'. Consider moving some data to heap.
-    //
-    // Comment phần trên để chạy phần dưới
-    //*************************************************************************
-
     registerResources();
 
     auto window = Window::getInstance();
@@ -101,7 +92,7 @@ int main() {
     (*window)->initializeMenuScene();
     (*window)->initializeLeaderboardScene();
     (*window)->initializeDifficultiesScene();
-    (*window)->initializePlayingScene(30, 30);
+    (*window)->initializePlayingScene();
 
     (*window)->createWindow();
 

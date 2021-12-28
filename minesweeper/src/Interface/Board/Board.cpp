@@ -7,7 +7,6 @@ Board::Board(const int rows, const int cols) {
 	number_of_cols = cols;
 	cell_size = MIN_CELL_SIZE;
 
-	last_pressed_cell = Position(-1, -1);
 	hovered_cell = Position(-1, -1);
 
 	board.resize(number_of_rows);
@@ -47,7 +46,6 @@ Result Board::updateBoard(const GAMECELL cell_board[][MAX_COLUMN], const char mi
 				if (board[i][j].setType(CellType::Mine) == Result::success)
 					change = true;
 			}
-
 			else {
 				if (cell_board[i][j].mine_Count != 0) {
 					if (board[i][j].setType(CellType::Number, cell_board[i][j].mine_Count) == Result::success)
@@ -57,21 +55,19 @@ Result Board::updateBoard(const GAMECELL cell_board[][MAX_COLUMN], const char mi
 					if (board[i][j].setType(CellType::Blank) == Result::success)
 						change = true;
 				}
+			}
 
-				if (cell_board[i][j].isOpened) {
-					if (cell_board[i][j].isFlag) {
-						if (board[i][j].setState(CellState::Flagged) == Result::success)
-							change = true;
-					}
-					else {
-						if (board[i][j].setState(CellState::Opened) == Result::success)
-							change = true;
-					}
-				}
-				else {
-					if (board[i][j].setState(CellState::Closed) == Result::success)
-						change = true;
-				}
+			if (cell_board[i][j].isOpened) {
+				if (board[i][j].setState(CellState::Opened) == Result::success)
+					change = true;
+			}
+			else if (cell_board[i][j].isFlag) {
+				if (board[i][j].setState(CellState::Flagged) == Result::success)
+					change = true;
+			}
+			else {
+				if (board[i][j].setState(CellState::Closed) == Result::success)
+					change = true;
 			}
 		}
 	}
@@ -88,9 +84,7 @@ bool Board::determineHoveredCell(const sf::Vector2i mouse_pos) {
 		hovered_cell.r = ((float)mouse_pos.y - top_left_pos.y) / cell_size;
 		hovered_cell.c = ((float)mouse_pos.x - top_left_pos.x) / cell_size;
 	}
-
 	
-
 	return hovered_cell != last_hovered;
 }
 
@@ -110,11 +104,6 @@ int Board::getRows() const {
 
 int Board::getCols() const {
 	return number_of_cols;
-}
-
-
-Position Board::getLastPressedCell() const {
-	return last_pressed_cell;
 }
 
 
@@ -171,8 +160,6 @@ void Board::setScale(const sf::Vector2f& scale) {}
 void Board::alignImageAndText() {}
 
 
-Result Board::centerTextInButton() {
-	return Result::failure;
-}
+void Board::centerTextInButton() {}
 
 

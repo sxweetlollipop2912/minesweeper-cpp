@@ -1,12 +1,19 @@
 ﻿#pragma once
 
 #include <vector>
+#include <string>
+#include <fstream>
 
-#include "../Constants.h"
-#include "../Enums.h"
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/vector.hpp>
+
 #include "../Interface/Board/Position.h"
 #include "../Interface/Board/Board.h"
+#include "../Game/GameTools.h"
 #include "../Structs.h"
+#include "../Constants.h"
+#include "../Enums.h"
 
 
 /// > INTERFACE: handles UI, graphical stuff, receives inputs from user then sends to GAME for processing.
@@ -36,6 +43,10 @@ namespace Comms {
 		// This can be a custom board size, or a generic board size (depends on difficulty).
 		int new_row = -1;
 		int new_col = -1;
+		Difficulty difficulty = Difficulty::Unknown;
+
+		// Only assigned during SceneType::Playing
+		Time current_timer = Time(-1, -1, -1, false);
 
 		// Only assigned when GameEvent `game_event` is one the following: OpenCell, FlagCell, AutoOpenCell.
 		// `current_scene` should be SceneType::Playing.
@@ -44,44 +55,43 @@ namespace Comms {
 	};
 
 
-	/*struct GameInfo {
-		// Only needed in SceneType::Playing.
-		// These should be the info of current saved game.
-		GameState game_state = GameState::Ongoing;
-		int board_row = -1;
-		int board_col = -1;
-		GAMECELL cell_board[MAX_ROW][MAX_COLUMN];
-		char mine_board[MAX_ROW][MAX_COLUMN];
-		Timer current_timer = { 0,0,0,false };
-		int flag_remaining = -1;
-
-		// Only needed in SceneType::Leaderboard or in GameEvent::ShowLeaderboard.
-		// Xài std::make_shared<Records>(records_var) để tạo shared pointer.
-		std::shared_ptr<Records> records = nullptr;
-	};*/
-
 	struct GameInfo {
 		// Only needed in SceneType::Playing.
 		// These should be the info of current saved game.
 		GameState game_state = GameState::Ongoing;
-		int board_row = -1;
-		int board_col = -1;
-		GAMECELL cell_board[MAX_ROW][MAX_COLUMN], old_cell_board[MAX_ROW][MAX_COLUMN];
-		char mine_board[MAX_ROW][MAX_COLUMN], old_mine_board[MAX_ROW][MAX_COLUMN];
-		Timer current_timer = { 0,0,0,false }, old_timer = { 0,0,0,false };
-		GAMEPREDICATE game_Feature, old_game_Feature;
-		PLAYER current_player, old_player;
-		//int flag_remaining = -1;
+		GAMECELL cell_board[MAX_ROW][MAX_COLUMN];
+		char mine_board[MAX_ROW][MAX_COLUMN];
+		GAMEPREDICATE game_Feature;
+		PLAYER current_player;
+
+		// Only needed while loading game.
+		Time current_timer = Time(-1, -1, -1, false);
 
 		// Only needed in SceneType::Leaderboard or in GameEvent::ShowLeaderboard.
-		// Xài std::make_shared<Records>(records_var) để tạo shared pointer.
-		std::shared_ptr<Records> records = nullptr;
+		Records records;
+
+
+		template<class Archive>
+		void serialize(Archive& ar, const unsigned int version) {
+			ar& game_state;
+			ar& game_Feature;
+			ar& current_player;
+			ar& current_timer;
+			ar& records;
+
+			for (int i = 0; i < game_Feature.MAX_ROW; i++) for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
+				ar& cell_board[i][j];
+				ar& mine_board[i][j];
+			}
+		}
 	};
 	
 
+	bool readGameInfo(GameInfo& game_info, const std::string& path);
+	void writeGameInfo(GameInfo& game_info, const std::string& path);
 
 	/// Used by INTERFACE to send InterfaceInfo whenever there are changes, to GAME.
-	Result interfaceInfoSending(const InterfaceInfo info);
+	Result interfaceInfoSending(const InterfaceInfo& info);
 
-	Result gameInfoSending(const GameInfo info);
+	Result gameInfoSending(const GameInfo& info);
 }

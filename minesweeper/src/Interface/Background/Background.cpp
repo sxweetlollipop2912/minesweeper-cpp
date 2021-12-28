@@ -17,9 +17,8 @@ Background::Background(const sf::VideoMode window_size, const sf::Color primary_
 	this->circle_speed = circle_speed;
 	transition_duration = sf::microseconds(0);
 
-	last_color_update = sf::microseconds(0);
-	last_pos_update = sf::microseconds(0);
-	clock.restart();
+	last_color_update = (*ResourceManager::getInstance())->getElapsedTime();
+	last_pos_update = (*ResourceManager::getInstance())->getElapsedTime();
 
 	background.setSize(sf::Vector2f(window_size.width, window_size.height ));
 	background.setFillColor(cur_prim_color);
@@ -54,15 +53,15 @@ Background::Background(const sf::VideoMode window_size, const sf::Color primary_
 
 	// Interactive objects
 	{
-		buttons_event[STR_NEXT_SONG] = GameEvent::NextSong;
+		buttons_event[STR_NEXT_SONG] = GameEvent::SkipSong;
 
 		Button& next_song_button = buttons[STR_NEXT_SONG];
-		next_song_button.setImage(TextureType::NextSong);
-		next_song_button.setSize(NEXT_SONG_SIZE);
+		next_song_button.setImage(TextureType::SkipSong);
+		next_song_button.setSize(SKIP_SONG_SIZE);
 
 		sf::Vector2f TL_next_song;
-		TL_next_song.x = RIGHT_DOWN_COEF_NEXT_SONG.x * window_size.width - next_song_button.getSize().x;
-		TL_next_song.y = RIGHT_DOWN_COEF_NEXT_SONG.y * window_size.height - next_song_button.getSize().y;
+		TL_next_song.x = RIGHT_DOWN_COEF_SKIP_SONG.x * window_size.width - next_song_button.getSize().x;
+		TL_next_song.y = RIGHT_DOWN_COEF_SKIP_SONG.y * window_size.height - next_song_button.getSize().y;
 		next_song_button.setTopLeftPos(TL_next_song);
 
 		sf::Vector2f volume_pos;
@@ -76,7 +75,7 @@ Background::Background(const sf::VideoMode window_size, const sf::Color primary_
 GameEvent Background::onMouseButtonReleased(const MouseActionType mouse_type) {
 	auto game_event = this->Scene::onMouseButtonReleased(mouse_type);
 
-	volume->onMouseReleased(mouse_type);
+	volume->onMouseButtonReleased(mouse_type);
 
 	return game_event;
 }
@@ -84,10 +83,10 @@ GameEvent Background::onMouseButtonReleased(const MouseActionType mouse_type) {
 
 GameEvent Background::onMouseButtonPressed(const MouseActionType mouse_type) {
 	auto game_event = Scene::onMouseButtonPressed(mouse_type);
-
+	
 	if (game_event == GameEvent::Unknown) {
 		bool change = false;
-		change |= volume->onMousePressed(mouse_type);
+		change |= volume->onMouseButtonPressed(mouse_type);
 
 		game_event = change ? GameEvent::ChangesInScene : GameEvent::Unknown;
 	}
@@ -110,7 +109,7 @@ void Background::calCurrentColor() {
 	if (transition_duration.asMilliseconds() < 0)
 		return;
 
-	auto time_elapsed = clock.getElapsedTime() - last_color_update;
+	auto time_elapsed = (*ResourceManager::getInstance())->getElapsedTime() - last_color_update;
 	transition_duration -= time_elapsed;
 	float rate = (1 / (float)transition_duration.asMilliseconds()) * (float)time_elapsed.asMilliseconds();
 
@@ -143,7 +142,7 @@ void Background::calCurrentColor() {
 		}
 	}
 
-	last_color_update = clock.getElapsedTime();
+	last_color_update = (*ResourceManager::getInstance())->getElapsedTime();
 }
 
 
@@ -162,7 +161,7 @@ void Background::calCurrentCirclesPos() {
 		}
 	}
 
-	auto time_elapsed = (clock.getElapsedTime() - last_pos_update).asMilliseconds();
+	auto time_elapsed = ((*ResourceManager::getInstance())->getElapsedTime() - last_pos_update).asMilliseconds();
 	float distance = circle_speed * (time_elapsed / (float)sf::seconds(1).asMilliseconds());
 
 	for (auto& circle : circles) {
@@ -173,7 +172,7 @@ void Background::calCurrentCirclesPos() {
 		pos.y += veloc.y * distance;
 	}
 
-	last_pos_update = clock.getElapsedTime();
+	last_pos_update = (*ResourceManager::getInstance())->getElapsedTime();
 }
 
 
@@ -209,7 +208,7 @@ void Background::setNextColor(const Color next_prim_color, const Color next_seco
 
 	if (transition_duration.asSeconds() > 0) {
 		this->transition_duration = transition_duration;
-		last_color_update = clock.getElapsedTime();
+		last_color_update = (*ResourceManager::getInstance())->getElapsedTime();
 	}
 }
 
