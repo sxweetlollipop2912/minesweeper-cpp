@@ -157,10 +157,6 @@ void Window::updateGameInfo() {
 					current_game_info.game_Feature.flags);
 				scene->resetTimer(current_game_info.current_timer);
 				scene->updateGameState(current_game_info.game_state);
-
-				if (current_game_info.game_state == GameState::Won) std::cout << "WON!\n";
-				else if (current_game_info.game_state == GameState::Ongoing) std::cout << "ongoing!\n";
-				else if (current_game_info.game_state == GameState::Lost) std::cout << "LOST!\n";
 			}
 
 			break;
@@ -182,10 +178,6 @@ void Window::updateGameInfo() {
 			scene->updateBoard(current_game_info.cell_board, current_game_info.mine_board,
 				current_game_info.game_Feature.flags);
 			scene->updateGameState(current_game_info.game_state);
-
-			if (current_game_info.game_state == GameState::Won) std::cout << "just WON!\n";
-			else if (current_game_info.game_state == GameState::Ongoing) std::cout << "still ongoing!\n";
-			else if (current_game_info.game_state == GameState::Lost) std::cout << "just LOST!\n";
 
 			break;
 		}

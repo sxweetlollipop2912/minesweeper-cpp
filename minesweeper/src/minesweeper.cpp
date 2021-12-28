@@ -83,14 +83,7 @@ void registerResources() {
 
 
 int main() {
-    Comms::GameInfo info;
-    info.records.beginner.push_back(PLAYER());
-    Comms::writeGameInfo(info, GAME_INFO_PATH);
-    info.records.beginner.clear();
-    Comms::readGameInfo(info, GAME_INFO_PATH);
-    if (info.records.beginner.size() == 1) std::cout << "success\n";
-
-    /*srand(time(NULL));
+    srand(time(NULL));
 
     registerResources();
 
@@ -126,5 +119,5 @@ int main() {
         // Limits receiving event and responding rate to about 120 times per sec.
         // Last benchmark: about 75 fps on average.
         std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 120));
-    }*/
+    }
 }

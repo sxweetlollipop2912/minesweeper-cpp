@@ -8,7 +8,6 @@ LeaderboardScene::LeaderboardScene(const sf::VideoMode& window_size) : Scene(win
 
 	buttons_event[STR_RETURN_BUTTON] = GameEvent::QuitToMenu;
 
-
 	// Texts
 	{
 		float pos_y_leaderboard_title = (float)this->window_size.height * POS_Y_COEF_LEADERBOARD_TITLE;
@@ -92,7 +91,7 @@ void LeaderboardScene::updateRecords(const std::shared_ptr<Records> records) {
 		}
 		if (i < records->intermediate.size()) {
 			PLAYER player = records->intermediate[i];
-			inter += "   " + timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
+			inter += "       " + timeToStr(player.timePlay.hours, player.timePlay.minutes, player.timePlay.seconds) + '\n';
 		}
 		if (i < records->expert.size()) {
 			PLAYER player = records->expert[i];

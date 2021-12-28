@@ -15,7 +15,7 @@ Scene::Scene(const sf::VideoMode& window_size, const SceneType scene_type, const
 	next_scene.clear();
 
 	buttons_event[STR_UNKNOWN] = GameEvent::Unknown;
-	hovered_button = STR_UNKNOWN;
+	pressed_button = hovered_button = STR_UNKNOWN;
 	pos_mouse = sf::Vector2i(-1, -1);
 }
 
@@ -38,13 +38,16 @@ GameEvent Scene::onMouseButtonReleased(const MouseActionType mouse_type) {
 	}
 	// Otherwise,
 	else {
+		if (mouse_type == MouseActionType::FirstLMB) {
+			pressed_button = hovered_button;
+		}
 		if ((!use_double_lmb && mouse_type != MouseActionType::FirstLMB) || 
 			(use_double_lmb && mouse_type != MouseActionType::LMB && mouse_type != MouseActionType::DoubleLMB)) {
 			return GameEvent::Unknown;
 		}
 
-		if (buttons_event.find(hovered_button) != buttons_event.end()) {
-			game_event = buttons_event.at(hovered_button);
+		if (buttons_event.find(pressed_button) != buttons_event.end()) {
+			game_event = buttons_event.at(pressed_button);
 		}
 
 		// If pop-up is successfully created.

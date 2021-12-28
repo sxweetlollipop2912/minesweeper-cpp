@@ -146,11 +146,9 @@ void PlayingScene::updateGameState(const GameState game_state) {
 		this->game_state = game_state;
 
 		if (game_state == GameState::Won) {
-			std::cout << "spawn won\n";
 			spawnPopUp(GameEvent::Won);
 		}
 		else if (game_state == GameState::Lost) {
-			std::cout << "spawn lost\n";
 			spawnPopUp(GameEvent::Lost);
 		}
 	}

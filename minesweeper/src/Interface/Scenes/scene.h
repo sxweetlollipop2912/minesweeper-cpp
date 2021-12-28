@@ -38,6 +38,7 @@ protected:
 
 	std::map <GameEvent, SceneType> next_scene;
 	std::string hovered_button;
+	std::string pressed_button;
 
 
 	void setWindowSize(const sf::VideoMode window_size);
