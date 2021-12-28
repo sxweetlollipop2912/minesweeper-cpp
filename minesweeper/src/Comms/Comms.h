@@ -59,8 +59,6 @@ namespace Comms {
 		// Only needed in SceneType::Playing.
 		// These should be the info of current saved game.
 		GameState game_state = GameState::Ongoing;
-		int board_row = -1;
-		int board_col = -1;
 		GAMECELL cell_board[MAX_ROW][MAX_COLUMN];
 		char mine_board[MAX_ROW][MAX_COLUMN];
 		GAMEPREDICATE game_Feature;
@@ -76,14 +74,12 @@ namespace Comms {
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version) {
 			ar& game_state;
-			ar& board_row;
-			ar& board_col;
 			ar& game_Feature;
 			ar& current_player;
 			ar& current_timer;
 			ar& records;
 
-			for (int i = 0; i < board_row; i++) for (int j = 0; j < board_col; j++) {
+			for (int i = 0; i < game_Feature.MAX_ROW; i++) for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
 				ar& cell_board[i][j];
 				ar& mine_board[i][j];
 			}
@@ -91,7 +87,7 @@ namespace Comms {
 	};
 	
 
-	void readGameInfo(GameInfo& game_info, const std::string& path);
+	bool readGameInfo(GameInfo& game_info, const std::string& path);
 	void writeGameInfo(GameInfo& game_info, const std::string& path);
 
 	/// Used by INTERFACE to send InterfaceInfo whenever there are changes, to GAME.

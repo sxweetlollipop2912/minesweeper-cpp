@@ -153,6 +153,25 @@ ifstream& operator >> (ifstream& inFile, vector <PLAYER>& score_Board) {
 	return inFile;
 }
 
+
+void set_opened(GAMECELL& cell, GAMEPREDICATE& game_Feature) {
+	game_Feature.flags += cell.isFlag;
+	cell.isFlag = false;
+	cell.isOpened = true;
+}
+
+void set_flagged(GAMECELL& cell, GAMEPREDICATE& game_Feature) {
+	game_Feature.flags -= !cell.isFlag;
+	cell.isFlag = true;
+	cell.isOpened = false;
+}
+
+void set_unflagged(GAMECELL& cell, GAMEPREDICATE& game_Feature) {
+	game_Feature.flags += cell.isFlag;
+	cell.isFlag = false;
+	cell.isOpened = false;
+}
+
 void set_up_game(GAMEPREDICATE& game_Feature, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], int theRow, int theColumn, int max_Mine) {
 	game_Feature.MAX_ROW = theRow;
 	game_Feature.MAX_COLUMN = theColumn;
@@ -209,11 +228,11 @@ int mine_Count(int theRow, int theColumn, const GAMEPREDICATE& game_Feature, cha
 
 void mine_Create(const GAMEPREDICATE& game_Feature, char mine_Board[][MAX_COLUMN], int theMines) {
 	int hasPlaced = 0; // The number of mines has been placed
-	ofstream outFile(DATA_PATH + "marked_mines.txt", ios::app);
+	/*ofstream outFile(DATA_PATH + "marked_mines.txt", ios::app);
 	if (outFile.fail()) {
 		cout << " Cannot open marked_mines.";
 		exit(1);
-	}
+	}*/
 	time_t t;
 	srand((unsigned)time(&t)); // Activate the random number runner
 	while (hasPlaced < theMines) {
@@ -226,11 +245,11 @@ void mine_Create(const GAMEPREDICATE& game_Feature, char mine_Board[][MAX_COLUMN
 		}
 		if (isLegal) {
 			mine_Board[x][y] = '&';
-			outFile << x << " " << y << endl;
+			//outFile << x << " " << y << endl;
 			hasPlaced++;
 		}
 	}
-	outFile.close();
+	//outFile.close();
 }
 
 
@@ -242,20 +261,21 @@ void mine_board_Clear(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_C
 		}
 	}
 
-	ofstream outFile(DATA_PATH + "marked_mines.txt");
-	if (outFile.fail()) {
-		cout << " Cannot open.";
-		exit(1);
-	}
-	//Clear the marked-mines TEXT FILE
-	outFile << "";
-	outFile.close();
+	//ofstream outFile(DATA_PATH + "marked_mines.txt");
+	//if (outFile.fail()) {
+	//	cout << " Cannot open.";
+	//	exit(1);
+	//}
+	////Clear the marked-mines TEXT FILE
+	//outFile << "";
+	//outFile.close();
 
 }
 
 
-void splash_Feature(int x, int y, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature) {
-	game_Board[x][y].isOpened = true;
+void splash_Feature(int x, int y, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], GAMEPREDICATE& game_Feature) {
+	set_opened(game_Board[x][y], game_Feature);
+
 	if (game_Board[x][y].mine_Count == 0) {
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
@@ -270,35 +290,45 @@ void splash_Feature(int x, int y, GAMECELL game_Board[][MAX_COLUMN], char mine_B
 	}
 }
 
-int fully_Flagged(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature) {
-	int count = 0;
-	ifstream inFile(DATA_PATH + "marked_mines.txt");
-	if (inFile.fail()) {
-		cout << " Cannot open marked_mines";
-		exit(1);
-	}
+bool has_Won(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature) {
+	bool won = false;
 
-	int x, y;
-	while (!inFile.eof()) {
-		inFile >> x >> y;
-		if (game_Board[x][y].isFlag) {
-			count++;
-		}
-	}
+	if (game_Feature.flags == 0) {
+		won = true;
 
-	return count;
-}
-
-void open_all_Cell(GAMECELL game_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature) {
-
-	for (int i = 0; i < game_Feature.MAX_ROW; i++) {
-		for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
-			if (!game_Board[i][j].isFlag) {
-				game_Board[i][j].isOpened = true;
+		for (int i = 0; i < game_Feature.MAX_ROW && won; i++) {
+			for (int j = 0; j < game_Feature.MAX_COLUMN && won; j++) {
+				if (isMine(i, j, mine_Board) && !game_Board[i][j].isFlag) {
+					won = false;
+				}
+				if (!isMine(i, j, mine_Board) && game_Board[i][j].isFlag) {
+					won = false;
+				}
 			}
 		}
 	}
 
+	if (!won) {
+		won = true;
+
+		for (int i = 0; i < game_Feature.MAX_ROW && won; i++) {
+			for (int j = 0; j < game_Feature.MAX_COLUMN && won; j++) {
+				if (!isMine(i, j, mine_Board) && !game_Board[i][j].isOpened) {
+					won = false;
+				}
+			}
+		}
+	}
+
+	return won;
+}
+
+void open_all_Cell(GAMECELL game_Board[][MAX_COLUMN], GAMEPREDICATE& game_Feature) {
+	for (int i = 0; i < game_Feature.MAX_ROW; i++) {
+		for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
+			set_opened(game_Board[i][j], game_Feature);
+		}
+	}
 }
 
 bool isFull(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature) {
@@ -328,13 +358,8 @@ int count_Flags(int x, int y, GAMECELL game_Board[][MAX_COLUMN], const GAMEPREDI
 	return results;
 }
 
-bool auto_open_Cell(int x, int y, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature) {
-
-	game_Board[x][y].isOpened = true;
-
-	if (isMine(x, y, mine_Board)) {
-		return false;
-	}
+bool auto_open_Cell(int x, int y, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], GAMEPREDICATE& game_Feature) {
+	if (!game_Board[x][y].isOpened) return true;
 
 	if ((game_Board[x][y].mine_Count != 0) && (game_Board[x][y].mine_Count == count_Flags(x, y, game_Board, game_Feature))) {
 		for (int i = -1; i < 2; i++) {
@@ -526,46 +551,26 @@ bool operator < (const PLAYER& first, const PLAYER& second) {
 
 
 void addtoRecord(int theLevel, const PLAYER& newPlayer, Records& records) {
-	ofstream outFile;
 	switch (theLevel) {
-	case 1:
+	case (int)Difficulty::Beginner:
 	{
 		records.beginner.push_back(newPlayer);
-		outFile.open(DATA_PATH + "beginner_records.txt", ios::app);
-		if (outFile.fail()) {
-			cout << " ERROR: outFile cannot be opened.";
-			exit(1);
-		}
-		outFile << records.beginner[records.beginner.size() - 1];
 		sort(records.beginner.begin(), records.beginner.end());
 		break;
 	}
-	case 2:
+	case (int)Difficulty::Intermediate:
 	{
 		records.intermediate.push_back(newPlayer);
-		outFile.open(DATA_PATH + "intermediate_records.txt", ios::app);
-		if (outFile.fail()) {
-			cout << " ERROR: outFile cannot be opened.";
-			exit(1);
-		}
-		outFile << records.intermediate[records.intermediate.size() - 1];
 		sort(records.intermediate.begin(), records.intermediate.end());
 		break;
 	}
-	case 3:
+	case (int)Difficulty::Expert:
 	{
 		records.expert.push_back(newPlayer);
-		outFile.open(DATA_PATH + "expert_records.txt", ios::app);
-		if (outFile.fail()) {
-			cout << " ERROR: outFile cannot be opened.";
-			exit(1);
-		}
-		outFile << records.expert[records.expert.size() - 1];
 		sort(records.expert.begin(), records.expert.end());
 		break;
 	}
 	}
-	outFile.close();
 }
 
 

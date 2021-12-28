@@ -52,6 +52,12 @@ ifstream& operator >> (ifstream& inFile, GAMECELL& anObject);
 
 ifstream& operator >> (ifstream& inFile, vector <PLAYER>& score_Board);
 
+void set_opened(GAMECELL& cell, GAMEPREDICATE& game_Feature);
+
+void set_flagged(GAMECELL& cell, GAMEPREDICATE& game_Feature);
+
+void set_unflagged(GAMECELL& cell, GAMEPREDICATE& game_Feature);
+
 void set_up_game(GAMEPREDICATE& game_Feature, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], int theRow, int theColumn, int max_Mine);
 
 bool isValid(int theRow, int theColumn, const GAMEPREDICATE& game_Feature);
@@ -66,15 +72,15 @@ void mine_Create(const GAMEPREDICATE& game_Feature, char mine_Board[][MAX_COLUMN
 
 void mine_board_Clear(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature);
 
-int fully_Flagged(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature);
+bool has_Won(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature);
 
-void open_all_Cell(GAMECELL game_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature);
+void open_all_Cell(GAMECELL game_Board[][MAX_COLUMN], GAMEPREDICATE& game_Feature);
 
-void splash_Feature(int x, int y, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature);
+void splash_Feature(int x, int y, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], GAMEPREDICATE& game_Feature);
 
 int count_Flags(int x, int y, GAMECELL game_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature);
 
-bool auto_open_Cell(int x, int y, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature);
+bool auto_open_Cell(int x, int y, GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], GAMEPREDICATE& game_Feature);
 
 bool isFull(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], const GAMEPREDICATE& game_Feature);
 

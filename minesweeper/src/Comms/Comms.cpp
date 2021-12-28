@@ -148,57 +148,19 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
 
             if (!current_info.cell_board[a][b].isOpened) {
                 if (current_info.cell_board[a][b].isFlag) {
-                    current_info.cell_board[a][b].isFlag = false;
-                    current_info.game_Feature.flags++;
+                    set_unflagged(current_info.cell_board[a][b], current_info.game_Feature);
                 }
-                else {
-                    current_info.cell_board[a][b].isFlag = true;
-                    current_info.game_Feature.flags--;
-                    if (current_info.game_Feature.flags == 0) {
-                        switch (current_info.current_player.level) {
-                        case (int)Difficulty::Beginner: {
-                            if (fully_Flagged(current_info.cell_board, current_info.mine_board, current_info.game_Feature) == BEGINNER_MINE) {
-                                open_all_Cell(current_info.cell_board, current_info.game_Feature);
-                                current_info.game_state = GameState::Won;
-                            }
-                            break;
-                        }
-                        case (int)Difficulty::Intermediate: {
-                            if (fully_Flagged(current_info.cell_board, current_info.mine_board, current_info.game_Feature) == INTERMEDIATE_MINE) {
-                                open_all_Cell(current_info.cell_board, current_info.game_Feature);
-                                current_info.game_state = GameState::Won;
-                            }
-                            break;
-                        }
-                        case (int)Difficulty::Expert: {
-                            if (fully_Flagged(current_info.cell_board, current_info.mine_board, current_info.game_Feature) == EXPERT_MINE) {
-                                open_all_Cell(current_info.cell_board, current_info.game_Feature);
-                                current_info.game_state = GameState::Won;
-                            }
-                            break;
-                        }
-                        case (int)Difficulty::Custom: {
-                            if (fully_Flagged(current_info.cell_board, current_info.mine_board, current_info.game_Feature) == current_info.game_Feature.maxMine) {
-                                open_all_Cell(current_info.cell_board, current_info.game_Feature);
-                                current_info.game_state = GameState::Won;
-                            }
-                            break;
-                        }
-                        }
-                    }
-                }
+                else if (current_info.game_Feature.flags > 0) {
+                    set_flagged(current_info.cell_board[a][b], current_info.game_Feature);
 
-                ofstream outFile(DATA_PATH + "last_Gameboard.txt");
-                if (outFile.fail()) {
-                    cout << " Cannot open last_Gameboard";
-                    exit(1);
-                }
-                for (int i = 0; i < current_info.game_Feature.MAX_ROW; i++) {
-                    for (int j = 0; j < current_info.game_Feature.MAX_COLUMN; j++) {
-                        outFile << current_info.cell_board[i][j] << endl;
+                    if (has_Won(current_info.cell_board, current_info.mine_board, current_info.game_Feature)) {
+                        open_all_Cell(current_info.cell_board, current_info.game_Feature);
+                        current_info.game_state = GameState::Won;
+                        current_info.current_player.timePlay = current_info.current_timer;
+                        addtoRecord(current_info.current_player.level, current_info.current_player, current_info.records);
                     }
                 }
-                outFile.close();
+            }
 
             writeGameInfo(current_info, GAME_INFO_PATH);
         }
