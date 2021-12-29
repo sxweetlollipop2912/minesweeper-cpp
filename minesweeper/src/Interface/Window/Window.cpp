@@ -12,15 +12,7 @@ Window::Window(const sf::VideoMode& window_size, const std::string& title, const
 	this->window_size = window_size;
 	this->title = title;
 	this->window_style = window_style;
-
-	background = std::make_shared<Background>(Background(window_size));
-
-	audio_manager.setRandomMusiclist(MAX_SONGS);
-	audio_manager.startMusic();
-
-	setCurrentSceneType(SceneType::Menu);
-	last_game_event = GameEvent::Unknown;
-	lock_mouse_button = MouseActionType::Unknown;
+	this->current_scene_type = SceneType::Unknown;
 
 	pos_mouse = sf::Vector2i(-1, -1);
 }
@@ -53,6 +45,26 @@ std::shared_ptr<Scene> Window::getCurrentScene() {
 	}
 
 	return nullptr;
+}
+
+
+void Window::initialize() {
+	background = std::make_shared<Background>(Background(window_size));
+
+	audio_manager.setRandomMusicList(MAX_SONGS);
+	audio_manager.startMusic();
+
+	initializeMenuScene();
+	initializeDifficultiesScene();
+	initializeLeaderboardScene();
+	initializePlayingScene();
+
+	setCurrentSceneType(SceneType::Menu);
+	last_game_event = GameEvent::Unknown;
+	lock_mouse_button = MouseActionType::Unknown;
+
+	current_interface_info.game_event = GameEvent::StartGame;
+	Comms::interfaceInfoSending(current_interface_info);
 }
 
 
@@ -89,6 +101,26 @@ void Window::initializePlayingScene(const int board_rows, const int board_cols) 
 }
 
 
+void Window::initializeCurrentScene() {
+	switch (getCurrentSceneType()) {
+	case SceneType::Menu:
+		initializeMenuScene();
+		break;
+	case SceneType::Difficulties:
+		initializeDifficultiesScene();
+		break;
+	case SceneType::Leaderboard:
+		initializeLeaderboardScene();
+		break;
+	case SceneType::Playing:
+		initializePlayingScene();
+		break;
+	default:
+		break;
+	}
+}
+
+
 bool Window::changeMousePosition(const sf::Vector2i& mouse_position) {
 	pos_mouse = mouse_position;
 
@@ -107,6 +139,10 @@ void Window::setCurrentSceneType(const SceneType& type) {
 		lock_mouse_button = MouseActionType::Unknown;
 
 		current_scene_type = type;
+
+		if (type != SceneType::Playing) {
+			background->setDefaultPositionAudioButtons();
+		}
 	}
 }
 
@@ -262,7 +298,9 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 			}
 
 			else if (getCurrentSceneType() == SceneType::Playing) {
-				// Keeps previous board configurations.
+				current_interface_info.new_row = current_game_info.game_Feature.MAX_ROW;
+				current_interface_info.new_col = current_game_info.game_Feature.MAX_COLUMN;
+				current_interface_info.difficulty = (Difficulty)current_game_info.current_player.level;
 			}
 
 			current_interface_info.current_timer = sf::microseconds(0);
@@ -422,15 +460,6 @@ void Window::onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Ve
 			handleGameEvents(nxt_event);
 		}
 	}
-}
-
-
-void Window::setVolumeTopLeftPos(const sf::Vector2f& top_left_pos) {
-	background->volume->setTopLeftPos(top_left_pos);
-}
-
-
-void Window::setSkipSongTopLeftPos(const sf::Vector2f& top_left_pos) {
 }
 
 

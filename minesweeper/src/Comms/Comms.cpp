@@ -4,23 +4,20 @@
 
 
 bool Comms::readGameInfo(GameInfo& game_info, const std::string& path) {
-    std::ifstream ifs;
-
-    {
-        int cnt = 0;
-        do {
-            ++cnt;
-            ifs = std::ifstream(path);
-        } while (cnt < 10 && ifs.fail());
-    }
+    std::ifstream ifs(path);
 
     if (!ifs.fail()) {
-        boost::archive::text_iarchive ia(ifs);
+        try {
+            boost::archive::text_iarchive ia(ifs);
 
-        game_info = GameInfo();
-        ia >> game_info;
+            game_info = GameInfo();
+            ia >> game_info;
 
-        return true;
+            return true;
+        }
+        catch (const std::exception& e) {
+            return false;
+        }
     }
 
     return false;
@@ -28,13 +25,20 @@ bool Comms::readGameInfo(GameInfo& game_info, const std::string& path) {
 }
 
 
-void Comms::writeGameInfo(GameInfo& game_info, const std::string& path) {
+bool Comms::writeGameInfo(GameInfo& game_info, const std::string& path) {
     std::ofstream ofs;
-    ofs.open(path);
 
-    boost::archive::text_oarchive oa(ofs);
+    try {
+        ofs.open(path);
 
-    oa << game_info;
+        boost::archive::text_oarchive oa(ofs);
+        oa << game_info;
+    }
+    catch (const std::exception& e) {
+        return false;
+    }
+
+    return true;
     // archive and stream closed when destructors are called
 }
 
@@ -43,9 +47,18 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
     auto& current_info = (*Window::getInstance())->current_game_info;
 
     switch (info.game_event) {
-    case GameEvent::NewGame: {
-        readGameInfo(current_info, GAME_INFO_PATH);
+    case GameEvent::StartGame: {
+        bool ok = false;
+        for (int i = 0; i < 10 && !ok; i++) {
+            ok = readGameInfo(current_info, GAME_INFO_PATH);
+        }
+        if (!ok) {
+            current_info.game_Feature.MAX_ROW = current_info.game_Feature.MAX_COLUMN = -1;
+        }
 
+        break;
+    }
+    case GameEvent::NewGame: {
         current_info.current_timer = info.current_timer;
         current_info.game_state = GameState::Ongoing;
 
@@ -91,25 +104,17 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
         //Setting mines into mine_board 
         mine_settingUp(current_info.current_player.level, current_info.game_Feature, current_info.mine_board, current_info.cell_board);
 
-        writeGameInfo(current_info, GAME_INFO_PATH);
-
         break;
     }
     case GameEvent::LoadGame: {
-        if (!readGameInfo(current_info, GAME_INFO_PATH)) {
-            current_info.game_Feature.MAX_ROW = current_info.game_Feature.MAX_COLUMN = -1;
-        }
         
         break;
     }
     case GameEvent::ShowLeaderboard: {
-        readGameInfo(current_info, GAME_INFO_PATH);
 
         break;
     }
     case GameEvent::OpenCell: {
-        readGameInfo(current_info, GAME_INFO_PATH);
-
         if (current_info.game_state == GameState::Ongoing) {
             current_info.current_timer = info.current_timer;
 
@@ -132,15 +137,11 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                     }
                 }
             }
-
-            writeGameInfo(current_info, GAME_INFO_PATH);
         }
 
         break;
     }
     case GameEvent::FlagCell: {
-        readGameInfo(current_info, GAME_INFO_PATH);
-
         if (current_info.game_state == GameState::Ongoing) {
             current_info.current_timer = info.current_timer;
 
@@ -161,15 +162,11 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                     }
                 }
             }
-
-            writeGameInfo(current_info, GAME_INFO_PATH);
         }
 
         break;
     }
     case GameEvent::AutoOpenCell: {
-        readGameInfo(current_info, GAME_INFO_PATH);
-
         if (current_info.game_state == GameState::Ongoing) {
             current_info.current_timer = info.current_timer;
 
@@ -185,17 +182,18 @@ Result Comms::interfaceInfoSending(const InterfaceInfo& info) {
                 current_info.current_player.timePlay = current_info.current_timer;
                 addtoRecord(current_info.current_player.level, current_info.current_player, current_info.records);
             }
-
-            writeGameInfo(current_info, GAME_INFO_PATH);
         }
 
         break;
     }
-    case GameEvent::QuitToMenu: {
-
-        break;
-    }
+    case GameEvent::QuitToMenu:
     case GameEvent::QuitGame: {
+        bool ok = false;
+        for (int i = 0; i < 10 && !ok; i++) {
+            ok = writeGameInfo(current_info, GAME_INFO_PATH);
+        }
+        
+        if (!ok) std::cout << "Failed to write save to files.";
 
         break;
     }

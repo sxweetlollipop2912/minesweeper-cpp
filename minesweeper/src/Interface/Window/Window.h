@@ -37,6 +37,7 @@ struct MouseAction {
 class Window {
 	friend Result Comms::gameInfoSending(const GameInfo& info);
 	friend Result Comms::interfaceInfoSending(const InterfaceInfo& info);
+	friend class PlayingScene;
 
 private:
 	static Window* instance;
@@ -60,6 +61,16 @@ private:
 
 	Window(const sf::VideoMode& window_size = sf::VideoMode(1500, 1000), const std::string& title = TITLE, const int window_style = sf::Style::Close);
 
+	// Initializes/Resets menu scene for window.
+	void initializeMenuScene();
+	// Initializes/Resets menu scene for window.
+	void initializeLeaderboardScene();
+	// Initializes/Resets showing difficulties scene for window.
+	void initializeDifficultiesScene();
+	// Initializes/Resets playing scene for window.
+	void initializePlayingScene(const int board_rows = -1, const int board_cols = -1);
+	void initializeCurrentScene();
+
 	void updateGameInfo();
 	// Returns true if there are visual changes.
 	// Otherwise, returns false
@@ -75,10 +86,6 @@ private:
 	void onMouseButtonPressed(const sf::Mouse::Button& button, const sf::Vector2i& position);
 	// Call upon a mouse button RELEASE event.
 	void onMouseButtonReleased(const sf::Mouse::Button& button, const sf::Vector2i& position);
-
-	// Between scenes
-	void setVolumeTopLeftPos(const sf::Vector2f& top_left_pos);
-	void setSkipSongTopLeftPos(const sf::Vector2f& top_left_pos);
 
 public:
 	std::shared_ptr<sf::RenderWindow> render_window;
@@ -118,14 +125,8 @@ public:
 	// Gets current scene as Scene object.
 	std::shared_ptr<Scene> getCurrentScene();
 
-	// Initializes/Resets menu scene for window.
-	void initializeMenuScene();
-	// Initializes/Resets menu scene for window.
-	void initializeLeaderboardScene();
-	// Initializes/Resets showing difficulties scene for window.
-	void initializeDifficultiesScene();
-	// Initializes/Resets playing scene for window.
-	void initializePlayingScene(const int board_rows = -1, const int board_cols = -1);
+	// Always call after creating a `Window` object.
+	void initialize();
 
 	// Call to update automatic features (i.e. timer while playing) at each frame.
 	void updatePerFrame();

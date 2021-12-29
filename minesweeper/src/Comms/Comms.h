@@ -22,6 +22,7 @@
 namespace Comms {
 	struct InterfaceInfo {
 		// This is a list a GameEvent that GAME should ONLY handle:
+		// > StartGame:		sent at game initialization.
 		// > QuitGame:		quitting the game. Time to wrap up everything.
 		// > QuitToMenu:		quitting to menu. Time to wrap up things if current_scene is Playing.
 		// > NewGame:		create a new board and delete current save.
@@ -88,7 +89,7 @@ namespace Comms {
 	
 
 	bool readGameInfo(GameInfo& game_info, const std::string& path);
-	void writeGameInfo(GameInfo& game_info, const std::string& path);
+	bool writeGameInfo(GameInfo& game_info, const std::string& path);
 
 	/// Used by INTERFACE to send InterfaceInfo whenever there are changes, to GAME.
 	Result interfaceInfoSending(const InterfaceInfo& info);

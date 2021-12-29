@@ -59,16 +59,34 @@ Background::Background(const sf::VideoMode window_size, const sf::Color primary_
 		next_song_button.setImage(TextureType::SkipSong);
 		next_song_button.setSize(SKIP_SONG_SIZE);
 
-		sf::Vector2f TL_next_song;
-		TL_next_song.x = RIGHT_DOWN_COEF_SKIP_SONG.x * window_size.width - next_song_button.getSize().x;
-		TL_next_song.y = RIGHT_DOWN_COEF_SKIP_SONG.y * window_size.height - next_song_button.getSize().y;
-		next_song_button.setTopLeftPos(TL_next_song);
-
-		sf::Vector2f volume_pos;
-		volume_pos.x = (RIGHT_DOWN_COEF_VOLUME.x - VOLUME_WIDTH) * window_size.width;
-		volume_pos.y = (RIGHT_DOWN_COEF_VOLUME.y - VOLUME_HEIGHT) * window_size.height;
-		volume = std::make_shared<Slider>(Slider(0, 100, 100, volume_pos, VOLUME_WIDTH * window_size.width, VOLUME_HEIGHT * window_size.width, false));
+		setDefaultPositionAudioButtons();
 	}
+}
+
+
+void Background::setDefaultPositionAudioButtons() {
+	sf::Vector2f volume_pos;
+	volume_pos.x = (RIGHT_DOWN_COEF_VOLUME.x - VOLUME_WIDTH) * window_size.width;
+	volume_pos.y = (RIGHT_DOWN_COEF_VOLUME.y - VOLUME_HEIGHT) * window_size.height;
+	setCustomPositionAudioButtons(volume_pos);
+}
+
+
+void Background::setCustomPositionAudioButtons(const sf::Vector2f& volume_top_left_pos) {
+	Button& next_song_button = buttons[STR_NEXT_SONG];
+
+	volume = std::make_shared<Slider>(Slider(0, 100, 100, volume_top_left_pos, VOLUME_WIDTH * window_size.width, VOLUME_HEIGHT * window_size.width, false));
+
+	next_song_button.setTopLeftPosY(volume_top_left_pos.y - SPACE_Y_COEF_SKIP_SONG_AND_VOLUME * window_size.height - next_song_button.getSize().y);
+	next_song_button.centerButtonHorizontally(VOLUME_WIDTH * window_size.width, volume_top_left_pos.x);
+}
+
+
+void Background::centerAudioButtonsHorizontally(const float space_width, const float left_pos_x) {
+	volume->centerSliderHorizontally(space_width, left_pos_x);
+
+	Button& next_song_button = buttons[STR_NEXT_SONG];
+	next_song_button.centerButtonHorizontally(space_width, left_pos_x);
 }
 
 
@@ -106,39 +124,45 @@ bool Background::changeMousePosition(const sf::Vector2i& pos) {
 
 
 void Background::calCurrentColor() {
-	if (transition_duration.asMilliseconds() < 0)
-		return;
-
 	auto time_elapsed = (*ResourceManager::getInstance())->getElapsedTime() - last_color_update;
 	transition_duration -= time_elapsed;
-	float rate = (1 / (float)transition_duration.asMilliseconds()) * (float)time_elapsed.asMilliseconds();
 
-	{
-		Color color = cur_prim_color;
-		color.r = (des_prim_color.r - color.r) * rate + color.r;
-		color.g = (des_prim_color.g - color.g) * rate + color.g;
-		color.b = (des_prim_color.b - color.b) * rate + color.b;
+	if (transition_duration.asMilliseconds() < 0) {
+		cur_prim_color = des_prim_color;
+		cur_second_color = des_second_color;
 
-		if ((des_prim_color.r - color.r) * (des_prim_color.r - cur_prim_color.r) > 0 &&
-			(des_prim_color.g - color.g) * (des_prim_color.g - cur_prim_color.g) > 0 &&
-			(des_prim_color.b - color.b) * (des_prim_color.b - cur_prim_color.b) > 0) {
-
-			cur_prim_color = color;
-		}
+		background.setFillColor(cur_prim_color);
 	}
-	background.setFillColor(cur_prim_color);
+	else {
+		float rate = (1 / (float)transition_duration.asMilliseconds()) * (float)time_elapsed.asMilliseconds();
 
-	{
-		Color color = cur_second_color;
-		color.r = (des_second_color.r - color.r) * rate + color.r;
-		color.g = (des_second_color.g - color.g) * rate + color.g;
-		color.b = (des_second_color.b - color.b) * rate + color.b;
+		{
+			Color color = cur_prim_color;
+			color.r = (des_prim_color.r - color.r) * rate + color.r;
+			color.g = (des_prim_color.g - color.g) * rate + color.g;
+			color.b = (des_prim_color.b - color.b) * rate + color.b;
 
-		if ((des_second_color.r - color.r) * (des_second_color.r - cur_second_color.r) > 0 &&
-			(des_second_color.g - color.g) * (des_second_color.g - cur_second_color.g) > 0 &&
-			(des_second_color.b - color.b) * (des_second_color.b - cur_second_color.b) > 0) {
+			if ((des_prim_color.r - color.r) * (des_prim_color.r - cur_prim_color.r) > 0 &&
+				(des_prim_color.g - color.g) * (des_prim_color.g - cur_prim_color.g) > 0 &&
+				(des_prim_color.b - color.b) * (des_prim_color.b - cur_prim_color.b) > 0) {
 
-			cur_second_color = color;
+				cur_prim_color = color;
+			}
+		}
+		background.setFillColor(cur_prim_color);
+
+		{
+			Color color = cur_second_color;
+			color.r = (des_second_color.r - color.r) * rate + color.r;
+			color.g = (des_second_color.g - color.g) * rate + color.g;
+			color.b = (des_second_color.b - color.b) * rate + color.b;
+
+			if ((des_second_color.r - color.r) * (des_second_color.r - cur_second_color.r) > 0 &&
+				(des_second_color.g - color.g) * (des_second_color.g - cur_second_color.g) > 0 &&
+				(des_second_color.b - color.b) * (des_second_color.b - cur_second_color.b) > 0) {
+
+				cur_second_color = color;
+			}
 		}
 	}
 

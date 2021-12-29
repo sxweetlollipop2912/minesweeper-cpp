@@ -8,6 +8,7 @@ PopUp::PopUp(const GameEvent yes_game_event, const GameEvent no_game_event, cons
 	Button& box = buttons[STR_BOX];
 	box.setImage(TextureType::PopUpBackground);
 	box.label.setText(msg);
+	box.label.setFontSize(DEFAULT_NORMAL_FONT_SIZE * 1.4f);
 	box.setTransparent();
 
 	Button& yes_button = buttons[STR_YES];
@@ -32,7 +33,7 @@ void PopUp::PositionPopUp(const sf::VideoMode& window_size) {
 	Button& yes_button = buttons[STR_YES];
 	Button& no_button = buttons[STR_NO];
 
-	box.setSize(sf::Vector2f(window_size.width / 2.8, window_size.height / 3));
+	box.setSize(sf::Vector2f(window_size.width / 2.6f, 0));
 	box.centerButtonHorizontally(window_size.width);
 	box.centerButtonVertically(window_size.height);
 

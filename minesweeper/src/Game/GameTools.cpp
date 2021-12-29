@@ -240,9 +240,26 @@ void mine_Create(const GAMEPREDICATE& game_Feature, char mine_Board[][MAX_COLUMN
 		int y = rand() % (game_Feature.MAX_COLUMN);
 		bool isLegal = true;
 
-		if (isMine(x, y, mine_Board) || (x == 0 && y == 0)) {
+		if (isMine(x, y, mine_Board)) {
 			isLegal = false;
 		}
+
+		{
+			int cnt_mine = 0;
+
+			for (int i = -1; i < 2; i++) {
+				for (int j = -1; j < 2; j++) {
+					if ((i != 0 || j != 0) && isValid(x + i, y + j, game_Feature)) {
+						if (isMine(x + i, y + j, mine_Board)) {
+							++cnt_mine;
+						}
+					}
+				}
+			}
+
+			isLegal |= cnt_mine == 8;
+		}
+
 		if (isLegal) {
 			mine_Board[x][y] = '&';
 			//outFile << x << " " << y << endl;
@@ -326,7 +343,7 @@ bool has_Won(GAMECELL game_Board[][MAX_COLUMN], char mine_Board[][MAX_COLUMN], c
 void open_all_Cell(GAMECELL game_Board[][MAX_COLUMN], GAMEPREDICATE& game_Feature) {
 	for (int i = 0; i < game_Feature.MAX_ROW; i++) {
 		for (int j = 0; j < game_Feature.MAX_COLUMN; j++) {
-			set_opened(game_Board[i][j], game_Feature);
+			game_Board[i][j].isOpened = true;
 		}
 	}
 }

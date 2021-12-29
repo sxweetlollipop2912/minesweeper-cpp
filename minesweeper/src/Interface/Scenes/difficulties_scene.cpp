@@ -72,7 +72,9 @@ DifficultiesScene::DifficultiesScene(const sf::VideoMode& window_size) : Scene(w
 
 		Button& return_button = buttons[STR_RETURN_BUTTON];
 		return_button.setImage(TextureType::ReturnButton);
-		return_button.setSize(RETURN_BUTTON_SIZE);
+		return_button.setSize(sf::Vector2f(buttons[STR_BEGINNER_BUTTON].getSize().y, buttons[STR_BEGINNER_BUTTON].getSize().y));
+		return_button.setTopLeftPosY(buttons[STR_BEGINNER_BUTTON].getPosTopLeft().y);
+		return_button.setTopLeftPosX(buttons[STR_BEGINNER_BUTTON].getPosTopLeft().x - return_button.getSize().x - (return_button.getSize().x / (float)2));
 	}
 
 	// Sliders
