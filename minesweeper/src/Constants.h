@@ -52,7 +52,7 @@ const std::string DEFAULT_FONT_PATH = FONT_PATH + (const std::string)"MochiyPopO
 
 
 // VISUAL
-const int DEFAULT_TRANSPARENT_ALPHA_VALUE = 240;
+const int DEFAULT_TRANSPARENT_ALPHA_VALUE = 245;
 const sf::Color HOVERED_COLOR = sf::Color(150, 150, 150);
 const sf::Color BACKGROUMD_COLOR = sf::Color(0, 0, 0);
 const sf::Color DEFAULT_TEXT_COLOR = sf::Color(235, 235, 235);
@@ -94,9 +94,9 @@ const float POS_Y_COEF_SLIDER_ROW = 3 / (float)7;
 const float POS_Y_COEF_SLODER_COL = 4 / (float)7;
 // PLAYING SCENE
 const float MIN_CELL_SIZE = 30;
-const float MAX_CELL_SIZE = 55;
-const sf::Vector2f TOP_LEFT_COEF_BOARD_AREA = sf::Vector2f((RETURN_BUTTON_SIZE.x * (const float)2) / (float)1500, 1 / (float)20);
-const sf::Vector2f RIGHT_DOWN_COEF_BOARD_AREA = sf::Vector2f((1500 - (RETURN_BUTTON_SIZE.x * (const float)2)) / (float)1500, 19 / (float)20);
+const float MAX_CELL_SIZE = 60;
+const sf::Vector2f TOP_LEFT_COEF_BOARD_AREA = sf::Vector2f((RETURN_BUTTON_SIZE.x * (const float)1.7f) / (float)DEFAULT_WINDOW_SIZE.width, 1 / (float)20);
+const sf::Vector2f RIGHT_DOWN_COEF_BOARD_AREA = sf::Vector2f((DEFAULT_WINDOW_SIZE.width - (RETURN_BUTTON_SIZE.x * (const float)0.3f)) / (float)DEFAULT_WINDOW_SIZE.width, 19 / (float)20);
 const float SPAPCE_BETWEEN_BOARD_SCOREBOARD_X_COEF = 1 / (float)40;
 // SCOREBOARD
 const float SCOREBOARD_SIZE_Y_COEF = 2 / (float)5;

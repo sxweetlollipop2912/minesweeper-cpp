@@ -45,6 +45,8 @@ LeaderboardScene::LeaderboardScene(const sf::VideoMode& window_size) : Scene(win
 		Button& return_button = buttons[STR_RETURN_BUTTON];
 		return_button.setImage(TextureType::ReturnButton);
 		return_button.setSize(RETURN_BUTTON_SIZE);
+		return_button.setTopLeftPosY(texts[STR_TITLE].getPosTopLeft().y);
+		return_button.setTopLeftPosX(texts[STR_BEGINNER_COL].getPosTopLeft().x - return_button.getSize().x - (return_button.getSize().x / (float)2));
 	}
 }
 

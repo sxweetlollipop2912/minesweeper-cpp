@@ -10,7 +10,6 @@
 #include "Interface/Window/Window.h"
 #include "Interface/ResourceManager/ResourceManager.h"
 #include "Constants.h"
-#include "Comms/Comms.h"
 
 
 void registerResources() {
@@ -27,7 +26,7 @@ void registerResources() {
         std::cout << "Loading PopUpBackground texture failed!";
     }
     if ((*ResourceManager::getInstance())->setTexture(TextureType::SkipSong, SKIP_SONG_BUTTON_PATH) == Result::failure) {
-        std::cout << "Loading NextSong texture failed!";
+        std::cout << "Loading SkipSong texture failed!";
     }
 
     // PLAYING SCENE TEXTURES
@@ -88,11 +87,7 @@ int main() {
     registerResources();
 
     auto window = Window::getInstance();
-
-    (*window)->initializeMenuScene();
-    (*window)->initializeLeaderboardScene();
-    (*window)->initializeDifficultiesScene();
-    (*window)->initializePlayingScene();
+    (*window)->initialize();
 
     (*window)->createWindow();
 
