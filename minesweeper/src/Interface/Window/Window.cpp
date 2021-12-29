@@ -139,6 +139,10 @@ void Window::setCurrentSceneType(const SceneType& type) {
 		lock_mouse_button = MouseActionType::Unknown;
 
 		current_scene_type = type;
+
+		if (type != SceneType::Playing) {
+			background->setDefaultPositionAudioButtons();
+		}
 	}
 }
 

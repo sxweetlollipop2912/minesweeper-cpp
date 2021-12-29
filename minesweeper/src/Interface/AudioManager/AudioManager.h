@@ -47,7 +47,7 @@ public:
 	// With `max_songs` as number of max songs on the list.
 	// If music is currently played, this will stop the music.
 	// NOTE: manually call `startMusic` to start music after calling this.
-	void setRandomMusiclist(const int max_songs);
+	void setRandomMusicList(const int max_songs);
 
 	void onNextMusicEvent();
 	void startMusic();

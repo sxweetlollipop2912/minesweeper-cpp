@@ -91,7 +91,7 @@ AudioVisualCfg AudioManager::parseFromCfgFile(const std::string& file_path) {
 }
 
 
-void AudioManager::setRandomMusiclist(const int max_songs) {
+void AudioManager::setRandomMusicList(const int max_songs) {
 	music.stop();
 	current_status = MusicStatus::Stopped;
 

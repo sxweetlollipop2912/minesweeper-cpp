@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "playing_scene.h"
+#include "../Window/Window.h"
 
 
 PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_rows, const int board_cols, const sf::Time timer_offset)
@@ -95,6 +96,12 @@ PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_row
 		return_button.setSize(RETURN_BUTTON_SIZE);
 		return_button.setTopLeftPosY(board.getPosTopLeft().y);
 		return_button.setTopLeftPosX(board.getPosTopLeft().x - return_button.getSize().x - (return_button.getSize().x / (float)3));
+
+		if (board.getCols() != 0 && board.getRows() != 0) {
+			const Button& scoreboard = buttons[STR_SCOREBOARD];
+			(*Window::getInstance())->background->setCustomPositionAudioButtons(sf::Vector2f(0, scoreboard.getPosRightDown().y + scoreboard.getSize().y / 4.0f));
+			(*Window::getInstance())->background->centerAudioButtonsHorizontally(scoreboard.getSize().x, scoreboard.getPosTopLeft().x);
+		}
 	}
 }
 
@@ -270,12 +277,10 @@ void PlayingScene::onGainedFocus() {
 
 
 bool PlayingScene::updatePerFrame() {
-	if (!pop_up) {
-		updateTimerStr(timer.getElapsedTime());
-	}
-	else {
+	if (pop_up) {
 		timer.pause();
 	}
+	updateTimerStr(timer.getElapsedTime());
 
 	return true;
 }

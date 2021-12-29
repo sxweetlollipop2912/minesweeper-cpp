@@ -40,7 +40,7 @@ const std::string GAME_INFO_PATH = DATA_PATH + (const std::string)"game_info.txt
 
 
 // WINDOW
-const sf::VideoMode DEFAULT_WINDOW_SIZE = sf::VideoMode(1500, 1000);
+const sf::VideoMode DEFAULT_WINDOW_SIZE = sf::VideoMode(1500, 1200);
 
 
 // TEXT
@@ -109,11 +109,11 @@ const sf::Vector2f POS_COEF_SCOREBOARD_FLAG = sf::Vector2f(70 / (float)447, (401
 const float POS_Y_COEF_LEADERBOARD_TITLE = 1 / (float)8;
 const float POS_Y_COEF_COL = 1 / (float)3;
 // AUDIO
-const float VOLUME_HEIGHT = 5 / (float)1000;
-const float VOLUME_WIDTH = 120 / (float)1500;
-const sf::Vector2f RIGHT_DOWN_COEF_VOLUME = RIGHT_DOWN_COEF_BOARD_AREA;
-const sf::Vector2f RIGHT_DOWN_COEF_SKIP_SONG = sf::Vector2f(RIGHT_DOWN_COEF_VOLUME.x, RIGHT_DOWN_COEF_VOLUME.y - VOLUME_HEIGHT * (float)5);
-const sf::Vector2f SKIP_SONG_SIZE = sf::Vector2f(35, 35);
+const float VOLUME_HEIGHT = 7 / (float)DEFAULT_WINDOW_SIZE.height;
+const float VOLUME_WIDTH = 150 / (float)DEFAULT_WINDOW_SIZE.width;
+const sf::Vector2f RIGHT_DOWN_COEF_VOLUME = sf::Vector2f((float)(DEFAULT_WINDOW_SIZE.width * 11 / (float)12) / (float)DEFAULT_WINDOW_SIZE.width, (float)(DEFAULT_WINDOW_SIZE.height * 15 / (float)17) / (float)DEFAULT_WINDOW_SIZE.height);
+const float SPACE_Y_COEF_SKIP_SONG_AND_VOLUME = VOLUME_HEIGHT * (float)5;
+const sf::Vector2f SKIP_SONG_SIZE = sf::Vector2f(40, 40);
 
 
 

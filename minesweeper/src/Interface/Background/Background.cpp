@@ -59,16 +59,34 @@ Background::Background(const sf::VideoMode window_size, const sf::Color primary_
 		next_song_button.setImage(TextureType::SkipSong);
 		next_song_button.setSize(SKIP_SONG_SIZE);
 
-		sf::Vector2f TL_next_song;
-		TL_next_song.x = RIGHT_DOWN_COEF_SKIP_SONG.x * window_size.width - next_song_button.getSize().x;
-		TL_next_song.y = RIGHT_DOWN_COEF_SKIP_SONG.y * window_size.height - next_song_button.getSize().y;
-		next_song_button.setTopLeftPos(TL_next_song);
-
-		sf::Vector2f volume_pos;
-		volume_pos.x = (RIGHT_DOWN_COEF_VOLUME.x - VOLUME_WIDTH) * window_size.width;
-		volume_pos.y = (RIGHT_DOWN_COEF_VOLUME.y - VOLUME_HEIGHT) * window_size.height;
-		volume = std::make_shared<Slider>(Slider(0, 100, 100, volume_pos, VOLUME_WIDTH * window_size.width, VOLUME_HEIGHT * window_size.width, false));
+		setDefaultPositionAudioButtons();
 	}
+}
+
+
+void Background::setDefaultPositionAudioButtons() {
+	sf::Vector2f volume_pos;
+	volume_pos.x = (RIGHT_DOWN_COEF_VOLUME.x - VOLUME_WIDTH) * window_size.width;
+	volume_pos.y = (RIGHT_DOWN_COEF_VOLUME.y - VOLUME_HEIGHT) * window_size.height;
+	setCustomPositionAudioButtons(volume_pos);
+}
+
+
+void Background::setCustomPositionAudioButtons(const sf::Vector2f& volume_top_left_pos) {
+	Button& next_song_button = buttons[STR_NEXT_SONG];
+
+	volume = std::make_shared<Slider>(Slider(0, 100, 100, volume_top_left_pos, VOLUME_WIDTH * window_size.width, VOLUME_HEIGHT * window_size.width, false));
+
+	next_song_button.setTopLeftPosY(volume_top_left_pos.y - SPACE_Y_COEF_SKIP_SONG_AND_VOLUME * window_size.height - next_song_button.getSize().y);
+	next_song_button.centerButtonHorizontally(VOLUME_WIDTH * window_size.width, volume_top_left_pos.x);
+}
+
+
+void Background::centerAudioButtonsHorizontally(const float space_width, const float left_pos_x) {
+	volume->centerSliderHorizontally(space_width, left_pos_x);
+
+	Button& next_song_button = buttons[STR_NEXT_SONG];
+	next_song_button.centerButtonHorizontally(space_width, left_pos_x);
 }
 
 
