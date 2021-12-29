@@ -15,6 +15,7 @@ enum class GameState {
 
 
 enum class GameEvent {
+	StartGame,
 	QuitGame,
 	QuitToMenu,
 	OpenPopUp,

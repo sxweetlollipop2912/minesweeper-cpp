@@ -124,39 +124,45 @@ bool Background::changeMousePosition(const sf::Vector2i& pos) {
 
 
 void Background::calCurrentColor() {
-	if (transition_duration.asMilliseconds() < 0)
-		return;
-
 	auto time_elapsed = (*ResourceManager::getInstance())->getElapsedTime() - last_color_update;
 	transition_duration -= time_elapsed;
-	float rate = (1 / (float)transition_duration.asMilliseconds()) * (float)time_elapsed.asMilliseconds();
 
-	{
-		Color color = cur_prim_color;
-		color.r = (des_prim_color.r - color.r) * rate + color.r;
-		color.g = (des_prim_color.g - color.g) * rate + color.g;
-		color.b = (des_prim_color.b - color.b) * rate + color.b;
+	if (transition_duration.asMilliseconds() < 0) {
+		cur_prim_color = des_prim_color;
+		cur_second_color = des_second_color;
 
-		if ((des_prim_color.r - color.r) * (des_prim_color.r - cur_prim_color.r) > 0 &&
-			(des_prim_color.g - color.g) * (des_prim_color.g - cur_prim_color.g) > 0 &&
-			(des_prim_color.b - color.b) * (des_prim_color.b - cur_prim_color.b) > 0) {
-
-			cur_prim_color = color;
-		}
+		background.setFillColor(cur_prim_color);
 	}
-	background.setFillColor(cur_prim_color);
+	else {
+		float rate = (1 / (float)transition_duration.asMilliseconds()) * (float)time_elapsed.asMilliseconds();
 
-	{
-		Color color = cur_second_color;
-		color.r = (des_second_color.r - color.r) * rate + color.r;
-		color.g = (des_second_color.g - color.g) * rate + color.g;
-		color.b = (des_second_color.b - color.b) * rate + color.b;
+		{
+			Color color = cur_prim_color;
+			color.r = (des_prim_color.r - color.r) * rate + color.r;
+			color.g = (des_prim_color.g - color.g) * rate + color.g;
+			color.b = (des_prim_color.b - color.b) * rate + color.b;
 
-		if ((des_second_color.r - color.r) * (des_second_color.r - cur_second_color.r) > 0 &&
-			(des_second_color.g - color.g) * (des_second_color.g - cur_second_color.g) > 0 &&
-			(des_second_color.b - color.b) * (des_second_color.b - cur_second_color.b) > 0) {
+			if ((des_prim_color.r - color.r) * (des_prim_color.r - cur_prim_color.r) > 0 &&
+				(des_prim_color.g - color.g) * (des_prim_color.g - cur_prim_color.g) > 0 &&
+				(des_prim_color.b - color.b) * (des_prim_color.b - cur_prim_color.b) > 0) {
 
-			cur_second_color = color;
+				cur_prim_color = color;
+			}
+		}
+		background.setFillColor(cur_prim_color);
+
+		{
+			Color color = cur_second_color;
+			color.r = (des_second_color.r - color.r) * rate + color.r;
+			color.g = (des_second_color.g - color.g) * rate + color.g;
+			color.b = (des_second_color.b - color.b) * rate + color.b;
+
+			if ((des_second_color.r - color.r) * (des_second_color.r - cur_second_color.r) > 0 &&
+				(des_second_color.g - color.g) * (des_second_color.g - cur_second_color.g) > 0 &&
+				(des_second_color.b - color.b) * (des_second_color.b - cur_second_color.b) > 0) {
+
+				cur_second_color = color;
+			}
 		}
 	}
 

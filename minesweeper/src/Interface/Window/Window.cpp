@@ -298,7 +298,9 @@ bool Window::handleGameEvents(const GameEvent game_event) {
 			}
 
 			else if (getCurrentSceneType() == SceneType::Playing) {
-				// Keeps previous board configurations.
+				current_interface_info.new_row = current_game_info.game_Feature.MAX_ROW;
+				current_interface_info.new_col = current_game_info.game_Feature.MAX_COLUMN;
+				current_interface_info.difficulty = (Difficulty)current_game_info.current_player.level;
 			}
 
 			current_interface_info.current_timer = sf::microseconds(0);
