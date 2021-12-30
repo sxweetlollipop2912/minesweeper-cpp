@@ -59,6 +59,8 @@ Background::Background(const sf::VideoMode window_size, const sf::Color primary_
 		next_song_button.setImage(TextureType::SkipSong);
 		next_song_button.setSize(SKIP_SONG_SIZE);
 
+		volume = std::make_shared<Slider>(Slider(0, 100, 100, sf::Vector2f(0, 0), VOLUME_WIDTH * window_size.width, VOLUME_HEIGHT * window_size.width, false));
+
 		setDefaultPositionAudioButtons();
 	}
 }
@@ -75,8 +77,7 @@ void Background::setDefaultPositionAudioButtons() {
 void Background::setCustomPositionAudioButtons(const sf::Vector2f& volume_top_left_pos) {
 	Button& next_song_button = buttons[STR_NEXT_SONG];
 
-	volume = std::make_shared<Slider>(Slider(0, 100, 100, volume_top_left_pos, VOLUME_WIDTH * window_size.width, VOLUME_HEIGHT * window_size.width, false));
-
+	volume->setTopLeftPos(volume_top_left_pos);
 	next_song_button.setTopLeftPosY(volume_top_left_pos.y - SPACE_Y_COEF_SKIP_SONG_AND_VOLUME * window_size.height - next_song_button.getSize().y);
 	next_song_button.centerButtonHorizontally(VOLUME_WIDTH * window_size.width, volume_top_left_pos.x);
 }

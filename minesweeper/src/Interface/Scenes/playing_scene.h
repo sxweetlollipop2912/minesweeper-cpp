@@ -24,6 +24,7 @@ private:
 	const std::string STR_SCOREBOARD = "scoreboard";
 	const std::string STR_TIMER_LABEL = "timer_label";
 	const std::string STR_FLAG_REMAINING_LABEL = "flag_label";
+	const std::string STR_CURRENT_DIFF = "diff";
 	const std::string STR_TIMER = "timer";
 	const std::string STR_FLAG_REMAINING = "flag";
 

@@ -69,5 +69,5 @@ public:
 	// Centers text on X-axis.
 	// > Returns Result::failure if text is wider than screen,
 	// > otherwise, returns Result::success.
-	Result centerTextHorizontally(const float window_width);
+	Result centerTextHorizontally(const float space_width, const float left_pos_x = 0);
 };

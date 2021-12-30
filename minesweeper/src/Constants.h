@@ -25,8 +25,8 @@ const int EXPERT_ROW = 16;
 const int EXPERT_COL = 30;
 const int EXPERT_MINE = 99;
 const float CUSTOM_MINE_COEF = 0.2f;
-const int MAX_RECORDS_PER_DIFF = 3;
-const int MAX_SONGS = 2;
+const int MAX_RECORDS_PER_DIFF = 5;
+const int MAX_SONGS = 15;
 
 // DIRECTORIES
 const std::string DATA_PATH = ".\\data\\";
@@ -56,7 +56,7 @@ const int DEFAULT_TRANSPARENT_ALPHA_VALUE = 245;
 const sf::Color HOVERED_COLOR = sf::Color(150, 150, 150);
 const sf::Color BACKGROUMD_COLOR = sf::Color(0, 0, 0);
 const sf::Color DEFAULT_TEXT_COLOR = sf::Color(235, 235, 235);
-const AudioVisualCfg::Cfg DEFAULT_VISUAL_CONFIG(sf::Color(16, 20, 20), sf::Color(92, 204, 230), sf::seconds(5), 225, sf::milliseconds(0));
+const AudioVisualCfg::Cfg DEFAULT_VISUAL_CONFIG(sf::Color(16, 18, 20), sf::Color(30, 44, 106), sf::seconds(5), 225, sf::milliseconds(0));
 const float BUBBLE_RADIUS = 150;
 const int NUMBER_OF_BUBBLES = 13;
 
@@ -100,7 +100,7 @@ const sf::Vector2f RIGHT_DOWN_COEF_BOARD_AREA = sf::Vector2f((DEFAULT_WINDOW_SIZ
 const float SPAPCE_BETWEEN_BOARD_SCOREBOARD_X_COEF = 1 / (float)40;
 // SCOREBOARD
 const float SCOREBOARD_SIZE_Y_COEF = 2 / (float)5;
-const sf::Vector2f POS_COEF_SCOREBOARD_DIFFICULTY = sf::Vector2f(55 / (float)447, 70 / (float)600);
+const sf::Vector2f POS_COEF_SCOREBOARD_DIFFICULTY = sf::Vector2f(55 / (float)447, 80 / (float)600);
 const sf::Vector2f POS_COEF_SCOREBOARD_TIMER_LABEL_LD = sf::Vector2f(55 / (float)447, (170 - 25) / (float)600);
 const sf::Vector2f POS_COEF_SCOREBOARD_FLAG_LABEL_LD = sf::Vector2f(55 / (float)447, (401 - 25) / (float)600);
 const sf::Vector2f POS_COEF_SCOREBOARD_TIMER = sf::Vector2f(70 / (float)447, (170 + 30) / (float)600);

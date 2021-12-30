@@ -98,6 +98,8 @@ void Slider::centerSliderHorizontally(const float space_width, const float left_
 
 
 void Slider::setTopLeftPos(const sf::Vector2f& top_left_pos) {
+	this->top_left_pos = top_left_pos;
+
 	sf::Vector2f diff;
 	diff.x = top_left_pos.x - axis.getPosition().x;
 	diff.y = top_left_pos.y - axis.getPosition().y;

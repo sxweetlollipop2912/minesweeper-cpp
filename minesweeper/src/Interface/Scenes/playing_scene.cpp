@@ -82,6 +82,8 @@ PlayingScene::PlayingScene(const sf::VideoMode& window_size, const int board_row
 		TL_board.y = TL_area.y + ((RD_area.y - TL_area.y) - (cell_size * board.number_of_rows)) / (float)2;
 		board.setTopLeftPos(TL_board);
 
+		Text& diff = texts[STR_CURRENT_DIFF];
+		diff.setText("Board  " + std::to_string(board_rows) + " x " + std::to_string(board_cols));
 
 		sf::Vector2f TL_scoreboard;
 		TL_scoreboard.y = board.getPosTopLeft().y;
@@ -165,6 +167,16 @@ void PlayingScene::updateGameState(const GameState game_state) {
 void PlayingScene::setTopLeftPosScoreboard(const sf::Vector2f top_left_pos) {
 	Button& scoreboard = buttons[STR_SCOREBOARD];
 	scoreboard.setTopLeftPos(top_left_pos);
+
+	{
+		Text& diff = texts[STR_CURRENT_DIFF];
+
+		sf::Vector2f TL_diff;
+		TL_diff.x = scoreboard.getPosTopLeft().x + scoreboard.getSize().x * POS_COEF_SCOREBOARD_DIFFICULTY.x;
+		TL_diff.y = scoreboard.getPosTopLeft().y + scoreboard.getSize().y * POS_COEF_SCOREBOARD_DIFFICULTY.y - diff.getHeight();
+		diff.setTopLeftPos(TL_diff);
+		diff.centerTextHorizontally(scoreboard.getSize().x, scoreboard.getPosTopLeft().x);
+	}
 
 	{
 		Text& timer_label = texts[STR_TIMER_LABEL];

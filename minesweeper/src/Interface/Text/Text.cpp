@@ -123,11 +123,11 @@ void Text::setTextColor(const sf::Color& color) {
 }
 
 
-Result Text::centerTextHorizontally(const float window_width) {
-    if (window_width < width)
+Result Text::centerTextHorizontally(const float space_width, const float left_pos_x) {
+    if (space_width < width)
         return Result::failure;
 
-    top_left_pos.x = (window_width / 2) - (width / 2);
+    top_left_pos.x = left_pos_x + (space_width / 2) - (width / 2);
 
     return Result::success;
 }
