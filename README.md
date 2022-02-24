@@ -4,7 +4,7 @@ A game that is both explosive and mind-blowing.
 ## Dependencies:
 - SFML v2.5 or above.
 - Boost serialization v1.78 or above.
-- [Repo](https://github.com/phatalways-sleeping/firstgame_Minesweeper) that sees the development of the game's functional part.
+- [Repo](https://github.com/phatalways-sleeping/firstgame_Minesweeper) that saw the development of this game's functional part.
 <br>
 
 This repo is a solution from Visual Studio (2019 in particular). Boost is set to be installed through NuGet, and SFML is already configured.
