@@ -22,6 +22,6 @@ Note: current configuration of the library in Visual Studio is:
 
 Refer to [SFML instruction for VS](https://www.sfml-dev.org/tutorials/2.5/start-vc.php) for more details or if you want to make any change on Visual Studio.
 ## Images
-- Menu:<br>![Menu](https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/menu.jpg?raw=true)
-- Selecting difficulty:<br>![Difficulty](https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/difficulty.jpg?raw=true)
-- In-game:<br>![In-game](https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/ingame.jpg?raw=true)
+- Menu:<br>![Menu](https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/menu.png?raw=true)
+- Selecting difficulty:<br>![Difficulty](https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/difficulty.png?raw=true)
+- In-game:<br>![In-game](https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/ingame.png?raw=true)
