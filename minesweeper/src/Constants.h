@@ -41,7 +41,7 @@ const std::string GAME_INFO_PATH = DATA_PATH + (const std::string)"game_info.txt
 
 // WINDOW
 const sf::VideoMode DEFAULT_WINDOW_SIZE = sf::VideoMode(
-        sf::VideoMode().getDesktopMode().width * 1700 / (float)1920,
+        (sf::VideoMode().getDesktopMode().height * 1000 / (float)1080) * 1.5,
         sf::VideoMode().getDesktopMode().height * 1000 / (float)1080);
 
 
