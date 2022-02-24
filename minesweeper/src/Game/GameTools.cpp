@@ -1,104 +1,10 @@
 #include <vector>
 
 #include "GameTools.h"
-#include "../Structs.h"
-#include "../Constants.h"
 
 Records records;
 Time new_Timers = Time(0, 0, 0, false), old_Timers;
 
-void TextColor(int color) {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-}
-
-char InttoChar(int k) {
-	switch (k) {
-	case 0: return '0';
-	case 1: return '1';
-	case 2: return '2';
-	case 3: return '3';
-	case 4: return '4';
-	case 5: return '5';
-	case 6: return '6';
-	case 7: return '7';
-	case 8: return '8';
-	case 9: return '9';
-	default: break;
-	}
-}
-
-void insertArray(char* h, Time* j) {
-	int balt = 0;
-	char u;
-	balt = j->seconds;
-	h[7] = InttoChar(balt % 10);
-	h[6] = InttoChar(balt /= 10);
-	balt = j->minutes;
-	h[4] = InttoChar(balt % 10);
-	h[3] = InttoChar(balt /= 10);
-	balt = j->hours;
-	h[1] = InttoChar(balt % 10);
-	h[0] = InttoChar(balt /= 10);
-}
-
-
-void WriteBlockChar(char* Arraych, int row, int col, int x, int y, int color) {
-	CHAR_INFO* character = new CHAR_INFO[row * col];
-	for (int i = 0; i < row * col; i++) {
-		character[i].Attributes = color;
-		character[i].Char.UnicodeChar = Arraych[i];
-	}
-	COORD sizebuff = { col,row };
-	COORD pos = { 0,0 };
-	SMALL_RECT earea = { x,y,x + col - 1,y + row - 1 };
-	WriteConsoleOutput(GetStdHandle(STD_OUTPUT_HANDLE), character, sizebuff, pos, &earea);
-	delete[] character;
-}
-
-
-void gotoXY(int column, int line) {
-	COORD coord;
-	coord.X = column;
-	coord.Y = line;
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
-// function to display the timer
-void displayClock() {
-	char a[8] = { '0','0',':','0','0',':','0','0' };
-	insertArray(a, &new_Timers);
-	WriteBlockChar(a, 1, 8, 70, 3, 0x004);
-}
-
-void timer() {
-	while (!new_Timers.STOP) {
-
-		// display the timer
-		displayClock();
-
-		// sleep system call to sleep
-		// for 1 second
-
-		// increment seconds
-		new_Timers.seconds++;
-
-		// if seconds reaches 60
-		if (new_Timers.seconds == 60) {
-
-			// increment minutes
-			new_Timers.minutes++;
-
-			// if minutes reaches 60
-			if (new_Timers.minutes == 60) {
-
-				// increment hours
-				new_Timers.hours++;
-				new_Timers.minutes = 0;
-			}
-			new_Timers.seconds = 0;
-		}
-		Sleep(1100);
-	}
-}
 
 ostream& operator << (ostream& outs, const Time& clock) {
 	outs << clock.hours << " " << clock.minutes << " " << clock.seconds;
@@ -240,9 +146,9 @@ void mine_Create(const GAMEPREDICATE& game_Feature, char mine_Board[][MAX_COLUMN
 		int y = rand() % (game_Feature.MAX_COLUMN);
 		bool isLegal = true;
 
-		if (isMine(x, y, mine_Board)) {
-			isLegal = false;
-		}
+        if (isMine(x, y, mine_Board) || (x == 0 && y == 0)) {
+            isLegal = false;
+        }
 
 		{
 			int cnt_mine = 0;

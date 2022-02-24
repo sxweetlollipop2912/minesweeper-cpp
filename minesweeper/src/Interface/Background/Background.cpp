@@ -25,10 +25,8 @@ Background::Background(const sf::VideoMode window_size, const sf::Color primary_
 
 	circles.resize(number_of_circles);
 	{
-		for (int i = 0; i < circles.size(); i++) {
-			auto& circle = circles[i];
-
-			circle.radius = circle_radius;
+		for (auto & circle : circles) {
+				circle.radius = circle_radius;
 
 			sf::Color color = secondary_color;
 
@@ -135,7 +133,7 @@ void Background::calCurrentColor() {
 		background.setFillColor(cur_prim_color);
 	}
 	else {
-		float rate = (1 / (float)transition_duration.asMilliseconds()) * (float)time_elapsed.asMilliseconds();
+		float rate = time_elapsed.asMilliseconds() / (float)transition_duration.asMilliseconds();
 
 		{
 			Color color = cur_prim_color;

@@ -3,9 +3,9 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <filesystem>
 
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
 
 #include "Interface/Window/Window.h"
 #include "Interface/ResourceManager/ResourceManager.h"
@@ -81,8 +81,16 @@ void registerResources() {
 }
 
 
-int main() {
-    srand(time(NULL));
+int main(int argc, char** argv) {
+    // Add `assets` and `data` folder next to `.exe` file, or remove these 2 lines.
+    // This sets working directory the same location as `.exe` file.
+    // This is a workaround on Linux-based OS.
+    {
+        //std::string path = argv[0];
+        //std::filesystem::current_path(path.substr(0, path.find_last_of('/')));
+    }
+
+    srand(time(nullptr));
 
     registerResources();
 
@@ -92,7 +100,7 @@ int main() {
     (*window)->createWindow();
 
     while ((*window)->render_window->isOpen()) {
-        sf::Event event;
+        sf::Event event{};
 
         while ((*window)->render_window->pollEvent(event)) {
             (*window)->handleSfEvents(event);

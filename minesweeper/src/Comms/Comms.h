@@ -91,7 +91,7 @@ namespace Comms {
 	bool readGameInfo(GameInfo& game_info, const std::string& path);
 	bool writeGameInfo(GameInfo& game_info, const std::string& path);
 
-	/// Used by INTERFACE to send InterfaceInfo whenever there are changes, to GAME.
+	// Used by INTERFACE to send InterfaceInfo whenever there are changes, to GAME.
 	Result interfaceInfoSending(const InterfaceInfo& info);
 
 	Result gameInfoSending(const GameInfo& info);

@@ -35,8 +35,8 @@ struct MouseAction {
 
 // This is a singleton.
 class Window {
-	friend Result Comms::gameInfoSending(const GameInfo& info);
-	friend Result Comms::interfaceInfoSending(const InterfaceInfo& info);
+	friend Result Comms::gameInfoSending(const Comms::GameInfo& info);
+	friend Result Comms::interfaceInfoSending(const Comms::InterfaceInfo& info);
 	friend class PlayingScene;
 
 private:
@@ -59,7 +59,7 @@ private:
 	std::deque <MouseAction> pressed_actions;
 	std::deque <MouseAction> released_actions;
 
-	Window(const sf::VideoMode& window_size = sf::VideoMode(1500, 1000), const std::string& title = TITLE, const int window_style = sf::Style::Close);
+	Window(const sf::VideoMode& window_size = DEFAULT_WINDOW_SIZE, const std::string& title = TITLE, const int window_style = sf::Style::Close);
 
 	// Initializes/Resets menu scene for window.
 	void initializeMenuScene();

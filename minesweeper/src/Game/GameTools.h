@@ -11,28 +11,12 @@
 #include<vector>
 #include<algorithm>
 #include<fstream>
-#include<Windows.h>
-#include<conio.h>
 
-#include "../Enums.h"
 #include "../Structs.h"
+#include "../Enums.h"
 #include "../Constants.h"
 
 using namespace std;
-
-void TextColor(int color);
-
-char InttoChar(int k);
-
-void insertArray(char* h, Time* j);
-
-void WriteBlockChar(char* Arraych, int row, int col, int x, int y, int color);
-
-void gotoXY(int column, int line);
-
-void displayClock();
-
-void timer();
 
 ostream& operator << (ostream& outs, const Time& clock);
 

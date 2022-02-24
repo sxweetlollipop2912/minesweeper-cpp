@@ -80,10 +80,12 @@ DifficultiesScene::DifficultiesScene(const sf::VideoMode& window_size) : Scene(w
 	// Sliders
 	{
 		float pos_y_slider_row = this->window_size.height * POS_Y_COEF_SLIDER_ROW;
-		float pos_y_slider_col = this->window_size.height * POS_Y_COEF_SLODER_COL;
+		float pos_y_slider_col = this->window_size.height * POS_Y_COEF_SLIDER_COL;
+        float slider_width = this->window_size.width * WIDTH_COEF_SLIDER;
+        float slider_height = this->window_size.height * HEIGHT_COEF_SLIDER;
 
-		slider_row = std::make_shared<Slider>(Slider(MIN_ROW, MAX_ROW, MIN_ROW, sf::Vector2f(0, pos_y_slider_row)));
-		slider_col = std::make_shared<Slider>(Slider(MIN_COLUMN, MAX_COLUMN, MIN_COLUMN, sf::Vector2f(0, pos_y_slider_col)));
+		slider_row = std::make_shared<Slider>(Slider(MIN_ROW, MAX_ROW, MIN_ROW, sf::Vector2f(0, pos_y_slider_row), slider_width, slider_height));
+		slider_col = std::make_shared<Slider>(Slider(MIN_COLUMN, MAX_COLUMN, MIN_COLUMN, sf::Vector2f(0, pos_y_slider_col), slider_width, slider_height));
 
 		slider_row->centerSliderHorizontally(this->window_size.width);
 		slider_col->centerSliderHorizontally(this->window_size.width);

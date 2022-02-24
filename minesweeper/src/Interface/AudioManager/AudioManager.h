@@ -29,14 +29,16 @@ private:
 
 	int current_song_idx;
 	int current_cfg_idx;
-	int volume;
+	float current_volume;
+    float des_volume;
 	MusicStatus current_status;
 
 	sf::Time start_moment;
-	sf::Time start_down_volume_moment;
+	sf::Time start_stopping_moment;
+    sf::Time start_changing_volume_moment;
 
 
-	AudioVisualCfg parseFromCfgFile(const std::string& file_path);
+	static AudioVisualCfg parseFromCfgFile(const std::string& file_path);
 
 	Result startPlayingEntry(const int song_idx);
 
@@ -51,7 +53,7 @@ public:
 
 	void onNextMusicEvent();
 	void startMusic();
-	void turnVolume(const int volume);
+	void turnVolume(const float volume);
 
 	// This should be called on every frame.
 	AudioVisualCfg::Cfg update();

@@ -135,14 +135,16 @@ void Slider::setSliderPercentValue(const float new_percent_value) {
 
 
 void Slider::draw(std::shared_ptr<sf::RenderTarget> renderer, const bool is_focusing) {
+    auto font_size = slider.getRadius() * 2;
+
 	if (visible_numbers) {
-		loadText(sfText, top_left_pos.x - slider.getRadius() - 18, top_left_pos.y - (20 / 2), std::to_string(min_value), 20);
+		loadText(sfText, top_left_pos.x - slider.getRadius() - font_size, top_left_pos.y - (font_size / 2), std::to_string(min_value), font_size);
 		renderer->draw(sfText);
 
-		loadText(sfText, top_left_pos.x + axis.getSize().x + slider.getRadius() + 5, top_left_pos.y - (20 / 2), std::to_string(max_value), 20);
+		loadText(sfText, top_left_pos.x + axis.getSize().x + font_size * 0.6, top_left_pos.y - (font_size / 2), std::to_string(max_value), font_size);
 		renderer->draw(sfText);
 
-		loadText(sfText, slider.getPosition().x - slider.getRadius() / (float)2, slider.getPosition().y - slider.getRadius() * 2 - (15 / (float)2), std::to_string((int)slider_value), 15);
+		loadText(sfText, slider.getPosition().x - slider.getRadius(), slider.getPosition().y - slider.getRadius() * 2 - (font_size / (float)1.5), std::to_string((int)slider_value), font_size * 3 / (float)4);
 		renderer->draw(sfText);
 	}
 

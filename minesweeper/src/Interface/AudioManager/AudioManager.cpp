@@ -9,9 +9,9 @@ AudioManager::AudioManager() {
 	current_song_idx = -1;
 	current_cfg_idx = 0;
 	current_status = MusicStatus::Stopped;
-	volume = 100;
+    current_volume = des_volume = 100;
 	start_moment = sf::microseconds(0);
-	start_down_volume_moment = sf::microseconds(0);
+    start_stopping_moment = start_changing_volume_moment = sf::microseconds(0);
 }
 
 
@@ -22,9 +22,27 @@ AudioVisualCfg AudioManager::parseFromCfgFile(const std::string& file_path) {
 	if (in_cfg.is_open()) {
 		std::string s;
 		int line_cnt = 0;
-		for (; line_cnt < MAX_LINE && std::getline(in_cfg, s) && (s.empty() || s[0] != '[' || s.back() != ']' || s.size() > MAX_CHAR_PER_LINE); line_cnt++);
 
-		while (line_cnt <= MAX_LINE && !s.empty() && s[0] == '[' && s.back() == ']' && s.size() <= MAX_CHAR_PER_LINE) {
+        auto normalize = [](std::string &s) {
+            if(!s.empty() && *s.rbegin() == '\r') {
+                s.erase( s.size() - 1, 1);
+            }
+        };
+        auto readNextCfg = [&]() {
+            for (; line_cnt < MAX_LINE && std::getline(in_cfg, s); line_cnt++) {
+                normalize(s);
+                if (!s.empty() && *s.begin() == '[' && *s.rbegin() == ']' && s.size() <= MAX_CHAR_PER_LINE)
+                    break;
+            }
+        };
+
+        readNextCfg();
+
+		while (line_cnt <= MAX_LINE) {
+            normalize(s);
+            if (!(!s.empty() && *s.begin() == '[' && *s.rbegin() == ']' && s.size() <= MAX_CHAR_PER_LINE))
+                break;
+
 			try {
 				auto start_time = std::stoi(s.substr(1, s.size() - 2));
 
@@ -32,9 +50,12 @@ AudioVisualCfg AudioManager::parseFromCfgFile(const std::string& file_path) {
 				auto& cfg = cfg_v.v.back();
 				cfg.time = sf::seconds(start_time);
 
-				for (; line_cnt < MAX_LINE && std::getline(in_cfg, s) && (s.empty() || s[0] != '[' || s.back() != ']' || s.size() > MAX_CHAR_PER_LINE); line_cnt++) {
-					if (s.empty() || s.size() > MAX_CHAR_PER_LINE)
-						continue;
+				for (; line_cnt < MAX_LINE && std::getline(in_cfg, s); line_cnt++) {
+                    normalize(s);
+                    if (s.empty() || s.size() > MAX_CHAR_PER_LINE)
+                        continue;
+                    if (*s.begin() == '[' && *s.rbegin() == ']')
+                        break;
 					if (s.find(OPTION_VALUE_SEPARATOR) == std::string::npos) 
 						continue;
 
@@ -80,7 +101,7 @@ AudioVisualCfg AudioManager::parseFromCfgFile(const std::string& file_path) {
 			catch (const std::exception& e) {
 				std::cout << "Error while parsing " << file_path  << ": " << e.what();
 
-				for (; line_cnt < MAX_LINE && std::getline(in_cfg, s) && (s.empty() || s[0] != '[' || s.back() != ']' || s.size() > MAX_CHAR_PER_LINE); line_cnt++);
+				readNextCfg();
 			}
 		}
 	}
@@ -111,7 +132,7 @@ void AudioManager::setRandomMusicList(const int max_songs) {
 
 	for (int cnt = 0; !set.empty() && cnt < max_songs; cnt++) {
 		int ran = rand() % (int)(set.size());
-		for (auto e : set) {
+		for (const auto& e : set) {
 			if (ran == 0) {
 				queue.push_back(e);
 				break;
@@ -131,8 +152,8 @@ void AudioManager::setRandomMusicList(const int max_songs) {
 
 Result AudioManager::startPlayingEntry(const int song_idx) {
 	if (!queue.empty() && music.openFromFile(MUSIC_PATH + queue[song_idx].string())) {
-		music.setVolume(100);
 		music.play();
+        music.setVolume(current_volume);
 		start_moment = (*ResourceManager::getInstance())->getElapsedTime();
 		current_cfg_idx = 0;
 
@@ -145,7 +166,7 @@ Result AudioManager::startPlayingEntry(const int song_idx) {
 
 
 void AudioManager::onNextMusicEvent() {
-	start_down_volume_moment = (*ResourceManager::getInstance())->getElapsedTime();
+    start_stopping_moment = (*ResourceManager::getInstance())->getElapsedTime();
 	current_status = MusicStatus::Stopping;
 }
 
@@ -155,16 +176,25 @@ void AudioManager::startMusic() {
 }
 
 
-void AudioManager::turnVolume(const int volume) {
-	if (current_status != MusicStatus::Stopping) {
-		this->volume = volume;
+void AudioManager::turnVolume(const float volume) {
+	if (current_status != MusicStatus::Stopping && std::abs(des_volume - volume) > EPS) {
+		this->des_volume = volume;
+        start_changing_volume_moment = (*ResourceManager::getInstance())->getElapsedTime();
 	}
 }
 
 
 AudioVisualCfg::Cfg AudioManager::update() {
-	if (current_status != MusicStatus::Stopping) {
-		music.setVolume(volume);
+	if (current_status != MusicStatus::Stopping && std::abs(des_volume - current_volume) > EPS) {
+        auto time_elapsed = (*ResourceManager::getInstance())->getElapsedTime() - start_changing_volume_moment;
+        if (time_elapsed < VOLUME_CHANGING_TIME) {
+            auto dec_volume_percent = time_elapsed.asMilliseconds() / (float)VOLUME_CHANGING_TIME.asMilliseconds();
+            current_volume += (des_volume - current_volume) * dec_volume_percent;
+        }
+        else {
+            current_volume = des_volume;
+        }
+        music.setVolume(current_volume);
 	}
 
 	AudioVisualCfg::Cfg cfg;
@@ -179,7 +209,7 @@ AudioVisualCfg::Cfg AudioManager::update() {
 		}
 
 		if (current_status == MusicStatus::Stopping) {
-			auto time_elapsed = (*ResourceManager::getInstance())->getElapsedTime() - start_down_volume_moment;
+			auto time_elapsed = (*ResourceManager::getInstance())->getElapsedTime() - start_stopping_moment;
 			auto volume_down = time_elapsed.asMilliseconds() / (float)VOLUME_DOWN_TIME.asMilliseconds();
 
 			if (volume_down > 1) {
@@ -187,7 +217,7 @@ AudioVisualCfg::Cfg AudioManager::update() {
 				current_status = MusicStatus::Playing;
 			}
 			else {
-				music.setVolume(volume - (volume_down * (float)100));
+				music.setVolume(current_volume - (volume_down * (float)100));
 			}
 		}
 
