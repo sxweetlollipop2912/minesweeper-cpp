@@ -1,6 +1,7 @@
 # Project-specific files
-/minesweeper/data/*
+game_info.txt
 /minesweeper/SFML/*
+!/minesweeper/SFML/README.md
 
 /.vscode/
 /.idea/

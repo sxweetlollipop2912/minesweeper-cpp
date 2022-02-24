@@ -1,4 +1,4 @@
-### Run on MacOS-arm64
+### Run on macOS-arm64
 Note: These steps below only need to be done once.
 1. Open terminal, navigate to this directory: <br>
 `cd <path_to_this_folder>`
