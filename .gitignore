@@ -1,5 +1,6 @@
 # Project-specific files
 /minesweeper/data/*
+/minesweeper/SFML/*
 
 /.vscode/
 /.idea/
