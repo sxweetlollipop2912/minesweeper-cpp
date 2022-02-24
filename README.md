@@ -7,6 +7,7 @@ A game that is both explosive and mind-blowing.
 <br>
 
 This repo is a solution from Visual Studio (2019 in particular). Boost is set to be installed through NuGet, and SFML is already configured.
+
 ## Installing SFML:
 If you're not on Visual Studio, see [SFML Tutorials](https://www.sfml-dev.org/tutorials/2.5/).
 <br>
@@ -21,7 +22,14 @@ Note: current configuration of the library in Visual Studio is:
 <br>
 
 Refer to [SFML instruction for VS](https://www.sfml-dev.org/tutorials/2.5/start-vc.php) for more details or if you want to make any change on Visual Studio.
+
+## Features
+Minesweeper should be too familiar a game for everyone. This section only mentions uncommon/need to be mentioned features in this particular game:
+- If all bombs surrounding a cell has been flagged, `double left click` on that cell to reveal the rest of surrounding cells.
+- There are 2 ways to win: open all non-bomb cells or flag all bomb cells.
+- When playing custom-sized board, number of bombs is 20% of total number of cells.
+
 ## Images
-- Menu:<br>![Menu](https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/menu.png?raw=true)
-- Selecting difficulty:<br>![Difficulty](https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/difficulty.png?raw=true)
-- In-game:<br>![In-game](https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/ingame.png?raw=true)
+- Menu:<br><img src="https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/menu.png" alt="menu" width="400"/>
+- Selecting difficulty:<br><img src="https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/difficulty.png" alt="difficulty" width="400"/>
+- In-game:<br><img src="https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/ingame.png" alt="in-game" width="400"/>
