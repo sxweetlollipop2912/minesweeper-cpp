@@ -1,6 +1,9 @@
 # minesweeper-cpp
 A game that is both explosive and mind-blowing.
 
+## To add your own music and visuals:
+- Refer to [this README](https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/windows/assets/music/README.md) for further instructions.
+
 ## Dependencies:
 - SFML v2.5 or above.
 - Boost serialization v1.78 or above.
@@ -22,15 +25,16 @@ Note: current configuration of the library in Visual Studio is:
 - `release`
 <br>
 
-Refer to [SFML instruction for VS](https://www.sfml-dev.org/tutorials/2.5/start-vc.php) for more details or if you want to make any change on Visual Studio.
+Refer to [SFML instruction for VS](https://www.sfml-dev.org/tutorials/2.5/start-vc.php) for more details or if you want to make any change.
 
 ## Features
 Minesweeper should be too familiar a game for everyone. This section only mentions uncommon/need to be mentioned features in this particular game:
-- If all bombs surrounding a cell has been flagged, `double left click` on that cell to reveal the rest of surrounding cells.
+- If all bombs surrounding a cell has been flagged, `double left click` on it to reveal the rest of surrounding cells.
 - There are 2 ways to win: open all non-bomb cells or flag all bomb cells.
 - When playing custom-sized board, number of bombs is 20% of total number of cells.
 
-## Images
-- Menu:<br><img src="https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/menu.png" alt="menu" width="400"/>
-- Selecting difficulty:<br><img src="https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/difficulty.png" alt="difficulty" width="400"/>
-- In-game:<br><img src="https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/ingame.png" alt="in-game" width="400"/>
+## Screenshots
+<img src="https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/menu.png" alt="menu" width="600"/>
+<img src="https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/difficulty.png" alt="difficulty" width="600"/>
+<img src="https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/ingame.png" alt="in-game" width="600"/>
+<img src="https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/images/leaderboard.png" alt="leaderboard" width="600"/>
