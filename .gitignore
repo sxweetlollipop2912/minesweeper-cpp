@@ -1,6 +1,7 @@
 # Project-specific files
 game_info.txt
 /minesweeper/SFML/*
+.DS_Store
 !/minesweeper/SFML/README.md
 
 /.vscode/
