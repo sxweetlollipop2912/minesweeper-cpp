@@ -33,7 +33,6 @@ Minesweeper should be too familiar a game for everyone. This section only mentio
 - There are 2 ways to win: open all non-bomb cells or flag all bomb cells.
 - When playing custom-sized board, number of bombs is 20% of total number of cells.
 
-
 ## Screenshots
 <img src="https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/screenshots/menu.png" alt="menu" width="600"/>
 <img src="https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/screenshots/difficulty.png" alt="difficulty" width="600"/>
