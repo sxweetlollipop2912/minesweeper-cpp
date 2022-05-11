@@ -21,8 +21,8 @@ If you're on Visual Studio:
 <br>
 
 Note: current configuration of the library in Visual Studio is:
-- `SFML_STATIC` (requires no `.dll`)
-- `release`
+- `SFML_STATIC` (requires no `.dll`) (already set up)
+- `release` (remember to run in `release` instead of `debug` mode)
 <br>
 
 Refer to [SFML instruction for VS](https://www.sfml-dev.org/tutorials/2.5/start-vc.php) for more details or if you want to make any change.
