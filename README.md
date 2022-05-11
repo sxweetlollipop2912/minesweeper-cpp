@@ -1,5 +1,6 @@
 # minesweeper-cpp
-A game that is both explosive and mind-blowing.
+A game that is both explosive and mind-blowing.<br>
+Here is the [link (v1.0 tag)](https://github.com/sxweetlollipop2912/minesweeper-cpp/releases/tag/v1.0) to download executable.
 
 ## To add your own music and visuals:
 - Refer to [this README](https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/windows/assets/music/README.md) for further instructions.
