@@ -1,6 +1,6 @@
 # minesweeper-cpp
 A game that is both explosive and mind-blowing.<br>
-Here is the [link (v1.0 tag)](https://github.com/sxweetlollipop2912/minesweeper-cpp/releases/tag/v1.0) to download executable.
+[Executable (v1.0 tag)](https://github.com/sxweetlollipop2912/minesweeper-cpp/releases/tag/v1.0).
 
 ## To add your own music and visuals:
 - Refer to [this README](https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/windows/assets/music/README.md) for further instructions.
@@ -29,10 +29,11 @@ Note: current configuration of the library in Visual Studio is:
 Refer to [SFML instruction for VS](https://www.sfml-dev.org/tutorials/2.5/start-vc.php) for more details or if you want to make any change.
 
 ## Features
-Minesweeper should be too familiar a game for everyone. This section only mentions uncommon/need to be mentioned features in this particular game:
-- If all bombs surrounding a cell has been flagged, `double left click` on it to reveal the rest of surrounding cells.
+Minesweeper should be too familiar a game for everyone. This section only covers uncommon/noteworthy features in this version:
+- If all bombs surrounding a cell have been flagged, `double left click` on that cell to reveal the rest of surrounding cells.
 - There are 2 ways to win: open all non-bomb cells or flag all bomb cells.
-- When playing custom-sized board, number of bombs is 20% of total number of cells.
+- Number of bombs is always 20% the size of custom boards.
+- Custom board scores are not recorded in leaderboard.
 
 ## Screenshots
 <img src="https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/screenshots/menu.png" alt="menu" width="600"/>
