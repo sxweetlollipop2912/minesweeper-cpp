@@ -1,9 +1,9 @@
 # minesweeper-cpp
-A game that is both explosive and mind-blowing.<br>
-[Executable (v1.0 tag)](https://github.com/sxweetlollipop2912/minesweeper-cpp/releases/tag/v1.0).
-
-## Add music and visuals:
-- [Read this.](https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/windows/assets/music/README.md)
+A game that is both explosive and mind-blowing. A 2-people school project.
+<br>
+[Download here](https://github.com/sxweetlollipop2912/minesweeper-cpp/releases/tag/v1.0)
+<br>
+[How to customize music and visuals](https://github.com/sxweetlollipop2912/minesweeper-cpp/blob/main/game_release/windows/assets/music/README.md)
 
 ## Dependencies:
 - SFML v2.5 or above
